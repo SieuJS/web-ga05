@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  nestjs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    volumes:
+      - '.:/app'
+    environment:
+      - API_PORT=3000
+      - SWAGGER_ENABLE=1
+      - API_PREFIX=/api/v1
+      - JWT_SECRET=secret
+      - JWT_ISSUER=nestjs
+      - HEALTH_TOKEN=health
+      - PASSENGERS_ALLOWED=yes
+    restart: always
+    networks:
+      - webnet
+
+networks:
+  webnet:
