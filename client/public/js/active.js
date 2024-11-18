@@ -1,3 +1,5 @@
+
+
 (function ($) {
     'use strict';
 
@@ -191,8 +193,9 @@
             values: [value_min, value_max],
             slide: function (event, ui) {
                 var result = label_result + " " + unit + ui.values[0] + ' - ' + unit + ui.values[1];
-                console.log(t);
                 t.closest('.slider-range').find('.range-price').html(result);
+                t.closest('.slider-range').find('#price-min').val(ui.values[0]);
+                t.closest('.slider-range').find('#price-max').val(ui.values[1]);
             }
         });
     })

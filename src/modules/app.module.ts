@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 
 import {ServeStaticModule} from '@nestjs/serve-static';
 import { CommonModule } from './common';
-import { PassengerModule } from './passenger/passenger.module';
 import { join } from 'path';
 import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
     imports: [
@@ -14,9 +14,9 @@ import { UserModule } from './user/user.module';
             exclude: ['/api/(.*)'],
         }),
         CommonModule,
-        PassengerModule,
         ProductModule,
-        UserModule
+        UserModule,
+        CategoryModule
     ]
 })
 export class ApplicationModule {}

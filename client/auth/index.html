@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const allowedPaths = [
+        "/auth/login",
+        "auth/register"
+      ];
+      console.log("reload");
+
+      const currentPath = window.location.pathname;
+
+      const isAllowed = allowedPaths.some((path) =>
+        currentPath.startsWith(path)
+      );
+
+      if (!isAllowed ) {
+        window.location.href = "/auth/login";
+      }
+    });
+  </script>
+</html>

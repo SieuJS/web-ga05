@@ -4,32 +4,43 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:QvzDsPrQIkuWdSqaSqcHeBfMvjeqLkDS@autorack.proxy.rlwy.net:17680/railway"
-}
-
-model Passenger {
-  id        Int    @id @default(autoincrement())
-  firstName String @unique
-  lastName  String
+  url      = env("DATABASE_URL")
 }
 
 model Product {
-  id           Int    @id @default(autoincrement())
-  productID    String
-  productName  String
-  productBrand String
-  gender       String
-  price        Float
-  numImages    Int
-  description  String
-  primaryColor String
-  image        String
+  id             String    @id @default(dbgenerated("public.uuid_generate_v4()")) @db.Uuid
+  name           String?
+  gender         String?
+  categoryId     String?   @map("category_id") @db.Uuid
+  price          Decimal?  @db.Decimal
+  description    String?
+  baseColour     String?   @map("base_colour")
+  image          String?
+  articleType    String?   @map("article_type")
+  season         String?
+  year           String?
+  usage          String?
+  tbl_categories Category? @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_in_category")
+
+  @@map("tbl_products")
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  name     String
-  password String
-  role     String
+  id       String  @id @default(dbgenerated("public.uuid_generate_v4()")) @db.Uuid
+  email    String? @unique
+  name     String?
+  password String?
+  role     String?
+
+  @@map("tbl_users")
+}
+
+model Category {
+  id             String    @id @default(dbgenerated("public.uuid_generate_v4()")) @db.Uuid
+  masterCategory String?   @map("master_category")
+  subCategory    String?   @map("sub_category")
+  tbl_products   Product[]
+
+  @@unique([masterCategory, subCategory])
+  @@map("tbl_categories")
 }

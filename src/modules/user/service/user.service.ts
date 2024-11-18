@@ -30,7 +30,7 @@ export class UserService{
         return user.password === hashedPassword;
     }
 
-    async getUserById(id: number): Promise<UserData> {
+    async getUserById(id: string): Promise<UserData> {
         const user = await this.prisma.user.findUnique({
             where: { id }
         });

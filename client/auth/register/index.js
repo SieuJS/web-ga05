@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('.login100-form');
-    console.log(form);
     form.addEventListener('submit', async function(event) {
         event.preventDefault(); // Prevent default form submission
 

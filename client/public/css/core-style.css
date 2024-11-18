@@ -702,6 +702,23 @@ img {
     left: 0;
 }
 
+.menu-content li .sub-menu > .cate-query.active a:before{
+    width: 10px;
+    height: 10px;
+    border: 1px solid #ff084e;
+    background-color: #ff084e;
+    border-radius: 2px;
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+    content: '';
+    position: absolute;
+    top: 18px;
+    left: 0;
+
+}
+
+
 .menu-content > li > a:before {
     width: 10px;
     height: 10px;

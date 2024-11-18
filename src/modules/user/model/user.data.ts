@@ -3,7 +3,7 @@ import { User } from "@prisma/client";
 
 export class UserData {
     @ApiProperty({description: 'The id of the user', example: 1})
-    id : number ;
+    id : string ;
 
     @ApiProperty({description: 'The email of the user', example: 'user@gmail.com'})
     email : string ;
@@ -19,9 +19,9 @@ export class UserData {
 
     constructor (user: User) {
         this.id = user.id;
-        this.email = user.email;
-        this.name = user.name;
-        this.password = user.password;
-        this.role = user.role;
+        this.email = user.email as string;
+        this.name = user.name as string;
+        this.password = user.password as string;
+        this.role = user.role as string;
     }
 }

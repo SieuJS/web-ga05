@@ -9,7 +9,7 @@ export class UserController {
     }
 
     @Get()
-    async getUserById(@Query() id: number) : Promise<UserData> {
+    async getUserById(@Query() id: string) : Promise<UserData> {
         return this.userService.getUserById(id);
     }
 
