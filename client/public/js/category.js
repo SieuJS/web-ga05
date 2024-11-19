@@ -1,4 +1,4 @@
-import { setLinkAndReload, toggleQuery } from "./product-query.js";
+import { setLinkAndReload } from "./product-query.js";
 import { getQuery } from "./product-query.js";
 import { setQuery, addSubQuery } from "./product-query.js";
 

@@ -3,8 +3,9 @@
 let processLink = new URL(window.location.href);
 let productQuery = processLink.search;
 export const loadProductQuery = async () => {
+
     try {
-        const response = await fetch('/api/v1/product'+productQuery.toLowerCase());
+        const response = await fetch('/api/v1/product'+processLink.search.toLowerCase());
         if (!response.ok) {
             throw new Error('Failed to fetch products');
         }
@@ -14,6 +15,7 @@ export const loadProductQuery = async () => {
     catch(error) {
         console.error('Error loading products:', error);
     }
+
 }
 export const getQuery = () => {
     if(processLink.search !== "") {
@@ -82,18 +84,107 @@ export const setQuery = (query) => {
 }
 
 export const setPrice = (min, max) => {
+    console.log('set price', min, max);
     let query = processLink.search;
     query = query.replaceAll("%20", " ");
+    let find = 0
     const components = query.split("&").map((component) => {
         if (component.includes("price")) {
             component = "price=" + min + "-" + max;
+            find = 1
         }
         return component;
     });
     query = components.join("&");
+    if (find === 0) {
+        query += "&price=" + min + "-" + max;
+    }
     processLink.search = query;
     productQuery = query;
     console.log("set price", processLink.search);
 };
+
+export const setSearchQuery = (search) => {
+    let query = processLink.search;
+    query = query.replaceAll("%20", " ");
+    if (query.includes("search")) {
+        query = query.replace(/search=[^&]*/, "search=" + search);
+    } else {
+        query += "&search=" + search;
+    }
+    processLink.search = query;
+    productQuery = query;
+    console.log("set search", processLink.search);
+}
+
+export const getSearchQuery = () => {
+    let query = processLink.search;
+    query = query.replaceAll("%20", " ");
+    if (query.includes("search")) {
+        let search = query.match(/search=[^&]*/)[0].split("=")[1];
+        return search;
+    }
+    return "";
+}
+
+export const setColorQuery = (color) => {
+    let query = processLink.search;
+    query = query.replaceAll("%20", " ");
+    if (query.includes("color")) {
+        query = query.replace(/color=[^&]*/, "color=" + color);
+    } else {
+        query += "&color=" + color;
+    }
+    processLink.search = query;
+    productQuery = query;
+    console.log("set color", processLink.search);
+};
+
+export const getColorQuery = () => {
+    let query = processLink.search;
+    query = query.replaceAll("%20", " ");
+    if (query.includes("color")) {
+        let color = query.match(/color=[^&]*/)[0].split("=")[1];
+        return color;
+    }
+    return "";
+};
+
+export const clearColorQuery = () => {
+    let query = processLink.search;
+    query = query.replaceAll("%20", " ");
+    query = query.replace(/&color=[^&]*/, "");
+    processLink.search = query;
+}
+
+export const setSeasonQuery = (season) => {
+    let query = processLink.search;
+    query = query.replaceAll("%20", " ");
+    if (query.includes("season")) {
+        query = query.replace(/season=[^&]*/, "season=" + season);
+    } else {
+        query += "&season=" + season;
+    }
+    processLink.search = query;
+    productQuery = query;
+    console.log("set season", processLink.search);
+}
+
+export const getSeasonQuery = () => {
+    let query = processLink.search; 
+    query = query.replace("%20", " ");
+    if(query.includes("season")){
+        query = query.match(/season=[^&]*/)[0].split("=")[1];
+        return query;
+    }
+    else {return "none"};
+}
+
+export const clearSeasonQuery = () => {
+    let query = processLink.search;
+    query = query.replaceAll("%20", " ");
+    query = query.replace(/&season=[^&]*/, "");
+    processLink.search = query;
+}
 
 getQuery() ;

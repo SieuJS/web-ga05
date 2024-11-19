@@ -1,9 +1,13 @@
 import { Body, Post,Get, Query, Controller, Param } from "@nestjs/common";
+import { ApiOperation, ApiResponse } from "@nestjs/swagger";
+
 import { ProductService } from "../service/product.service";
 import { ProductData, ProductInput } from "../model";
 import { PaginationArgs } from "nestjs-prisma-pagination";
 import { ApiTags } from "@nestjs/swagger";
 import { LoggerService } from "../../common";
+import { SearchProductPipe } from "../pipe/search-product.pipe";
+
 
 interface ProductPaginateResponse {
     data: ProductData[];
@@ -30,8 +34,12 @@ export class ProductController {
     }
 
     @Get()
-    async getListProduct(@Query() paginationArgs: PaginationArgs = {}): Promise<ProductPaginateResponse> {
-        const products = await this.productService.getListProduct(paginationArgs);
+    @ApiOperation({ summary: 'Get all product' })
+    @ApiResponse({ status: 200, description: 'Get all product' , type : ProductData})
+    async getListProduct(@Query() paginationArgs: PaginationArgs = {} , @Query(SearchProductPipe) searchProduct : any ): Promise<ProductPaginateResponse> {
+        console.log(searchProduct)
+
+        const products = await this.productService.getListProduct(searchProduct, paginationArgs);
         return {
             data: products,
             total: products.length,
@@ -42,7 +50,15 @@ export class ProductController {
     }
 
     @Get('detail/:id')
+    @ApiOperation({ summary: 'Get product by ID' })
     async getProductById(@Param('id') id: string): Promise<ProductData> {
         return this.productService.getProductById(id);
+    }
+
+    @Get('related/:id')
+    @ApiOperation({ summary: 'Get related product by ID' })
+    @ApiResponse({ status: 200, description: 'Get related product by ID' , isArray : true, type : ProductData})
+    async getRelatedProduct(@Param('id') id: string): Promise<ProductData[]> {
+        return this.productService.getRelatedProduct(id);
     }
 }

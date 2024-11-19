@@ -13,9 +13,95 @@ export class ProductService {
         return product as ProductData;
     }
 
-    async getListProduct(paginationArgs : PaginationArgs = {}, paginationOptions : PaginationOptions = {}): Promise<ProductData[]> {
-        const query = paginate({limit: 10, ...paginationArgs}, {orderBy : {id : 'asc'}, ...paginationOptions});
-        const products = await this.prisma.product.findMany(query );
+    async getListProduct(where : any ,paginationArgs : PaginationArgs = {}, paginationOptions : PaginationOptions = {}): Promise<ProductData[]> {
+        const query = paginate({limit: 10, ...paginationArgs}, {orderBy : {id : 'asc'}, ...paginationOptions}, );
+        let products ;
+        if(where.categoryId)
+        {
+          products = await this.prisma.product.findMany(
+            {
+                ...query,
+              where : {
+                AND : [
+                  {
+                    name : {
+                      contains : where.search || '',
+                      mode : 'insensitive'
+                    }
+                  },
+                  {
+                    description : {
+                        contains : where.search || '',
+                        mode : 'insensitive'
+                    }
+                  },
+                  {
+                    season : {
+                      contains : where.season || '',
+                      mode : 'insensitive'
+                    }
+                  },
+                  {
+                    baseColour : {
+                      contains : where.baseColor || '',
+                      mode : 'insensitive'
+                    }
+                  },
+                  {
+                    price : {
+                      gte : parseInt(where.minPrice) || 0,
+                      lte : parseInt(where.maxPrice) || 10000000
+                    }
+                  },
+                  {
+                    categoryId : where.categoryId || null
+                  }
+                ]}
+          })
+        }
+        else {
+          products = await this.prisma.product.findMany(
+            {
+              ...query,
+            where : {
+              AND : [
+                {
+                  name : {
+                    contains : where.search || '',
+                    mode : 'insensitive'
+                  }
+                },
+                {
+                  description : {
+                      contains : where.search || '',
+                      mode : 'insensitive'
+                  }
+                },
+                {
+                  season : {
+                    contains : where.season || '',
+                    mode : 'insensitive'
+
+                  }
+                },
+                {
+                  baseColour : {
+                    contains : where.baseColor || '',
+                    mode : 'insensitive'
+
+                  }
+                },
+                {
+                  price : {
+                    gte : parseInt(where.minPrice) || 0,
+                    lte : parseInt(where.maxPrice) || 10000000
+                  }
+                }
+              ]}
+            }
+          )
+        }
+
         return products as ProductData[];
     }
 
@@ -49,5 +135,25 @@ export class ProductService {
             take : parseInt(limit.toString())
         });
         return colourCounts.map(colour => `${colour.baseColour}: ${colour._count._all}`) as string[];
+    }
+
+    async getRelatedProduct(id: string, take : number = 4): Promise<ProductData[]> {
+        const product = await this.prisma.product.findUnique({
+            where: { id }
+        }) as ProductData;
+        const relatedProducts = await this.prisma.product.findMany({
+            where: {
+              OR: [
+                {
+                  categoryId: product.categoryId,
+                }
+              ],
+              NOT: {
+                id: product.id
+              }
+            },
+            take 
+        });
+        return relatedProducts as ProductData[];
     }
 }

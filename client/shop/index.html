@@ -436,6 +436,17 @@
           <div class="row">
             <div class="col-12 col-md-4 col-lg-3">
               <div class="shop_sidebar_area">
+                <div class="widget search mb-50">
+                  <h6 class="widget-title mb-30">Search</h6>
+                  <div class="search_form ">
+                    <form class="row" id = "search-form">
+                      <input type="text" class = "search-text mail col-9" placeholder="Search" id = "search-input" />
+                      <button class="submit col-3" id = "search-btn">Search</button>
+                    </form>
+
+                  </div>
+
+              </div>
                 <div class="widget catagory mb-50">
                   <!--  Side Nav  -->
                   <div class="nav-side-menu">
@@ -519,6 +530,10 @@
                       </ul>
                     </div>
                   </div>
+                  <div class="search_form">
+
+                    <button class ="submit text-center col-12" id = "category-submit">Filter</button>
+                  </div>
                 </div>
 
                 <div class="widget price mb-50">
@@ -547,6 +562,11 @@
                         ></span>
                       </div>
                       <div class="range-price">Price: 0 - 1350</div>
+                      <input type="hidden" id="price-min" value = "0" />
+                      <input type="hidden" id="price-max" value="1350" />
+                      <div class="search_form mt-4">
+                        <button id="price-btn" class ="submit text-center col-12">Submit</button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -574,24 +594,33 @@
                         <a href="#"><span>(29)</span></a>
                       </li>
                     </ul>
+                    <div class="search_form mt-2">
+                      <button class ="submit text-center col-12" id = "clear-color">Clear filter</button>
+                    </div>
                   </div>
                 </div>
 
                 <div class="widget size mb-50">
-                  <h6 class="widget-title mb-30">Filter by Size</h6>
+                  <h6 class="widget-title mb-30">Filter by Season</h6>
                   <div class="widget-desc">
-                    <ul class="d-flex justify-content-between">
-                      <li><a href="#">XS</a></li>
-                      <li><a href="#">S</a></li>
-                      <li><a href="#">M</a></li>
-                      <li><a href="#">L</a></li>
-                      <li><a href="#">XL</a></li>
-                      <li><a href="#">XXL</a></li>
+                    <ul class="d-flex justify-content-between row">
+                      <li class = "season-select col-lg-6">
+                        <a href="#">Spring</a>
+                        <input type = "hidden" value = "Spring" />
+                      </li>
+                      <li class = "season-select col-lg-6"><a href="#">Summer</a>
+                        <input type = "hidden" value = "Summer" />
+                      </li>
+                      <li class = "season-select col-lg-6"><a href="#">Fall</a>
+                        <input type = "hidden" value = "Fall" />
+                      </li>
+                      <li class = "season-select col-lg-6"><a href="#">Winter</a>
+                        <input type = "hidden" value = "Winter" />
+                      </li>
                     </ul>
-                  </div>
-
-                  <div class="search-form mt-3">
-                    <button id = "search-btn" class="btn btn-sm ">Serch</button>
+                    <div class="search_form mt-2">
+                      <button class ="submit text-center col-12" id = "clear-season">Clear filter</button>
+                    </div>
                   </div>
 
                 </div>
@@ -638,258 +667,6 @@
             <div class="col-12 col-md-8 col-lg-9">
               <div class="shop_grid_product_area">
                 <div class="row" id = "product-list">
-                  <!-- Single gallery Item -->
-                  <div
-                    class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig"
-                    data-wow-delay="0.2s"
-                  >
-                    <!-- Product Image -->
-                    <div class="product-img">
-                      <img src="../public/img/product-img/product-1.jpg" alt="" />
-                      <div class="product-quicview">
-                        <a href="#" data-toggle="modal" data-target="#quickview"
-                          ><i class="ti-plus"></i
-                        ></a>
-                      </div>
-                    </div>
-                    <!-- Product Description -->
-                    <div class="product-description">
-                      <h4 class="product-price">$39.90</h4>
-                      <p>Jeans midi cocktail dress</p>
-                      <!-- Add to Cart -->
-
-                      <div class="d-flex justify-content-between">
-                        <a href="#" class="add-to-cart-btn">ADD TO CART</a>
-                        <a href="/product-details/" class="add-to-cart-btn"
-                          >Detail</a
-                        >
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Single gallery Item -->
-                  <div
-                    class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig"
-                    data-wow-delay="0.3s"
-                  >
-                    <!-- Product Image -->
-                    <div class="product-img">
-                      <img src="../public/img/product-img/product-2.jpg" alt="" />
-                      <div class="product-quicview">
-                        <a href="#" data-toggle="modal" data-target="#quickview"
-                          ><i class="ti-plus"></i
-                        ></a>
-                      </div>
-                    </div>
-                    <!-- Product Description -->
-                    <div class="product-description">
-                      <h4 class="product-price">$39.90</h4>
-                      <p>Jeans midi cocktail dress</p>
-                      <!-- Add to Cart -->
-                      <div class="d-flex justify-content-between">
-                        <a href="#" class="add-to-cart-btn">ADD TO CART</a>
-                        <a href="/product-details/" class="add-to-cart-btn"
-                          >Detail</a
-                        >
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Single gallery Item -->
-                  <div
-                    class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig"
-                    data-wow-delay="0.4s"
-                  >
-                    <!-- Product Image -->
-                    <div class="product-img">
-                      <img src="../public/img/product-img/product-3.jpg" alt="" />
-                      <div class="product-quicview">
-                        <a href="#" data-toggle="modal" data-target="#quickview"
-                          ><i class="ti-plus"></i
-                        ></a>
-                      </div>
-                    </div>
-                    <!-- Product Description -->
-                    <div class="product-description">
-                      <h4 class="product-price">$39.90</h4>
-                      <p>Jeans midi cocktail dress</p>
-                      <!-- Add to Cart -->
-                      <div class="d-flex justify-content-between">
-                        <a href="#" class="add-to-cart-btn">ADD TO CART</a>
-                        <a href="/product-details/" class="add-to-cart-btn"
-                          >Detail</a
-                        >
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Single gallery Item -->
-                  <div
-                    class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig"
-                    data-wow-delay="0.5s"
-                  >
-                    <!-- Product Image -->
-                    <div class="product-img">
-                      <img src="../public/img/product-img/product-4.jpg" alt="" />
-                      <div class="product-quicview">
-                        <a href="#" data-toggle="modal" data-target="#quickview"
-                          ><i class="ti-plus"></i
-                        ></a>
-                      </div>
-                    </div>
-                    <!-- Product Description -->
-                    <div class="product-description">
-                      <h4 class="product-price">$39.90</h4>
-                      <p>Jeans midi cocktail dress</p>
-                      <!-- Add to Cart -->
-                      <div class="d-flex justify-content-between">
-                        <a href="#" class="add-to-cart-btn">ADD TO CART</a>
-                        <a href="/product-details/" class="add-to-cart-btn"
-                          >Detail</a
-                        >
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Single gallery Item -->
-                  <div
-                    class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig"
-                    data-wow-delay="0.6s"
-                  >
-                    <!-- Product Image -->
-                    <div class="product-img">
-                      <img src="../public/img/product-img/product-5.jpg" alt="" />
-                      <div class="product-quicview">
-                        <a href="#" data-toggle="modal" data-target="#quickview"
-                          ><i class="ti-plus"></i
-                        ></a>
-                      </div>
-                    </div>
-                    <!-- Product Description -->
-                    <div class="product-description">
-                      <h4 class="product-price">$39.90</h4>
-                      <p>Jeans midi cocktail dress</p>
-                      <!-- Add to Cart -->
-                      <div class="d-flex justify-content-between">
-                        <a href="#" class="add-to-cart-btn">ADD TO CART</a>
-                        <a href="/product-details/" class="add-to-cart-btn"
-                          >Detail</a
-                        >
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Single gallery Item -->
-                  <div
-                    class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig"
-                    data-wow-delay="0.7s"
-                  >
-                    <!-- Product Image -->
-                    <div class="product-img">
-                      <img src="../public/img/product-img/product-6.jpg" alt="" />
-                      <div class="product-quicview">
-                        <a href="#" data-toggle="modal" data-target="#quickview"
-                          ><i class="ti-plus"></i
-                        ></a>
-                      </div>
-                    </div>
-                    <!-- Product Description -->
-                    <div class="product-description">
-                      <h4 class="product-price">$39.90</h4>
-                      <p>Jeans midi cocktail dress</p>
-                      <!-- Add to Cart -->
-                      <div class="d-flex justify-content-between">
-                        <a href="#" class="add-to-cart-btn">ADD TO CART</a>
-                        <a href="/product-details/" class="add-to-cart-btn"
-                          >Detail</a
-                        >
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Single gallery Item -->
-                  <div
-                    class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig"
-                    data-wow-delay="0.8s"
-                  >
-                    <!-- Product Image -->
-                    <div class="product-img">
-                      <img src="../public/img/product-img/product-7.jpg" alt="" />
-                      <div class="product-quicview">
-                        <a href="#" data-toggle="modal" data-target="#quickview"
-                          ><i class="ti-plus"></i
-                        ></a>
-                      </div>
-                    </div>
-                    <!-- Product Description -->
-                    <div class="product-description">
-                      <h4 class="product-price">$39.90</h4>
-                      <p>Jeans midi cocktail dress</p>
-                      <!-- Add to Cart -->
-                      <div class="d-flex justify-content-between">
-                        <a href="#" class="add-to-cart-btn">ADD TO CART</a>
-                        <a href="/product-details/" class="add-to-cart-btn"
-                          >Detail</a
-                        >
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Single gallery Item -->
-                  <div
-                    class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig"
-                    data-wow-delay="0.9s"
-                  >
-                    <!-- Product Image -->
-                    <div class="product-img">
-                      <img src="../public/img/product-img/product-8.jpg" alt="" />
-                      <div class="product-quicview">
-                        <a href="#" data-toggle="modal" data-target="#quickview"
-                          ><i class="ti-plus"></i
-                        ></a>
-                      </div>
-                    </div>
-                    <!-- Product Description -->
-                    <div class="product-description">
-                      <h4 class="product-price">$39.90</h4>
-                      <p>Jeans midi cocktail dress</p>
-                      <!-- Add to Cart -->
-                      <div class="d-flex justify-content-between">
-                        <a href="#" class="add-to-cart-btn">ADD TO CART</a>
-                        <a href="/product-details/" class="add-to-cart-btn"
-                          >Detail</a
-                        >
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Single gallery Item -->
-                  <div
-                    class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig"
-                    data-wow-delay="1s"
-                  >
-                    <!-- Product Image -->
-                    <div class="product-img">
-                      <img src="../public/img/product-img/product-9.jpg" alt="" />
-                      <div class="product-quicview">
-                        <a href="#" data-toggle="modal" data-target="#quickview"
-                          ><i class="ti-plus"></i
-                        ></a>
-                      </div>
-                    </div>
-                    <!-- Product Description -->
-                    <div class="product-description">
-                      <h4 class="product-price">$39.90</h4>
-                      <p>Jeans midi cocktail dress</p>
-                      <!-- Add to Cart -->
-                      <div class="d-flex justify-content-between">
-                        <a href="#" class="add-to-cart-btn">ADD TO CART</a>
-                        <a href="/product-details/" class="add-to-cart-btn"
-                          >Detail</a
-                        >
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
 
@@ -1028,7 +805,9 @@
     <!-- Active js -->
     <script  src="../public/js/active.js"></script>
     <script type = "module" src = "../public/js/product-query.js"></script>
-    <script type = "module"  src = "./index.js"></script>
+    <script type = "module" src="../public/js/color-filter.js"></script>
     <script type = "module" src = "../public/js/category.js"></script>
+    <script type = "module"  src = "./index.js"></script>
+    
   </body>
 </html>

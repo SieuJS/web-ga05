@@ -42,4 +42,28 @@ export class CategoryService {
         })
         return categories as CategoryData[];
     }
+
+    async getListCategoryByMaster(masterCategory: string[] | null): Promise<CategoryData[]> {
+        const categories = await this.prisma.category.findMany({
+            where: {
+            masterCategory: {
+                in: masterCategory,
+                mode: 'insensitive'
+            }
+            }
+        });
+        return categories as CategoryData[];
+    }
+
+    async getListCategoryBySub(subCategory: string[] | null): Promise<CategoryData[]> {
+        const categories = await this.prisma.category.findMany({
+            where : {
+                subCategory : {
+                    in : subCategory,
+                    mode : 'insensitive'
+                }
+            }
+        });
+        return categories as CategoryData[];
+    }
 }

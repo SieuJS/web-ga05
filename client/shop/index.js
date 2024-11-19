@@ -1,5 +1,5 @@
 
-import { loadProductQuery } from '../public/js/product-query.js';
+import { clearColorQuery, clearSeasonQuery, getSeasonQuery, loadProductQuery, setLinkAndReload, setSearchQuery,setSeasonQuery, getSearchQuery } from '../public/js/product-query.js';
 import { setPrice } from '../public/js/product-query.js';
 
 async function loadProducts() {
@@ -9,7 +9,7 @@ async function loadProducts() {
     productContainer.innerHTML = '';
     products.forEach((product) => {
       const productHTML = `
-        <div class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.9s">
+        <div class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.2s">
           <div class="product-img">
             <img src="${product.image}" alt="${product.name}" />
             <div class="product-quicview">
@@ -35,4 +35,64 @@ async function loadProducts() {
 
 document.addEventListener('DOMContentLoaded', loadProducts);
 
+const searchForm = document.getElementById('search-form');
+
+searchForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const searchQuery = document.getElementById('search-input').value;
+  setSearchQuery(searchQuery);
+  setLinkAndReload();
+});
+
+const searchInput = document.getElementById('search-input');
+searchInput.value = getSearchQuery();
+console.log('searchInput', searchInput.value);
+
+const priceButton = document.getElementById('price-btn');
+priceButton.onclick = async () => {
+  const minPrice = document.getElementById('price-min').value;
+  const maxPrice = document.getElementById('price-max').value;
+
+  setPrice(minPrice, maxPrice);
+  await loadProducts();
+}
+
+const seasonSelect = document.querySelectorAll('.season-select');
+seasonSelect.forEach((season) => {
+  season.addEventListener('click', (e) => {
+    let seasonValue = season.querySelector('input');
+    console.log('seasonValue', seasonValue);
+    setSeasonQuery(seasonValue.value);
+    setLinkAndReload();
+  })
+})
+
+const seasonSelectors = document.querySelectorAll('.season-select') ; 
+
+seasonSelectors.forEach(season => {
+  let seasonValue = season.querySelector('input')
+  seasonValue = seasonValue.value;
+  if (seasonValue === getSeasonQuery()) {
+    console.log("mactch season ")
+    season.classList.add('active');
+  }
+})
+
+const seasonClear = document.getElementById('clear-season');
+seasonClear.addEventListener('click', () => {
+  console.log('clicked')
+  clearSeasonQuery();
+  setLinkAndReload();
+})
+
+const colorClear = document.getElementById('clear-color');
+colorClear.onclick = () => {
+  clearColorQuery();
+  setLinkAndReload();
+}
+
+const categorySubmit = document.getElementById('category-submit');
+categorySubmit.addEventListener('click', () => {
+  setLinkAndReload();
+})
 

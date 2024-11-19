@@ -1425,6 +1425,40 @@ img {
     color: #fff;
 }
 
+
+.search_form .mail {
+    border: none;
+    border-radius: 0;
+    font-size: 12px;
+    height: 50px;
+    padding: 5px 15px;
+    width: 100%;
+    background-color: #f0eded;
+    color: #929191;
+    font-style: italic;
+}
+
+.search_form .submit {
+    background-color: #3a3a3a;
+    border: none;
+    border-radius: 0;
+    color: #fff;
+    text-align: start;
+    cursor: pointer;
+    font-size: 12px;
+    height: 50px;
+    text-transform: uppercase;
+    top: 0;
+    -webkit-transition-duration: 500ms;
+    transition-duration: 500ms;
+    font-weight: 700;
+}
+
+.search_form .submit:hover {
+    background-color: #ff084e;
+    color: #fff;
+}
+
 .copywrite_text > p {
     color: #9f9f9f;
     font-size: 14px;
@@ -1501,6 +1535,13 @@ img {
     display: inline-block;
 }
 
+.widget.size .widget-desc ul li.active a {
+    border: 2px solid #ff084e;
+    background-color: #ff084e;
+    color: white;
+
+}
+
 .widget.size .widget-desc a {
     display: block;
     font-size: 14px;
@@ -1569,6 +1610,30 @@ img {
 .widget.color .widget-desc ul li.cyan a {
     background-color: #9ee7f4;
 }
+
+.widget.color .widget-desc ul li.beige a {
+    background-color: #f5f5dc;
+}
+
+.widget.color .widget-desc ul li.black a {
+    background-color: #000;
+}
+.widget.color .widget-desc ul li.blue a {
+    background-color: #0000ff;
+}
+.widget.color .widget-desc ul li.bronze a {
+    background-color: #cd7f32;
+}
+
+.widget.color .widget-desc ul li.brown a {
+    background-color: #964b00;
+}
+
+.widget.color .widget-desc ul li .active {
+    border: 2px solid #ff084e;
+
+}
+
 
 .widget.color .widget-desc ul li a:after {
     width: calc(100% + 6px);

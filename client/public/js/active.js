@@ -48,29 +48,29 @@
     }
 
     // :: 3.0 Related Product Active Code
-    if ($.fn.owlCarousel) {
-        $('.you_make_like_slider').owlCarousel({
-            items: 3,
-            margin: 30,
-            loop: true,
-            nav: false,
-            dots: true,
-            autoplay: true,
-            autoplayTimeout: 7000,
-            smartSpeed: 1000,
-            responsive: {
-                0: {
-                    items: 1
-                },
-                576: {
-                    items: 2
-                },
-                768: {
-                    items: 3
-                }
-            }
-        });
-    }
+    // if ($.fn.owlCarousel) {
+    //     $('.you_make_like_slider').owlCarousel({
+    //         items: 3,
+    //         margin: 30,
+    //         loop: true,
+    //         nav: false,
+    //         dots: true,
+    //         autoplay: true,
+    //         autoplayTimeout: 7000,
+    //         smartSpeed: 1000,
+    //         responsive: {
+    //             0: {
+    //                 items: 1
+    //             },
+    //             576: {
+    //                 items: 2
+    //             },
+    //             768: {
+    //                 items: 3
+    //             }
+    //         }
+    //     });
+    // }
 
     welcomeSlide.on('translate.owl.carousel', function () {
         var slideLayer = $("[data-animation]");
