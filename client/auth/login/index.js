@@ -41,7 +41,6 @@ loginForm.addEventListener('submit', async (e) => {
     }
 
     const data = await response.json();
-    console.log('Login successful:', data);
     successMessageElement.classList.remove('d-none');
     successMessageElement.textContent = "Login success, wait for redirecting to shop page";
     localStorage.setItem('token',  data.token);

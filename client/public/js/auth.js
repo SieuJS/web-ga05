@@ -1,6 +1,5 @@
 const token = localStorage.getItem('token');
 const navbar = document.querySelector('#nav');
-console.log('token:', token);
 if (token) {
     const logoutButton = document.createElement('li.nav-item')
     logoutButton.innerHTML = `<a href = "#" class="nav-link" >Logout</a>`;

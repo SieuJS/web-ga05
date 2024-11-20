@@ -46,7 +46,6 @@ searchForm.addEventListener('submit', (e) => {
 
 const searchInput = document.getElementById('search-input');
 searchInput.value = getSearchQuery();
-console.log('searchInput', searchInput.value);
 
 
 
@@ -54,7 +53,6 @@ const seasonSelect = document.querySelectorAll('.season-select');
 seasonSelect.forEach((season) => {
   season.addEventListener('click', (e) => {
     let seasonValue = season.querySelector('input');
-    console.log('seasonValue', seasonValue);
     setSeasonQuery(seasonValue.value);
     setLinkAndReload();
   })
@@ -66,14 +64,12 @@ seasonSelectors.forEach(season => {
   let seasonValue = season.querySelector('input')
   seasonValue = seasonValue.value;
   if (seasonValue === getSeasonQuery()) {
-    console.log("mactch season ")
     season.classList.add('active');
   }
 })
 
 const seasonClear = document.getElementById('clear-season');
 seasonClear.addEventListener('click', () => {
-  console.log('clicked')
   clearSeasonQuery();
   setLinkAndReload();
 })

@@ -54,7 +54,6 @@ export const addSubQuery = (subquery, master) => {
     }
 
     processLink.search = query;
-    console.log("process add", processLink.search);
     productQuery = query;
 }
 
@@ -66,7 +65,6 @@ export const toggleQuery = (query) => {
     } else {
         productQuery += "&" + query;
     }
-    console.log("process toggle" ,processLink.search);
     processLink.search = productQuery;
     processLink.hash = "menu-content2";
 }
@@ -80,11 +78,9 @@ export const addQuery = (query) => {
 export const setQuery = (query) => {
     productQuery = query;
     processLink.search = productQuery;
-    console.log("Current set", processLink.search);
 }
 
 export const setPrice = (min, max) => {
-    console.log('set price', min, max);
     let query = processLink.search;
     query = query.replaceAll("%20", " ");
     let find = 0
@@ -124,7 +120,6 @@ export const setSearchQuery = (search) => {
     }
     processLink.search = query;
     productQuery = query;
-    console.log("set search", processLink.search);
 }
 
 export const getSearchQuery = () => {
@@ -147,7 +142,6 @@ export const setColorQuery = (color) => {
     }
     processLink.search = query;
     productQuery = query;
-    console.log("set color", processLink.search);
 };
 
 export const getColorQuery = () => {
@@ -177,7 +171,6 @@ export const setSeasonQuery = (season) => {
     }
     processLink.search = query;
     productQuery = query;
-    console.log("set season", processLink.search);
 }
 
 export const getSeasonQuery = () => {

@@ -1,8 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const products = await fetchNewArrivals();
-    console.log("products 1", products);
     if (products) {
-        console.log("products", products);
         renderNewArrivals(products);
         (function ($) {
             $('.portfolio-menu button.btn').on('click', function () {
@@ -48,7 +46,6 @@ const fetchNewArrivals = async () => {
 
 const renderNewArrivals = (products) => {
     const newArrivalsContainer = document.querySelector(".karl-new-arrivals");
-    console.log("called");
     newArrivalsContainer.innerHTML = "";
     products.forEach((product) => {
         const productHTML = `

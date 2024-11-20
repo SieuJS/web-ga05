@@ -36,7 +36,6 @@ export class UserController {
     @Post('login')
     @ApiResponse({ status: 200, description: 'User logged in successfully' , type: AuthResponse})
     async signIn(@Body() data: { email: string, password: string }): Promise<AuthResponse> {
-        console.log("login" , data)
         const user = await this.userService.signIn(data.email, data.password);
         if (!user) {
             throw new HttpException('Invalid email or password', 401);

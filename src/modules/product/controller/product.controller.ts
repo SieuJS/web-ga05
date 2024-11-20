@@ -37,7 +37,6 @@ export class ProductController {
     @ApiOperation({ summary: 'Get all product' })
     @ApiResponse({ status: 200, description: 'Get all product' , type : ProductData})
     async getListProduct(@Query() paginationArgs: PaginationArgs = {} , @Query(SearchProductPipe) searchProduct : any ): Promise<ProductPaginateResponse> {
-        console.log(searchProduct)
 
         const products = await this.productService.getListProduct(searchProduct, paginationArgs);
         return {
