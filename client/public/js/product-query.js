@@ -101,8 +101,18 @@ export const setPrice = (min, max) => {
     }
     processLink.search = query;
     productQuery = query;
-    console.log("set price", processLink.search);
 };
+
+export const getPriceRange = () => {
+    let query = processLink.search;
+    query = query.replaceAll("%20", " ");
+    if (query.includes("price")) {
+        let price = query.match(/price=[^&]*/)[0].split("=")[1].split("-");
+        return price;
+    }
+    return [0, 1350];
+};
+
 
 export const setSearchQuery = (search) => {
     let query = processLink.search;

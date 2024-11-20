@@ -178,27 +178,29 @@
     }
 
     // :: 11.0 Slider Range Price Active Code
-    $('.slider-range-price').each(function () {
-        var min = jQuery(this).data('min');
-        var max = jQuery(this).data('max');
-        var unit = jQuery(this).data('unit');
-        var value_min = jQuery(this).data('value-min');
-        var value_max = jQuery(this).data('value-max');
-        var label_result = jQuery(this).data('label-result');
-        var t = $(this);
-        $(this).slider({
-            range: true,
-            min: min,
-            max: max,
-            values: [value_min, value_max],
-            slide: function (event, ui) {
-                var result = label_result + " " + unit + ui.values[0] + ' - ' + unit + ui.values[1];
-                t.closest('.slider-range').find('.range-price').html(result);
-                t.closest('.slider-range').find('#price-min').val(ui.values[0]);
-                t.closest('.slider-range').find('#price-max').val(ui.values[1]);
-            }
-        });
-    })
+    // $('.slider-range-price').each(function () {
+    //     var min = jQuery(this).data('min');
+    //     var max = jQuery(this).data('max');
+    //     var unit = jQuery(this).data('unit');
+    //     var value_min = jQuery(this).data('value-min');
+    //     var value_max = jQuery(this).data('value-max');
+    //     var label_result = jQuery(this).data('label-result');
+    //     var t = $(this);
+    //     $(this).slider({
+    //         range: true,
+    //         min: min,
+    //         max: max,
+    //         values: [value_min, value_max],
+    //         slide: function (event, ui) {
+    //             console.log("values",event.target);
+    //             console.log("values",ui);
+    //             var result = label_result + " " + unit + ui.values[0] + ' - ' + unit + ui.values[1];
+    //             t.closest('.slider-range').find('.range-price').html(result);
+    //             t.closest('.slider-range').find('#price-min').val(ui.values[0]);
+    //             t.closest('.slider-range').find('#price-max').val(ui.values[1]);
+    //         }
+    //     });
+    // })
 
     // :: 12.0 PreventDefault a Click
     $("a[href='#']").on('click', function ($) {

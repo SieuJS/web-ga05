@@ -48,14 +48,7 @@ const searchInput = document.getElementById('search-input');
 searchInput.value = getSearchQuery();
 console.log('searchInput', searchInput.value);
 
-const priceButton = document.getElementById('price-btn');
-priceButton.onclick = async () => {
-  const minPrice = document.getElementById('price-min').value;
-  const maxPrice = document.getElementById('price-max').value;
 
-  setPrice(minPrice, maxPrice);
-  await loadProducts();
-}
 
 const seasonSelect = document.querySelectorAll('.season-select');
 seasonSelect.forEach((season) => {
