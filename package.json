@@ -13,7 +13,7 @@
     "start": "node dist/server.js",
     "dev": "env-cmd -f .env nodemon",
     "vercel-build": "prisma db pull && prisma generate && npm run build",
-    "build": "npm run clean && tsc",
+    "build": " npm run clean && tsc",
     "test": "env-cmd -f .env jest --config=jest.json",
     "lint": "eslint -c .eslintrc.js --ext .ts './src/**/*.ts'"
   },

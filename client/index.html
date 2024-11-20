@@ -263,9 +263,7 @@
                         <li class="nav-item">
                           <a class="nav-link" href="/#contact">Contact</a>
                         </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="/auth/login/">Login</a>
-                        </li>
+
                       </ul>
                     </div>
                   </nav>
@@ -367,7 +365,7 @@
                       Summer Collection
                     </h2>
                     <a
-                      href="#"
+                      href="/shop/?&season=Summer&master=Footwear"
                       class="btn karl-btn"
                       data-animation="fadeInLeftBig"
                       data-delay="1s"
@@ -401,10 +399,10 @@
                       data-delay="500ms"
                       data-duration="500ms"
                     >
-                      Women Fashion
+                      ACCESORIES COLLECTION
                     </h2>
                     <a
-                      href="#"
+                      href="/shop/?&master=Accessories"
                       class="btn karl-btn"
                       data-animation="fadeInRightBig"
                       data-delay="1s"
@@ -592,10 +590,10 @@
           <div class="text-center portfolio-menu">
             <button class="btn active" data-filter="*">ALL</button>
             <button class="btn" data-filter=".women">WOMAN</button>
-            <button class="btn" data-filter=".man">MAN</button>
-            <button class="btn" data-filter=".access">ACCESSORIES</button>
-            <button class="btn" data-filter=".shoes">shoes</button>
-            <button class="btn" data-filter=".kids">KIDS</button>
+            <button class="btn" data-filter=".men">MAN</button>
+            <button class="btn" data-filter=".casual">CASUAL</button>
+            <button class="btn" data-filter=".formal">FORMAL</button>
+            <button class="btn" data-filter=".sports">SPORTS</button>
           </div>
         </div>
 
@@ -775,7 +773,7 @@
                 <div class="offer-product-price">
                   <h3><span class="regular-price">$25.90</span> $15.90</h3>
                 </div>
-                <a href="/shop/" class="btn karl-btn mt-30">Shop Now</a>
+                <a href="/shop/?&master=Apparel&color=white" class="btn karl-btn mt-30">Shop Now</a>
               </div>
             </div>
           </div>
@@ -1063,30 +1061,30 @@
     <script src="./public/js/plugins.js"></script>
     <!-- Active js -->
     <script src="./public/js/active.js"></script>
-
-
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
+    <script src = "./public/js/auth.js"></script>
+    <script src = "./index.js"></script>
+    <script >
         const allowedPaths = [
-          "/shop/",
-          "/product-details/",
-          "/checkout/",
-          "/cart/",
-          "/auth",
-          "/auth",
-        ];
-        console.log("reload");
+        "/shop/",
+        "/product-details/",
+        "/checkout/",
+        "/cart/",
+        "/auth",
+        "/auth",
+      ];
+      console.log("reload");
 
-        const currentPath = window.location.pathname;
+      const currentPath = window.location.pathname;
 
-        const isAllowed = allowedPaths.some((path) =>
-          currentPath.startsWith(path)
-        );
+      const isAllowed = allowedPaths.some((path) =>
+        currentPath.startsWith(path)
+      );
 
-        if (!isAllowed && currentPath !== "/" && currentPath !== "") {
-          window.location.href = "/";
-        }
-      });
+      if (!isAllowed && currentPath !== "/" && currentPath !== "") {
+        console.log("redirect");
+
+        // window.location.href = "/";
+      }
     </script>
   </body>
 </html>

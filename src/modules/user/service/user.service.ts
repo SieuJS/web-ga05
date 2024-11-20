@@ -17,6 +17,24 @@ export class UserService{
         });
         return user as UserData;
     }
+
+    async signIn(email: string, password: string): Promise<UserData | null> {
+
+        const user = await this.prisma.user.findUnique({
+            where: { email }
+        });
+
+        if (!user) {
+            return null;
+        }
+
+        const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
+        if (user.password !== hashedPassword) {
+            return null;
+        }
+
+        return user as UserData;
+    }
     async checkPassword(email: string, password: string): Promise<boolean> {
         const user = await this.prisma.user.findUnique({
             where: { email }

@@ -23,8 +23,7 @@ COPY package*.json ./
 RUN npm ci
 
 COPY --chown=node:node . .
-RUN npx prisma db pull \
-    && npx prisma generate \
+RUN npx prisma generate \
     && npm run build \
     && npm prune --omit=dev
 
@@ -35,6 +34,7 @@ FROM node:20-alpine
 ENV NODE_ENV production
 
 USER node
+
 WORKDIR /home/node
 
 COPY --from=builder --chown=node:node /home/node/package*.json ./ 

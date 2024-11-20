@@ -61,4 +61,11 @@ export class ProductController {
     async getRelatedProduct(@Param('id') id: string): Promise<ProductData[]> {
         return this.productService.getRelatedProduct(id);
     }
+
+    @Get('new-arrivals') 
+    @ApiOperation({ summary: 'Get new arrival product' })
+    @ApiResponse({ status: 200, description: 'Get new arrival product' , isArray : true, type : ProductData})
+    async getNewArrivalProduct() {
+        return this.productService.getNewArrivalProduct();
+    }
 }

@@ -156,4 +156,58 @@ export class ProductService {
         });
         return relatedProducts as ProductData[];
     }
+
+    async getNewArrivalProduct(take : number = 8): Promise<ProductData[]> {
+
+      const MenCasualProducts = await this.prisma.product.findMany({
+        where : {
+          gender : "Men" , 
+          usage : "Casual"
+        },
+        take : 2
+      })  as ProductData[]; 
+
+      const MenFormalProducts = await this.prisma.product.findMany({
+        where : {
+          gender : "Men" , 
+          usage : "Formal"
+        },
+        take : 2
+       }) as ProductData[];
+
+      const MenSportsProducts = await this.prisma.product.findMany({
+        where : {
+          gender : "Men",
+          usage : "Sports"
+        },
+        take : 2
+       }) as ProductData[];
+
+      const WomenCasualProducts = await this.prisma.product.findMany({
+        where : {
+          gender : "Women" , 
+          usage : "Casual"
+        },
+        take : 2
+      }) as ProductData[];
+
+      const WomenFormalProducts = await this.prisma.product.findMany({
+        where : {
+          gender : "Women" , 
+          usage : "Formal"
+        },
+        take : 2
+      }) as ProductData[];
+
+      const WomenSportsProducts = await this.prisma.product.findMany({
+        where : {
+          gender : "Women",
+          usage : "Sports"
+        },
+        take : 2
+      }) as ProductData[];
+
+      const products = [...MenCasualProducts, ...MenFormalProducts, ...MenSportsProducts, ...WomenCasualProducts, ...WomenFormalProducts, ...WomenSportsProducts]
+        return products;
+      }
 }
