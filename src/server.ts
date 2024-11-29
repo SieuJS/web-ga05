@@ -8,6 +8,8 @@ import { CommonModule, LogInterceptor } from './modules/common';
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
+import * as session from 'express-session';
+import * as passport from 'passport';
 /**
  * These are API defaults that can be changed using environment variables,
  * it is not required to change them (see the `.env.example` file)
@@ -61,6 +63,16 @@ async function bootstrap(): Promise<void> {
     // @todo Enable Helmet for better API security headers
 
     app.setGlobalPrefix(process.env.API_PREFIX || API_DEFAULT_PREFIX);
+
+    app.use(
+        session({
+          secret: 'my-secret',
+          resave: false,
+          saveUninitialized: false,
+        }),
+      );
+    app.use(passport.initialize())
+    app.use(passport.session())
 
     if (!process.env.SWAGGER_ENABLE || process.env.SWAGGER_ENABLE === '1') {
         createSwagger(app);
