@@ -3,7 +3,7 @@ const loginForm = document.querySelector('#login-form');
 
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const email = e.target['email'].value ;
+    const username = e.target['username'].value ;
     const password = e.target['pass'].value ; 
     const errorElement = document.querySelector('#error');
     const errorMessageElement = document.querySelector('#error-text');
@@ -23,7 +23,7 @@ loginForm.addEventListener('submit', async (e) => {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, password }),
     });
 
     if (!response.ok) {

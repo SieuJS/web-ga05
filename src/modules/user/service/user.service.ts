@@ -1,14 +1,16 @@
 import { Injectable } from "@nestjs/common";
 import { UserData, UserInput } from "../model";
 import { PrismaService } from "../../common";
-import * as crypto from 'crypto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService{   
     constructor(private prisma: PrismaService) {}
 
     async createUser(data: UserInput): Promise<UserData> {
-        const hashedPassword = crypto.createHash('sha256').update(data.password).digest('hex');
+        const saltOrRounds = 10;
+        const hashedPassword = await bcrypt.hash(data.password, saltOrRounds);
+
         const user = await this.prisma.user.create({
             data: {
                 ...data,
@@ -18,34 +20,31 @@ export class UserService{
         return user as UserData;
     }
 
-    async signIn(email: string, password: string): Promise<UserData | null> {
+    async signIn(username: string, password: string): Promise<UserData | null> {
 
         const user = await this.prisma.user.findUnique({
-            where: { email }
+            where: { username }
         });
 
         if (!user) {
             return null;
         }
 
-        const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
-        if (user.password !== hashedPassword) {
+        const passwordValid = await bcrypt.compare(password, user.password as string);
+        if (!passwordValid) {
             return null;
         }
-
         return user as UserData;
     }
-    async checkPassword(email: string, password: string): Promise<boolean> {
+    async checkPassword(username : string, password: string): Promise<boolean> {
         const user = await this.prisma.user.findUnique({
-            where: { email }
+            where: { username }
         });
 
         if (!user) {
             return false;
         }
-
-        const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
-        return user.password === hashedPassword;
+        return bcrypt.compare(password, user.password as string);
     }
 
     async getUserById(id: string): Promise<UserData> {
@@ -58,6 +57,18 @@ export class UserService{
     async getUserByEmail(email: string): Promise<UserData> {
         const user = await this.prisma.user.findUnique({
             where: { email }
+        });
+        return user as UserData;
+    }
+
+    async getUserByUserName(username: string): Promise<UserData> {
+        const user = await this.prisma.user.findFirst({
+            where : {
+                username : {
+                    equals : username,
+                    mode : "insensitive"
+                }
+            }
         });
         return user as UserData;
     }

@@ -68,6 +68,7 @@ async function bootstrap(): Promise<void> {
         session({
           secret: 'my-secret',
           resave: false,
+          cookie : { maxAge : 60*60*1000}, // 1 hour
           saveUninitialized: false,
         }),
       );

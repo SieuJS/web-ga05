@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Product {
-  id             String    @id @default(dbgenerated("public.uuid_generate_v4()")) @db.Uuid
+  id             String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   name           String?
   gender         String?
   categoryId     String?   @map("category_id") @db.Uuid
@@ -26,17 +26,18 @@ model Product {
 }
 
 model User {
-  id       String  @id @default(dbgenerated("public.uuid_generate_v4()")) @db.Uuid
-  email    String? @unique
-  name     String?
-  password String?
-  role     String?
+  id        String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  email     String  @unique
+  username String  @unique
+  name      String?
+  password  String
+  role      String
 
   @@map("tbl_users")
 }
 
 model Category {
-  id             String    @id @default(dbgenerated("public.uuid_generate_v4()")) @db.Uuid
+  id             String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   masterCategory String?   @map("master_category")
   subCategory    String?   @map("sub_category")
   tbl_products   Product[]

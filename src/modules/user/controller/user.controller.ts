@@ -1,13 +1,14 @@
-import { Controller, Get, Post, Query,Body, HttpException } from "@nestjs/common";
+import { Controller, Get, Post, Query,Body, HttpException, UseGuards, Req, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Request } from "express";
 import { UserService } from "../service/user.service";
-import { UserData, UserInput } from "../model/";
-import { ApiResponse } from "@nestjs/swagger";
+import { UserData, UserInput, UserInSession, UserLoginInput } from "../model/";
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { LocalAuthGuard, AuthenticatedGuard } from "../../auth";
+import { UserInputPipe } from "../pipe/user-input.pipe";
+import { AuthResponse } from "../model/";
 
-class AuthResponse  extends UserData {
-    token: string;
-}
 
-
+@ApiTags('User')
 @Controller('user')
 export class UserController {
     constructor (private userService : UserService){
@@ -20,29 +21,46 @@ export class UserController {
     }
 
     @Post("signup")
+    @UsePipes(ValidationPipe)
     @ApiResponse({ status: 200, description: 'User created successfully' , type: AuthResponse})
-    async createUser(@Body() data: UserInput): Promise<AuthResponse> {
+    async createUser(@Req() req : Request, @Body(UserInputPipe) data: UserInput): Promise<AuthResponse> {
         const existingUser = await this.userService.getUserByEmail(data.email);
         if (existingUser) {
             throw new HttpException('User with this email already exists', 400);
         }
-        const newUser = await this.userService.createUser(data);
-        return {
-            ...newUser,
-            token : 'Bearer ' + newUser.id
+        const existingUserName = await this.userService.getUserByUserName(data.username);
+        if (existingUserName) {
+            throw new HttpException('User with this username already exists', 400);
         }
+        await this.userService.createUser(data);
+
+        return await this.signIn(req);
+
     }
 
     @Post('login')
+    @ApiOperation({ summary: 'Login the user' })
     @ApiResponse({ status: 200, description: 'User logged in successfully' , type: AuthResponse})
-    async signIn(@Body() data: { email: string, password: string }): Promise<AuthResponse> {
-        const user = await this.userService.signIn(data.email, data.password);
-        if (!user) {
-            throw new HttpException('Invalid email or password', 401);
-        }
-        return {
-            ...user ,
-            token : 'Bearer ' + user.id
-        }
+    @ApiBody( {description : "Input form", type : UserLoginInput})
+    @UseGuards(LocalAuthGuard)
+    async signIn(@Req() req : Request): Promise<AuthResponse> {
+        const userInSession = req.user as UserInSession;
+        return { ...userInSession,
+            token: 'Bearer ' + req.sessionID};
     };
+
+    @UseGuards(AuthenticatedGuard)
+    @Get('/protected')
+    @ApiOperation({ summary: 'Get the user information' })
+    getHello(@Req() req : Request): AuthResponse {
+        const userInSession = req.user as UserInSession;
+        return { ...userInSession,
+            token: 'Bearer ' + req.sessionID};
+    }
+
+    @Get('/logout')
+    logout(@Req() req : any): any {
+      req.session.destroy();
+      return { msg: 'The user session has ended' }
+    }
 }
