@@ -3,6 +3,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('.login100-form');
     form.addEventListener('submit', async function(event) {
         event.preventDefault(); // Prevent default form submission
+        const submitRequestButton = document.querySelector('.submit-request-button');
+        const loadingContent = '<span class="loader" role="status" aria-hidden="true"></span> Loading...';
+        const idleContent = 'Sign Up';
+
+        submitRequestButton.innerHTML = loadingContent;
         
         // Get form values
         const fullname = form.querySelector('input[name="fullname"]').value;
@@ -83,6 +88,8 @@ document.addEventListener('DOMContentLoaded', function() {
             timeOut(() => {
                 errorElement.classList.add('d-none');
             }, 3000);
+            submitRequestButton.innerHTML = "Sign Up";
+            return;
         }
     });
 });

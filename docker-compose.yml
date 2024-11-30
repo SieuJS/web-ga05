@@ -10,7 +10,7 @@ services:
     volumes:
       - '.:/app'
     environment:
-      - DATABASE_URL=postgresql://postgres:QvzDsPrQIkuWdSqaSqcHeBfMvjeqLkDS@autorack.proxy.rlwy.net:17680/railway?schema=sche_karl_shop
+      - DATABASE_URL=postgresql://doadmin:AVNS_TK6mL23WhT_WWMdxG7P@db-postgresql-blr1-30615-do-user-17467981-0.m.db.ondigitalocean.com:25060/defaultdb?sslmode=require?sslcert=ca-certificate.crt
       - API_PORT=3000
       - SWAGGER_ENABLE=1
       - API_PREFIX=/api/v1
