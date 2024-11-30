@@ -1,8 +1,29 @@
+const isLogged = async () => {
+    
+    try {
+        const res = await fetch ('/api/v1/user/protected');
+        if(!res.ok){
+            throw new Error('Not logged in');
+        }
+        return true;  
+    }
+    catch (error) {
+        return 0;
+    }
+};
+
+(async () =>{
+    let isSignin = await isLogged();
+    if (isSignin) {
+        window.location.href = '/shop';
+    }
+    else {
+        
+    }
+})()
 
 (function ($) {
     "use strict";
-
-
     /*==================================================================
     [ Focus input ]*/
     $('.input100').each(function(){

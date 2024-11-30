@@ -32,9 +32,9 @@ export class UserController {
         if (existingUserName) {
             throw new HttpException('User with this username already exists', 400);
         }
-        await this.userService.createUser(data);
+        const user = await this.userService.createUser(data);
 
-        return await this.signIn(req);
+        return { username : user.username, role : user.role, token: 'Bearer ' + req.sessionID};
 
     }
 

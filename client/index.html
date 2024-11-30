@@ -1069,8 +1069,8 @@
         "/product-details/",
         "/checkout/",
         "/cart/",
-        "/auth",
-        "/auth",
+        "/auth/login",
+        "/auth/register",
       ];
 
       const currentPath = window.location.pathname;
@@ -1081,7 +1081,7 @@
 
       if (!isAllowed && currentPath !== "/" && currentPath !== "") {
 
-        // window.location.href = "/";
+        window.location.href = "/";
       }
     </script>
   </body>
