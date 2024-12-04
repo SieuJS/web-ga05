@@ -68,6 +68,7 @@ submitBtn.addEventListener('click', async () => {
 
     if(response.ok) {
         alert('Order success');
+        window.location.href = '/order';
     }
     else {
         alert('Order failed');
