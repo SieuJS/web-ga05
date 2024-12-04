@@ -1,7 +1,9 @@
 
 import { clearColorQuery, clearSeasonQuery, getSeasonQuery, loadProductQuery, setLinkAndReload, setSearchQuery,setSeasonQuery, getSearchQuery } from '../public/js/product-query.js';
-import { setPrice } from '../public/js/product-query.js';
+import { addToCart, loadCart } from '../public/js/cart.js';
 
+
+loadCart();
 async function loadProducts() {
   try {
     const products = await loadProductQuery();
@@ -20,13 +22,22 @@ async function loadProducts() {
             <h4 class="product-price">$${parseFloat(product.price).toFixed(2)}</h4>
             <p>${product.name}</p>
             <div class="d-flex justify-content-between">
-              <a href="#" class="add-to-cart-btn">ADD TO CART</a>
+              <a href="#" data-id = "${product.id}" class="add-to-cart-btn">ADD TO CART</a>
               <a href="/product-details/?id=${product.id}" class="add-to-cart-btn">DETAIL</a>
             </div>
           </div>
         </div>
       `;
       productContainer.innerHTML += productHTML;
+    });
+
+    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+    addToCartButtons.forEach((button) => {
+      button.addEventListener('click', (event) => {
+        event.preventDefault();
+        const productId = button.getAttribute('data-id');
+        addToCart(event.target, productId);
+      });
     });
   } catch (error) {
     console.error('Error loading products:', error);

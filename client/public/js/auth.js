@@ -1,4 +1,4 @@
-const isLogged = async () => {
+export const isLogged = async () => {
     
     try {
         const res = await fetch ('/api/v1/user/protected');

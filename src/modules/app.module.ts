@@ -11,6 +11,7 @@ import { UserModule } from './user/user.module';
 import { CategoryModule } from './category/category.module';
 import { PrismaService } from './common';
 import { CartModule } from './cart/cart.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
     imports: [
@@ -38,7 +39,8 @@ import { CartModule } from './cart/cart.module';
         ProductModule,
         UserModule,
         CategoryModule,
-        CartModule
+        CartModule,
+        OrderModule
     ]
 })
 export class ApplicationModule {}

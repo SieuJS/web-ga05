@@ -114,4 +114,50 @@ export class CartService {
             throw new HttpException('Product not found in cart',402);
         }
     }
+
+
+
+    async updateItemInCart(input : CartInput) : Promise<CartWithProductData> {
+        const productInCart = await this.txHost.tx.cart.findFirst({
+            where :{
+                userId : input.userId,
+                productId : input.productId
+            }
+        });
+
+        if(productInCart) {
+            if(input.quantity <= 0) {
+                throw new HttpException('Quantity must be greater than 0',402);
+            }
+            return await this.txHost.tx.cart.update({
+                where : {
+                    id : productInCart.id
+                },
+                data : {
+                    quantity : input.quantity
+                },
+                select : selectCartWithProductQuery
+            }) as CartWithProductData;
+        }
+        else {
+            throw new HttpException('Product not found in cart',402);
+        }
+    }
+
+    async clearCart(userId : string) : Promise<void> {
+        await this.txHost.tx.cart.deleteMany({
+            where : {
+                userId : userId
+            },
+        });
+    }
+
+    async clearItemInCart(userId : string, productId : string) : Promise<void> {
+        await this.txHost.tx.cart.deleteMany({
+            where : {
+                userId : userId,
+                productId : productId
+            },
+        });
+    }
 }

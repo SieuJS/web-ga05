@@ -23,6 +23,7 @@ model Product {
   quantity       Int
   in_cart        Cart[]
   tbl_categories Category? @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_in_category")
+  in_orders       OrderProductBill[]
 
   @@map("tbl_products")
 }
@@ -35,6 +36,7 @@ model User {
   password  String
   role      String
   cart     Cart[]
+  orders   Order[]
   @@map("tbl_users")
 }
 
@@ -57,4 +59,48 @@ model Cart {
   products_in_cart Product? @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_products_in_cart")
 
   @@map("tbl_carts")
+}
+
+
+model Order {
+  id String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  total Decimal
+  userId String @map("user_id") @db.Uuid
+  orderDate DateTime @map("order_date")
+  order_of_user User @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_order_of_user")
+  order_bill_address OrderAdressBill[]
+  order_bill_product OrderProductBill[]
+
+
+  @@map("tbl_orders")
+
+}
+
+model OrderAdressBill {
+  id String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  orderId String @map("order_id") @db.Uuid
+  firstName String @map("first_name")
+  lastName String @map("last_name")
+  company String
+  country String
+  address String
+  postCode String @map("post_code")
+  city String
+  province String
+  phone String
+  email String
+  order_of_order Order @relation(fields: [orderId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_order_of_order")
+  @@map("tbl_order_address_bills")
+}
+
+model OrderProductBill {
+  id String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  orderId String @map("order_id") @db.Uuid
+  productId String @map("product_id") @db.Uuid
+  productName String @map("product_name")
+  quantity Int
+  price Decimal
+  bill_of_order Order @relation(fields: [orderId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_order_of_order")
+  product_in_order Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_of_order")
+  @@map("tbl_order_product_bills")
 }

@@ -274,7 +274,7 @@
                                         <th>Total</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class = 'cart-table-body'>
                                     <tr>
                                         <td class="cart_product_img d-flex align-items-center">
                                             <a href="#"><img src="../public/img/product-img/product-9.jpg" alt="Product"></a>
@@ -285,7 +285,7 @@
                                             <div class="quantity">
                                                 <span class="qty-minus" onclick="var effect = document.getElementById('qty'); var qty = effect.value; if( !isNaN( qty ) && qty > 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
                                                 <input type="number" class="qty-text" id="qty" step="1" min="1" max="99" name="quantity" value="1">
-                                                <span class="qty-plus" onclick="var effect = document.getElementById('qty'); var qty = effect.value; if( !isNaN( qty )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                <span class="qty-plus" onclick="var effect = document.getElementById('qty'); var qty = effect.value; if( !isNaN( qty )) effect.value++;return false"><i class="fa fa-plus" aria-hidden="true"></i></span>
                                             </div>
                                         </td>
                                         <td class="total_price"><span>$49.88</span></td>
@@ -296,11 +296,11 @@
 
                         <div class="cart-footer d-flex mt-30">
                             <div class="back-to-shop w-50">
-                                <a href="shop-grid-left-sidebar.html">Continue shooping</a>
+                                <a href="/shop">Continue shooping</a>
                             </div>
                             <div class="update-checkout w-50 text-right">
-                                <a href="#">clear cart</a>
-                                <a href="#">Update cart</a>
+                                <a href="#" class = "btn-clear-cart">clear cart</a>
+                                <a href="#" class = "btn-update-cart">Update cart</a>
                             </div>
                         </div>
 
@@ -351,9 +351,9 @@
                             </div>
 
                             <ul class="cart-total-chart">
-                                <li><span>Subtotal</span> <span>$59.90</span></li>
-                                <li><span>Shipping</span> <span>Free</span></li>
-                                <li><span><strong>Total</strong></span> <span><strong>$59.90</strong></span></li>
+                                <li><span>Subtotal</span> <span id = "total-price-cart">$59.90</span></li>
+                                <li><span>Shipping</span> <span id = "ship-fee">Free</span></li>
+                                <li><span><strong>Total</strong></span> <span><strong id = "total-price-all">$59.90</strong></span></li>
                             </ul>
                             <a href="/checkout/" class="btn karl-checkout-btn">Proceed to checkout</a>
                         </div>
@@ -449,6 +449,9 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <script src="../public/js/plugins.js"></script>
     <!-- Active js -->
     <script src="../public/js/active.js"></script>
+    <script type = "module" src = "../public/js/auth.js"> </script>
+    <script type = "module" src = "../public/js/cart.js"> </script>
+    <script type = "module" src = "./index.js"> </script>
 
 </body>
 

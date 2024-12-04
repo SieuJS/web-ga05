@@ -1,3 +1,6 @@
+import { addToCart , loadCart } from "./public/js/cart.js";
+loadCart();
+
 document.addEventListener("DOMContentLoaded", async () => {
     const products = await fetchNewArrivals();
     if (products) {
@@ -27,6 +30,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                 });
             }
         })(jQuery);
+        const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
+        addToCartButtons.forEach((button) => {
+            button.addEventListener("click", (event) => {
+                event.preventDefault();
+                const productId = button.getAttribute("data-id");
+                addToCart(event.target ,productId);
+            });
+        });
+
     }
 });
 
@@ -62,7 +74,9 @@ const renderNewArrivals = (products) => {
                     ).toFixed(2)}</h4>
                     <p style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis ellipsis;">${product.name}</p>
                     <div class="d-flex justify-content-between">
-                        <a href="#" class="add-to-cart-btn">ADD TO CART</a>
+                        <a href="#"
+                        data-id="${product.id}"
+                        class="add-to-cart-btn">ADD TO CART</a>
                         <a href="/product-details/?id=${
                             product.id
                         }" class="add-to-cart-btn">DETAIL</a>

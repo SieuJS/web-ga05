@@ -2,7 +2,7 @@ import { CartData } from '../cart.data';
 import { ApiProperty, PickType } from '@nestjs/swagger';
 import { ProductData } from '../../../product';
 
-export class ProductMiniData extends PickType( ProductData, ['id', 'image', 'name', 'price']) {}
+export class ProductMiniData extends PickType( ProductData, ['id', 'image', 'name', 'price', 'quantity']) {}
 
 
 export class CartWithProductData extends CartData {
@@ -16,7 +16,8 @@ export class CartWithProductData extends CartData {
             id : productData.id,
             image : productData.image,
             name : productData.name,
-            price : productData.price
+            price : productData.price,
+            quantity : productData.quantity
         }
     }
 }
