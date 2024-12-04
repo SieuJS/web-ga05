@@ -1,6 +1,7 @@
 import { isLogged } from "../public/js/auth.js";
+import { loadCart } from "../public/js/cart.js";
 const orderTable = document.querySelector('.order-table');
-
+loadCart();
 
 
 

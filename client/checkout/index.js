@@ -1,8 +1,7 @@
 import { isLogged } from "../public/js/auth.js";
-import { fetchCart } from "../public/js/cart.js";
-import {isLogged} from "../public/js/auth.js";
+import { fetchCart, loadCart } from "../public/js/cart.js";
 const  orderList = document.querySelector('.order-details-form');
-
+loadCart();
 const productList = []
 let totalPrice = 0;
 
@@ -40,6 +39,7 @@ const loadOrders = async () => {
 
 const submitBtn = document.querySelector('.submit-btn');
 submitBtn.addEventListener('click', async () => {
+    submitBtn.innerHTML = '<span class="loader" role="status" aria-hidden="true"></span >';
     const addressInfor = {} ;
     addressInfor.firstName = document.getElementById('first_name').value;
     addressInfor.lastName = document.getElementById('last_name').value;
@@ -65,7 +65,7 @@ submitBtn.addEventListener('click', async () => {
         },
         body: JSON.stringify(body)
     })
-
+    submitBtn.innerHTML = 'Place Order';
     if(response.ok) {
         alert('Order success');
         window.location.href = '/order';
