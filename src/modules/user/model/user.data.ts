@@ -46,4 +46,4 @@ export class UserData {
     }
 }
 
-export class UserInSession extends OmitType(UserData, ['password','name', 'email', 'id'] as const) {}
+export class UserInSession extends OmitType(UserData, ['password','name', 'email'] as const) {}

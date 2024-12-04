@@ -7,37 +7,40 @@ export class ProductData {
     id : string ;
 
     @ApiProperty({description: 'The name of the product', example: 'CLocker'})
-    name : string ;
+    name : string | null ;
 
     @ApiProperty({description : "The gender suitable for the product", example : "male"})
-    gender : string ; 
+    gender: string | null ; 
 
     @ApiProperty ({description : "THe id of category " , example : "d1234231-1231-1231-1231-123123123123"})
-    categoryId : string;
+    categoryId? : string | null;
 
     @ApiProperty ({description : "The price of the product", example : 1000})
-    price : Decimal;
+    price? : Decimal | null;
 
     @ApiProperty ({description : "The description of the product", example : "This is a locker"})
-    description : string;
+    description? : string | null;
 
     @ApiProperty ({description : "base color of the product", example : "red"})
-    baseColour : string ; 
+    baseColour? : string | null ; 
 
     @ApiProperty({description : "The image of the product", example : "https://www.google.com"})
-    image : string;
+    image? : string | null;
 
     @ApiProperty({description : "The article of product", example : "Shirts"})
-    articleType : string;
+    articleType? : string | null;
 
     @ApiProperty({description : "season of the product", example : "summer"})
-    season : string;
+    season? : string | null;
 
     @ApiProperty({description : "year of the product", example : "2021"})
-    year : string;
+    year? : string | null;
 
     @ApiProperty({description : "usage of the product", example : "casual"})
-    usage : string;
+    usage? : string | null;
+
+    @ApiProperty({description : "The quantity of product", example : 10})
+    quantity : number;
 
     constructor(product: Product) {
         this.id = product.id;
@@ -52,5 +55,6 @@ export class ProductData {
         this.season = product.season as string;
         this.year = product.year as string;
         this.usage = product.usage as string;
+        this.quantity = product.quantity as number;
     }
 }

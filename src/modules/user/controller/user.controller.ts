@@ -11,9 +11,10 @@ import { AuthResponse } from "../model/";
 @ApiTags('User')
 @Controller('user')
 export class UserController {
-    constructor (private userService : UserService){
-        this.userService = userService
-    }
+    constructor (
+        private userService : UserService,
+
+    ){}
 
     @Get()
     async getUserById(@Query() id: string) : Promise<UserData> {
@@ -34,7 +35,7 @@ export class UserController {
         }
         const user = await this.userService.createUser(data);
 
-        return { username : user.username, role : user.role, token: 'Bearer ' + req.sessionID};
+        return {id : user.id,  username : user.username, role : user.role, token: 'Bearer ' + req.sessionID};
 
     }
 

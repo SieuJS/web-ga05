@@ -20,6 +20,8 @@ model Product {
   season         String?
   year           String?
   usage          String?
+  quantity       Int
+  in_cart        Cart[]
   tbl_categories Category? @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_in_category")
 
   @@map("tbl_products")
@@ -32,7 +34,7 @@ model User {
   name      String?
   password  String
   role      String
-
+  cart     Cart[]
   @@map("tbl_users")
 }
 
@@ -44,4 +46,15 @@ model Category {
 
   @@unique([masterCategory, subCategory])
   @@map("tbl_categories")
+}
+
+model Cart {
+  id        String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId    String  @map("user_id") @db.Uuid
+  productId String?  @map("product_id") @db.Uuid
+  quantity  Int
+  cart_of_user User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_cart_of_user")
+  products_in_cart Product? @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_products_in_cart")
+
+  @@map("tbl_carts")
 }

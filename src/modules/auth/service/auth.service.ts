@@ -3,7 +3,6 @@ import { UserInSession, UserService } from '../../user';
 import * as bcrypt from 'bcrypt';
 import { UserLoginInput } from '../../user';
 
-
     @Injectable()
     export class AuthService {
       constructor(private readonly usersService: UserService) {}
@@ -15,6 +14,7 @@ import { UserLoginInput } from '../../user';
         const passwordValid = await bcrypt.compare(input.password, user.password)
         if (user && passwordValid) {
           return {
+            id : user.id,
             username : user.username,
             role : user.role,
           }

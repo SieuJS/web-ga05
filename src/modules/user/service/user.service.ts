@@ -1,11 +1,16 @@
 import { Injectable } from "@nestjs/common";
+import { TransactionHost } from "@nestjs-cls/transactional";
+import { TransactionalAdapterPrisma } from "@nestjs-cls/transactional-adapter-prisma";
 import { UserData, UserInput } from "../model";
 import { PrismaService } from "../../common";
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService{   
-    constructor(private prisma: PrismaService) {}
+    constructor(
+        private prisma: PrismaService,
+        private txHost : TransactionHost<TransactionalAdapterPrisma>
+    ) {}
 
     async createUser(data: UserInput): Promise<UserData> {
         const saltOrRounds = 10;
@@ -62,7 +67,7 @@ export class UserService{
     }
 
     async getUserByUserName(username: string): Promise<UserData> {
-        const user = await this.prisma.user.findFirst({
+        const user = await this.txHost.tx.user.findFirst({
             where : {
                 username : {
                     equals : username,

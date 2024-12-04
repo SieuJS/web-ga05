@@ -1,11 +1,15 @@
 import { ProductData, ProductInput } from "../model";
+import { TransactionHost } from "@nestjs-cls/transactional";
+import { TransactionalAdapterPrisma } from "@nestjs-cls/transactional-adapter-prisma";
 import { PrismaService } from "../../common";
 import { Injectable } from "@nestjs/common";
 import { paginate, PaginationArgs, PaginationOptions } from 'nestjs-prisma-pagination';
 
 @Injectable()
 export class ProductService {
-    constructor(private prisma: PrismaService) {}
+    constructor(private prisma: PrismaService,
+        private txHost : TransactionHost<TransactionalAdapterPrisma>
+    ) {}
     async createProduct(data: ProductInput): Promise<ProductData> {
         const product = await this.prisma.product.create({
             data
@@ -210,4 +214,35 @@ export class ProductService {
       const products = [...MenCasualProducts, ...MenFormalProducts, ...MenSportsProducts, ...WomenCasualProducts, ...WomenFormalProducts, ...WomenSportsProducts]
         return products;
       }
+
+    async updateQuantity(productId : string , quantity : number, isAdd : boolean = true) : Promise<ProductData> {
+      const product = await this.txHost.tx.product.findUnique({
+        where : {
+          id : productId
+        }});
+        if (!product) {
+          throw new Error('Product not found');
+        }
+      if(!isAdd){
+        if(product.quantity < quantity) {
+          throw new Error('Product out of stock');
+        }
+        return this.txHost.tx.product.update({
+          where : {
+            id : productId
+          },
+          data : {
+            quantity : product.quantity - quantity
+          }
+        });
+      }
+      return this.txHost.tx.product.update({
+        where : {
+          id : productId
+        },
+        data : {
+          quantity : product.quantity + quantity
+        }
+      });
+    }
 }
