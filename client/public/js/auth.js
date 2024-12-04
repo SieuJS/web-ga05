@@ -23,7 +23,10 @@ const navbar = document.querySelector('#nav');
             localStorage.removeItem('token');
             window.location.href = '/';
         })
+        const orderButton = document.createElement('li.nav-item')
+        orderButton.innerHTML = `<a class="nav-link" href="/order">Orders</a>`;
         navbar.appendChild(logoutButton);
+        navbar.appendChild(orderButton);
     }
     
     else {

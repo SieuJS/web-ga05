@@ -64,9 +64,10 @@ model Cart {
 
 model Order {
   id String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  total Decimal
+  totalPrice Float @map("total_price")
   userId String @map("user_id") @db.Uuid
   orderDate DateTime @map("order_date")
+  status String
   order_of_user User @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_order_of_user")
   order_bill_address OrderAdressBill[]
   order_bill_product OrderProductBill[]
@@ -99,8 +100,9 @@ model OrderProductBill {
   productId String @map("product_id") @db.Uuid
   productName String @map("product_name")
   quantity Int
-  price Decimal
+  price Float
+  totalPrice Float @map("total_price")
   bill_of_order Order @relation(fields: [orderId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_order_of_order")
-  product_in_order Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_of_order")
+  products_in_order Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_of_order")
   @@map("tbl_order_product_bills")
 }
