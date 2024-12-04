@@ -1,4 +1,4 @@
-import { Controller, Post, Req, UseGuards, Body, Get, Delete, Param, Patch } from "@nestjs/common";
+import { Controller, Post, Req, UseGuards, Body, Get, Delete, Param, Patch, HttpException } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import {Transactional} from "@nestjs-cls/transactional"
 
@@ -123,6 +123,12 @@ export class CartController {
                 await this.cartService.clearItemInCart(userInSession.id, input.productId as string);
             }
             else {
+            const productInStock = await this.productService.getProductById(input.productId as string);
+            console.log('cart contro', productInStock.quantity < input.quantity)
+            if(productInStock.quantity < input.quantity) {
+                console.log('cart contro', productInStock.quantity)
+                throw new HttpException('Product out of stock', 400);
+            }
             await this.cartService.updateItemInCart(input);
             }
         }

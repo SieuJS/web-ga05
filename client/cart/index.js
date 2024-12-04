@@ -41,7 +41,7 @@ const renderCartDetail = (cart) => {
                     <span class="qty-minus"
                         onclick="var effect = document.getElementById('qty-${item.products_in_cart.id}'); var qty = effect.value; if( !isNaN( qty ) && qty > 0 ) effect.value--;return false;"><i
                             class="fa fa-minus" aria-hidden="true"></i></span>
-                    <input type="number" class="qty-text" id="qty-${item.products_in_cart.id}" step="1" min="1" max="${item.products_in_cart.quantity}" name="quantity" value="${item.quantity}">
+                    <input type="number" class="qty-text" id="qty-${item.products_in_cart.id}" step="1" min="1" max="${item.products_in_cart.quantity}" name="quantity" value="${item.quantity}" disabled>
                     <span class="qty-plus"
                         onclick="var effect = document.getElementById('qty-${item.products_in_cart.id}'); var qty = effect.value; if( !isNaN( qty ) && qty < ${item.products_in_cart.quantity}) effect.value++;return false;"><i
                         class="fa fa-plus" aria-hidden="true"></i></span>
@@ -116,22 +116,24 @@ buttonClearCart.addEventListener('click', async () => {
 const buttonUpdateCart = document.querySelector('.btn-update-cart');
 buttonUpdateCart.addEventListener('click', async () => {
     buttonUpdateCart.innerHTML = '<span class="loader"></span>';
-    const response = await fetch('/api/v1/cart/update', {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(
-            [...toUpdateProducts]
-        )
-    });
-    if(response.ok) {
-        loadCartDetail();
+    try{
+        const response = await fetch('/api/v1/cart/update', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+                [...toUpdateProducts]
+            )
+        });
+        if(response.ok) {
+            loadCartDetail();
+        }
     }
-    else {
+    catch(error) {
         console.error('Failed to update cart');
-        window.alert('Failed to update cart');
+        window.alert('Failed to update cart, ',error.message);
     }
+    
     buttonUpdateCart.innerHTML = 'UPDATE CART';
-    window.location.reload();
 });
