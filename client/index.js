@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 });
             }
         })(jQuery);
-        const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
+        const addToCartButtons = document.querySelectorAll(".add-to-cart-event");
         addToCartButtons.forEach((button) => {
             button.addEventListener("click", (event) => {
                 event.preventDefault();
@@ -76,10 +76,10 @@ const renderNewArrivals = (products) => {
                     <div class="d-flex justify-content-between">
                         <a href="#"
                         data-id="${product.id}"
-                        class="add-to-cart-btn">ADD TO CART</a>
+                        class="add-to-cart-btn add-to-cart-event">ADD TO CART</a>
                         <a href="/product-details/?id=${
                             product.id
-                        }" class="add-to-cart-btn">DETAIL</a>
+                        }" class="add-to-cart-btn ">DETAIL</a>
                     </div>
                 </div>
             </div>

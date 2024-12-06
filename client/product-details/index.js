@@ -101,7 +101,7 @@ function renderRelatedProducts(products) {
             <h4 class="product-price">₹${parseFloat(product.price).toFixed(2)}</h4>
             <p style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis ellipsis;">${product.name}</p>
             <div class="d-flex justify-content-between">
-            <a href="#" class="add-to-cart-btn">ADD TO CART</a>
+            <a href="#" class="add-to-cart-btn add-to-cart-event">ADD TO CART</a>
             <a href="/product-details/?id=${product.id}" class="add-to-cart-btn">DETAIL</a>
             </div>
             </div>

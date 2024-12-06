@@ -22,7 +22,7 @@ async function loadProducts() {
             <h4 class="product-price">$${parseFloat(product.price).toFixed(2)}</h4>
             <p>${product.name}</p>
             <div class="d-flex justify-content-between">
-              <a href="#" data-id = "${product.id}" class="add-to-cart-btn">ADD TO CART</a>
+              <a href="#" data-id = "${product.id}" class="add-to-cart-btn add-to-cart-event">ADD TO CART</a>
               <a href="/product-details/?id=${product.id}" class="add-to-cart-btn">DETAIL</a>
             </div>
           </div>
@@ -31,7 +31,7 @@ async function loadProducts() {
       productContainer.innerHTML += productHTML;
     });
 
-    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+    const addToCartButtons = document.querySelectorAll('.add-to-cart-event');
     addToCartButtons.forEach((button) => {
       button.addEventListener('click', (event) => {
         event.preventDefault();
