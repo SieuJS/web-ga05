@@ -1,6 +1,5 @@
-
-import { clearColorQuery, clearSeasonQuery, getSeasonQuery, loadProductQuery, setLinkAndReload, setSearchQuery,setSeasonQuery, getSearchQuery } from '../public/js/product-query.js';
 import { addToCart, loadCart } from '../public/js/cart.js';
+import { clearColorQuery, clearSeasonQuery, getSeasonQuery, loadProductQuery, setLinkAndReload, setSearchQuery,setSeasonQuery, getSearchQuery } from '../public/js/product-query.js';
 
 
 loadCart();

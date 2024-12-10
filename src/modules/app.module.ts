@@ -7,7 +7,7 @@ import { AuthModule } from './auth';
 import { CommonModule } from './common';
 import { join } from 'path';
 import { ProductModule } from './product/product.module';
-import { UserModule } from './user/user.module';
+import { UserModule } from './user';
 import { CategoryModule } from './category/category.module';
 import { PrismaService } from './common';
 import { CartModule } from './cart/cart.module';

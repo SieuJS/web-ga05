@@ -36,15 +36,16 @@ export class CartController {
     @ApiOperation({summary : 'Add item to cart'})
     @ApiBody({type :  CartInput})
     @ApiResponse({status : 200, description : 'Item added to cart', type : CartResponseData})
-    async addItemToCart(@Req() req : any, @Body() input : CartInput) : Promise<CartResponseData> {
+    async addItemToCart( @Body() input : any,@Req() req : any,) : Promise<CartResponseData> {
+
         const userInSession = req.user ; 
         input.userId = userInSession.id;
-        await this.productService.updateQuantity(input.productId as string, input.quantity, false)
-            
+
+        input.quantity = parseInt(input.quantity as any);
         await this.cartService.addItemToCart(input);
             
         const cartOfUser = await this.cartService.getCartByUserId(userInSession.id);
-            
+    
         return {
             data : cartOfUser,
             message : 'Item added to cart'

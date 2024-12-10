@@ -1,18 +1,32 @@
+import { loadCart } from '../public/js/cart.js';
+import { addToCart as addTOCartEvent } from '../public/js/cart.js';
+
+loadCart();
+
+const cartSubmitEvent = document.querySelector('.cart-submit-event');
+
+cartSubmitEvent.addEventListener('click', async (event) => {
+    event.preventDefault();
+    const productId = getProductIdFromUrl() ; 
+    const quantity = document.getElementById('qty').value;
+    await addTOCartEvent(event.target, productId, quantity);
+    
+});
+
 const wrapper = document.querySelector('#wrapper');
 
-document.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener('DOMContentLoaded', async () => {
     const productId = getProductIdFromUrl();
-    if(!productId) {
+    if (!productId) {
         window.location.href = '/shop/';
-    }
-    else{
-    const productData = await fetchProductDetails(productId);
-    
-    if (productData) {
-        renderProductDetails(productData);
-        let relatedProducts = await getRelatedProduct(productId);
-        renderRelatedProducts(relatedProducts);
-    }
+    } else {
+        const productData = await fetchProductDetails(productId);
+
+        if (productData) {
+            renderProductDetails(productData);
+            const relatedProducts = await getRelatedProduct(productId);
+            renderRelatedProducts(relatedProducts);
+        }
     }
 });
 
@@ -41,7 +55,7 @@ function renderProductDetails(product) {
     const productDescription = document.querySelector('.single_product_desc .card-body');
     const productImages = document.querySelector('#product_details_slider .carousel-inner');
     const carouselIndicators = document.querySelector('#product_details_slider .carousel-indicators');
-    
+
     productTitle.textContent = product.name;
     productPrice.textContent = `₹${parseFloat(product.price).toFixed(2)}`;
     productDescription.innerHTML = `<p>${product.description}</p>`;
@@ -59,12 +73,12 @@ function renderProductDetails(product) {
     `;
     productImages.insertAdjacentHTML('beforeend', carouselItem);
     const indicatorItem = `
-            <li data-target="#product_details_slider" data-slide-to="${1}" class="${isActive}" style="background-image: url(${imgUrl}); object-fit: cover;"></li>
-        `;
+        <li data-target="#product_details_slider" data-slide-to="1" class="${isActive}" style="background-image: url(${imgUrl}); object-fit: cover;"></li>
+    `;
     carouselIndicators.insertAdjacentHTML('beforeend', indicatorItem);
 
     const cartForm = document.querySelector('.cart');
-    cartForm.addEventListener('submit', function(event) {
+    cartForm.addEventListener('submit', (event) => {
         event.preventDefault();
         const quantity = document.getElementById('qty').value;
         addToCart(product.id, quantity);
@@ -75,14 +89,18 @@ function addToCart(productId, quantity) {
     console.log(`Added ${quantity} of Product ID ${productId} to the cart`);
 }
 
-
-async function getRelatedProduct (id) {
-    const response = await fetch('/api/v1/product/related/'+id);
-    if (!response.ok) {
-        throw new Error('Failed to fetch related products');
+async function getRelatedProduct(id) {
+    try {
+        const response = await fetch(`/api/v1/product/related/${id}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch related products');
+        }
+        const products = await response.json();
+        return products;
+    } catch (error) {
+        console.error('Error fetching related products:', error);
+        return [];
     }
-    const products = await response.json();
-    return products;
 }
 
 function renderRelatedProducts(products) {
@@ -90,26 +108,27 @@ function renderRelatedProducts(products) {
     relatedProductsContainer.innerHTML = '';
     products.forEach((product) => {
         const productHTML = `
-            <div class="single_gallery_item" style="overflow: hidden;"> 
-            <div class="product-img">
-            <img src="${product.image}" alt="${product.name}" style="object-fit: contain; height: 200px;" />
-            <div class="product-quicview">
-            <a href="#" data-toggle="modal" data-target="#quickview"><i class="ti-plus"></i></a>
-            </div>
-            </div>
-            <div class="product-description" style="overflow: hidden;">
-            <h4 class="product-price">₹${parseFloat(product.price).toFixed(2)}</h4>
-            <p style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis ellipsis;">${product.name}</p>
-            <div class="d-flex justify-content-between">
-            <a href="#" class="add-to-cart-btn add-to-cart-event">ADD TO CART</a>
-            <a href="/product-details/?id=${product.id}" class="add-to-cart-btn">DETAIL</a>
-            </div>
-            </div>
+            <div class="single_gallery_item" style="overflow: hidden;">
+                <div class="product-img">
+                    <img src="${product.image}" alt="${product.name}" style="object-fit: contain; height: 200px;" />
+                    <div class="product-quicview">
+                        <a href="#" data-toggle="modal" data-target="#quickview"><i class="ti-plus"></i></a>
+                    </div>
+                </div>
+                <div class="product-description" style="overflow: hidden;">
+                    <h4 class="product-price">₹${parseFloat(product.price).toFixed(2)}</h4>
+                    <p style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${product.name}</p>
+                    <div class="d-flex justify-content-between">
+                        <a href="#" class="add-to-cart-btn add-to-cart-event">ADD TO CART</a>
+                        <a href="/product-details/?id=${product.id}" class="add-to-cart-btn">DETAIL</a>
+                    </div>
+                </div>
             </div>
         `;
         relatedProductsContainer.innerHTML += productHTML;
     });
-    (function($) {
+
+    (function ($) {
         'use strict';
         if ($.fn.owlCarousel) {
             $('.you_make_like_slider').owlCarousel({
@@ -123,17 +142,16 @@ function renderRelatedProducts(products) {
                 smartSpeed: 1000,
                 responsive: {
                     0: {
-                        items: 1
+                        items: 1,
                     },
                     576: {
-                        items: 2
+                        items: 2,
                     },
                     768: {
-                        items: 3
-                    }
-                }
+                        items: 3,
+                    },
+                },
             });
         }
     })(jQuery);
 }
-

@@ -66,11 +66,19 @@ export const loadCart = async () => {
     }
 }
 
-export const addToCart = async (element, id) => {
+export const addToCart = async (element, id , quantity = 1) => {
     const elementContent = element.innerHTML;
     element.innerHTML = '<span class="loader" role="status" aria-hidden="true"></span>';
-    const response = await fetch(`/api/v1/cart/add/${id}`, {
-        method: 'PATCH'
+    const body = {
+        productId : id,
+        quantity : quantity
+    }
+    const response = await fetch(`/api/v1/cart/add`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body : JSON.stringify(body),
     });
     const data = await response.json();
     if(!response.ok && response.status === 403) {

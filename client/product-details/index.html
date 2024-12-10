@@ -359,7 +359,7 @@
                                     <input type="number" class="qty-text" id="qty" step="1" min="1" max="12" name="quantity" value="1">
                                     <span class="qty-plus" onclick="var effect = document.getElementById('qty'); var qty = effect.value; if( !isNaN( qty )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
                                 </div>
-                                <button type="submit" name="addtocart" value="5" class="btn cart-submit d-block">Add to cart</button>
+                                <button type="submit" name="addtocart" value="5" class="btn cart-submit cart-submit-event d-block" >Add to cart</button>
                             </form>
 
                             <div id="accordion" role="tablist">
@@ -675,8 +675,9 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <script src="../public/js/plugins.js"></script>
     <!-- Active js -->
     <script src="../public/js/active.js"></script>
-    <script src = "../public/js/auth.js"></script>
-    <script src = "./index.js"></script>
+    <script type = "module" src = "../public/js/auth.js"></script>
+    <script type = "module" src = "../public/js/cart.js"></script>
+    <script type = "module" src = "./index.js"></script>
 
 
 </body>

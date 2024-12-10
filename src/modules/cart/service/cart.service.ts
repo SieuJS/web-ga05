@@ -41,7 +41,6 @@ export class CartService {
         });
     }
     async addItemToCart(input : CartInput) : Promise<CartWithProductData> {
-        console.log('get in add to cart')
         const productInCart = await this.prismaSerivce.cart.findFirst({
             where :{
                 userId : input.userId,
@@ -69,6 +68,7 @@ export class CartService {
             }) as CartWithProductData; 
         }
         else {
+
             return await this.txHost.tx.cart.create({
                 data : {
                     userId : input.userId,
