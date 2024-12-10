@@ -12,7 +12,7 @@
 # https://www.bretfisher.com/node-docker-good-defaults/
 # http://goldbergyoni.com/checklist-best-practice-of-node-js-in-production/
 
-FROM node:20-slim as builder
+FROM node:20-alpine as builder
 
 ENV NODE_ENV build
 
@@ -29,10 +29,10 @@ RUN npx prisma generate \
 
 # ---
 
-FROM node:20-slim
+FROM node:20-alpine
 
-RUN apt-get update -qq && \
-    apt-get install -y openssl
+RUN apk update && \
+    apk add --no-cache openssl
 
 ENV NODE_ENV production
 
