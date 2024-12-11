@@ -1,21 +1,14 @@
 import { Body, Post,Get, Query, Controller, Param } from "@nestjs/common";
-import { ApiOperation, ApiResponse } from "@nestjs/swagger";
-
+import { ApiOperation, ApiQuery, ApiResponse } from "@nestjs/swagger";
+import { PaginateTransformPipe } from "../../paginate";
 import { ProductService } from "../service/product.service";
 import { ProductData, ProductInput } from "../model";
-import { PaginationArgs } from "nestjs-prisma-pagination";
 import { ApiTags } from "@nestjs/swagger";
 import { LoggerService } from "../../common";
 import { SearchProductPipe } from "../pipe/search-product.pipe";
+import { ProductPaginatedResult } from "../model";
+import { PaginationArgs } from "../../paginate";
 
-
-interface ProductPaginateResponse {
-    data: ProductData[];
-    total: number;
-    next : string;
-    previous : string;
-    limit : number;
-} 
 
 @Controller('product')
 @ApiTags("Product")
@@ -35,17 +28,11 @@ export class ProductController {
 
     @Get()
     @ApiOperation({ summary: 'Get all product' })
-    @ApiResponse({ status: 200, description: 'Get all product' , type : ProductData})
-    async getListProduct(@Query() paginationArgs: PaginationArgs = {} , @Query(SearchProductPipe) searchProduct : any ): Promise<ProductPaginateResponse> {
-
+    @ApiQuery({ name: 'search', required: false})
+    @ApiResponse({ status: 200, description: 'Get all product' , type : ProductPaginatedResult})
+    async getListProduct(@Query(PaginateTransformPipe) paginationArgs: PaginationArgs , @Query(SearchProductPipe) searchProduct : any ): Promise<ProductPaginatedResult> {
         const products = await this.productService.getListProduct(searchProduct, paginationArgs);
-        return {
-            data: products,
-            total: products.length,
-            next: '',
-            previous: '',
-            limit: products.length
-        }
+        return products;
     }
 
     @Get('detail/:id')

@@ -1,9 +1,13 @@
-import { ProductData, ProductInput } from "../model";
+import { ProductData, ProductInput, ProductPaginatedResult } from "../model";
 import { TransactionHost } from "@nestjs-cls/transactional";
 import { TransactionalAdapterPrisma } from "@nestjs-cls/transactional-adapter-prisma";
 import { PrismaService } from "../../common";
 import { Injectable } from "@nestjs/common";
-import { paginate, PaginationArgs, PaginationOptions } from 'nestjs-prisma-pagination';
+import { PaginationArgs } from "../../paginate";
+import { searchProductQuery } from "../query";
+import { PaginatorTypes, paginator } from '@nodeteam/nestjs-prisma-pagination';
+
+const paginate: PaginatorTypes.PaginateFunction = paginator({ perPage: 10 });
 
 @Injectable()
 export class ProductService {
@@ -17,15 +21,19 @@ export class ProductService {
         return product as ProductData;
     }
 
-    async getListProduct(where : any ,paginationArgs : PaginationArgs = {}, paginationOptions : PaginationOptions = {}): Promise<ProductData[]> {
-        const query = paginate({limit: 10, ...paginationArgs}, {orderBy : {id : 'asc'}, ...paginationOptions}, );
-        let products ;
+    async getListProduct(where : any ,paginationArgs : PaginationArgs ): Promise<ProductPaginatedResult> {
+        let products : ProductPaginatedResult; ;
         if(where.categoryId)
         {
-          products = await this.prisma.product.findMany(
+          products = await paginate(this.prisma.product, 
+            searchProductQuery(where), 
+            paginationArgs
+          ) 
+        }
+        else {
+          products = await paginate(this.prisma.product, 
             {
-                ...query,
-              where : {
+              where :{
                 AND : [
                   {
                     name : {
@@ -43,12 +51,14 @@ export class ProductService {
                     season : {
                       contains : where.season || '',
                       mode : 'insensitive'
+
                     }
                   },
                   {
                     baseColour : {
                       contains : where.baseColor || '',
                       mode : 'insensitive'
+
                     }
                   },
                   {
@@ -56,57 +66,13 @@ export class ProductService {
                       gte : parseInt(where.minPrice) || 0,
                       lte : parseInt(where.maxPrice) || 10000000
                     }
-                  },
-                  {
-                    categoryId : where.categoryId || null
                   }
-                ]}
-          })
-        }
-        else {
-          products = await this.prisma.product.findMany(
-            {
-              ...query,
-            where : {
-              AND : [
-                {
-                  name : {
-                    contains : where.search || '',
-                    mode : 'insensitive'
-                  }
-                },
-                {
-                  description : {
-                      contains : where.search || '',
-                      mode : 'insensitive'
-                  }
-                },
-                {
-                  season : {
-                    contains : where.season || '',
-                    mode : 'insensitive'
-
-                  }
-                },
-                {
-                  baseColour : {
-                    contains : where.baseColor || '',
-                    mode : 'insensitive'
-
-                  }
-                },
-                {
-                  price : {
-                    gte : parseInt(where.minPrice) || 0,
-                    lte : parseInt(where.maxPrice) || 10000000
-                  }
-                }
-              ]}
-            }
+                ]
+              }}, 
+            paginationArgs
           )
         }
-
-        return products as ProductData[];
+        return products;
     }
 
     async getProductById(id: string): Promise<ProductData> {
