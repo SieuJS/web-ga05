@@ -66,4 +66,9 @@ export class CategoryService {
         });
         return categories as CategoryData[];
     }
+
+    async getAllCategory() : Promise<CategoryData[]> {
+        const categories = await this.prisma.category.findMany();
+        return categories as CategoryData[];
+    }
 }

@@ -29,6 +29,9 @@ export class ProductController {
     @Get()
     @ApiOperation({ summary: 'Get all product' })
     @ApiQuery({ name: 'search', required: false})
+    @ApiQuery({ name: 'season', required: false})
+    @ApiQuery({ name: 'color', required: false})
+    @ApiQuery({name : 'master', required : false})
     @ApiResponse({ status: 200, description: 'Get all product' , type : ProductPaginatedResult})
     async getListProduct(@Query(PaginateTransformPipe) paginationArgs: PaginationArgs , @Query(SearchProductPipe) searchProduct : any ): Promise<ProductPaginatedResult> {
         const products = await this.productService.getListProduct(searchProduct, paginationArgs);

@@ -13,9 +13,12 @@ import { PrismaService } from './common';
 import { CartModule } from './cart/cart.module';
 import { OrderModule } from './order/order.module';
 import { PaginateModule } from './paginate/paginate.module';
+import { ViewModule } from './view/view.module';
+
 
 @Module({
     imports: [
+        ViewModule,
         ClsModule.forRoot({
             plugins: [
                 new ClsPluginTransactional({
@@ -42,7 +45,7 @@ import { PaginateModule } from './paginate/paginate.module';
         CategoryModule,
         CartModule,
         OrderModule,
-        PaginateModule
+        PaginateModule,
     ]
 })
 export class ApplicationModule {}

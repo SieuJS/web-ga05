@@ -2,32 +2,26 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- Title  -->
     <title>Karl - Fashion Ecommerce Template | Home</title>
 
     <!-- Favicon  -->
-    <link rel="icon" href="./public/img/core-img/favicon.ico" />
-
+    <link rel="icon" href="/public/img/core-img/favicon.ico" />
+    <link rel = "stylesheet" href="/public/css/themify-icons.css"/>
     <!-- Core Style CSS -->
-    <link rel="stylesheet" href="./public/css/core-style.css" />
-    <link rel="stylesheet" href="./public/css/style.css" />
+    <link rel="stylesheet" href="/public/css/core-style.css" />
+    <link rel="stylesheet" href="/public/css/style.css" />
 
     <!-- Responsive CSS -->
-    <link href="./public/css/responsive.css" rel="stylesheet" />
+    <link href="/public/css/responsive.css" rel="stylesheet" />
   </head>
 
   <body>
     <div class="catagories-side-menu">
       <!-- Close Icon -->
-      <div id="sideMenuClose">
+      <div id="sideMenuClose" class = "d-flex justify-content-center align-items-center">
         <i class="ti-close"></i>
       </div>
       <!--  Side Nav  -->
@@ -213,7 +207,7 @@
                       aria-expanded="false"
                       aria-label="Toggle navigation"
                     >
-                      <span class="navbar-toggler-icon"
+                      <span class="navbar-toggler-icon d-flex justify-content-center align-items-center"
                         ><i class="ti-menu"></i
                       ></span>
                     </button>
@@ -888,47 +882,7 @@
               </div>
             </div>
           </div>
-          <section class="about-us-area">
-            <section class="about-us py-5 bg-light">
-              <div class="container">
-                <div class="row">
-                  <div class="col-lg-8 mx-auto text-center">
-                    <h2 class="display-4">About Karl</h2>
-                    <p class="lead">
-                      Karl is a fashion brand dedicated to offering quiet luxury
-                      that allows our customers to express their unique style
-                      without distraction. We emphasize elegance, comfort, and
-                      exclusivity to provide signature fashion that aligns with
-                      personal taste.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <!-- Mission and Vision Section -->
-            <section class="mission-vision py-5">
-              <div class="container">
-                <div class="row text-center">
-                  <div class="col-md-6">
-                    <h3 class="h5">Our Mission</h3>
-                    <p>
-                      To create a visually stunning, high-performance website
-                      that offers seamless functionality, ensuring an excellent
-                      user experience.
-                    </p>
-                  </div>
-                  <div class="col-md-6">
-                    <h3 class="h5">Our Vision</h3>
-                    <p>
-                      To scale Karl’s brand presence globally and inspire one
-                      billion users with our signature luxury fashion.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </section>
-
+          
             <!-- Team Section -->
             <section class="team py-5 bg-light">
               <div class="container">
@@ -1080,10 +1034,10 @@
         currentPath.startsWith(path)
       );
 
-      if (!isAllowed && currentPath !== "/" && currentPath !== "") {
+      // if (!isAllowed && currentPath !== "") {
 
-        window.location.href = "/";
-      }
+      //   window.location.href = "/view/";
+      // }
     </script>
   </body>
 </html>

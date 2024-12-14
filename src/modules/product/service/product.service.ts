@@ -4,10 +4,9 @@ import { TransactionalAdapterPrisma } from "@nestjs-cls/transactional-adapter-pr
 import { PrismaService } from "../../common";
 import { Injectable } from "@nestjs/common";
 import { PaginationArgs } from "../../paginate";
-import { searchProductQuery } from "../query";
 import { PaginatorTypes, paginator } from '@nodeteam/nestjs-prisma-pagination';
 
-const paginate: PaginatorTypes.PaginateFunction = paginator({ perPage: 10 });
+const paginate: PaginatorTypes.PaginateFunction = paginator({});
 
 @Injectable()
 export class ProductService {
@@ -26,7 +25,45 @@ export class ProductService {
         if(where.categoryId)
         {
           products = await paginate(this.prisma.product, 
-            searchProductQuery(where), 
+            {
+              where :{    
+                AND: [
+                        {
+                            name: {
+                                contains: where.search || "",
+                                mode: "insensitive",
+                            },
+                        },
+                        {
+                            description: {
+                                contains: where.search || "",
+                                mode: "insensitive",
+                            },
+                        },
+                        {
+                            season: {
+                                contains: where.season || "",
+                                mode: "insensitive",
+                            },
+                        },
+                        {
+                            baseColour: {
+                                contains: where.baseColor || "",
+                                mode: "insensitive",
+                            },
+                        },
+                        {
+                            price: {
+                                gte: parseInt(where.minPrice) || 0,
+                                lte: parseInt(where.maxPrice) || 10000000,
+                            },
+                        },
+                        {
+                            categoryId: {...where.categoryId },
+                        },
+                    ]
+                }
+            } ,
             paginationArgs
           ) 
         }

@@ -1,11 +1,13 @@
 import { addToCart, loadCart } from '../public/js/cart.js';
 import { clearColorQuery, clearSeasonQuery, getSeasonQuery, loadProductQuery, setLinkAndReload, setSearchQuery,setSeasonQuery, getSearchQuery } from '../public/js/product-query.js';
-
+import { paginateRender } from '../public/js/paginate.js';
 
 loadCart();
 async function loadProducts() {
   try {
-    const products = await loadProductQuery();
+    const payload = await loadProductQuery();
+    const products = payload.data ; 
+    const meta = payload.meta;
     const productContainer = document.getElementById('product-list');
     productContainer.innerHTML = '';
     products.forEach((product) => {
@@ -38,6 +40,8 @@ async function loadProducts() {
         addToCart(event.target, productId);
       });
     });
+    paginateRender(meta);
+
   } catch (error) {
     console.error('Error loading products:', error);
   }

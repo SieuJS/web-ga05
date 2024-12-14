@@ -9,7 +9,7 @@ export const loadProductQuery = async () => {
         if (!response.ok) {
             throw new Error('Failed to fetch products');
         }
-        const products = (await response.json()).data;
+        const products = (await response.json());
         return products;
     }
     catch(error) {

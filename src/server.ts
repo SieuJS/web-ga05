@@ -1,15 +1,15 @@
 import { INestApplication } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-
 import { ApplicationModule } from './modules/app.module';
 import { CommonModule, LogInterceptor } from './modules/common';
-
+import * as hbs from 'express-handlebars';
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
 import * as session from 'express-session';
 import * as passport from 'passport';
+import { productRender } from './modules/view/hbs/productRender';
 /**
  * These are API defaults that can be changed using environment variables,
  * it is not required to change them (see the `.env.example` file)
@@ -60,9 +60,22 @@ async function bootstrap(): Promise<void> {
         ApplicationModule
     );
     app.useStaticAssets(join(__dirname, '..', 'client'));
+    app.setBaseViewsDir(join(__dirname, '..', 'views'));
+
+    app.engine(
+        'hbs',
+        hbs.create({
+          extname: 'hbs',
+          defaultLayout: 'layout_main',
+          layoutsDir: join(__dirname, '..', 'views', 'layouts'),
+          partialsDir: join(__dirname, '..', 'views', 'partials'),
+          helpers : {productRender}
+        }).engine,
+      );
+    app.setViewEngine('hbs');
     // @todo Enable Helmet for better API security headers
 
-    app.setGlobalPrefix(process.env.API_PREFIX || API_DEFAULT_PREFIX);
+    app.setGlobalPrefix(process.env.API_PREFIX || API_DEFAULT_PREFIX , { exclude: ['view/(.*)'] });
 
     app.use(
         session({
@@ -72,6 +85,8 @@ async function bootstrap(): Promise<void> {
           saveUninitialized: false,
         }),
       );
+
+
     app.use(passport.initialize())
     app.use(passport.session())
 

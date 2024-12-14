@@ -8,6 +8,11 @@ import { ApiTags } from "@nestjs/swagger";
 export class CategoryController {
     constructor (private categoryService: CategoryService) {}
 
+    @Get()
+    async getListCategory() : Promise<CategoryData[]> {
+        return this.categoryService.getAllCategory();
+    }
+
     @Get('/master')
     async getListMasterCategory() : Promise<CategoryData[]> {
         return this.categoryService.getListMasterCategory();
