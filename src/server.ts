@@ -6,7 +6,6 @@ import { CommonModule, LogInterceptor } from './modules/common';
 import * as hbs from 'express-handlebars';
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import * as fs from 'fs';
 import * as session from 'express-session';
 import * as passport from 'passport';
 import { productRender, paginateRender, productDetailRender, relatedProductsRender, productImageRender } from './modules/view/hbs';
@@ -56,10 +55,6 @@ function createSwagger(app: INestApplication) {
  * parsing middleware.
  */
 async function bootstrap(): Promise<void> {
-  const httpsOptions = {
-    key: fs.readFileSync(join(__dirname,'../secret/ssl.key.pem')),
-    cert: fs.readFileSync(join(__dirname,'../secret/ssl.cert.pem')),
-  };
     const app = await NestFactory.create<NestExpressApplication>(
         ApplicationModule
     );
