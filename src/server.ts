@@ -61,9 +61,7 @@ async function bootstrap(): Promise<void> {
     cert: fs.readFileSync(join(__dirname,'../secret/ssl.cert.pem')),
   };
     const app = await NestFactory.create<NestExpressApplication>(
-        ApplicationModule,{
-          httpsOptions,
-        }
+        ApplicationModule
     );
     app.useStaticAssets(join(__dirname, '..', 'client'));
     app.setBaseViewsDir(join(__dirname, '..', 'views'));
