@@ -30,6 +30,10 @@ export const setLinkAndReload = () => {
     window.location.href = processLink.href;
 }
 
+export const setLinkAndAjax = async (renderProduct) => {
+    window.history.pushState({}, '', processLink.href);
+};
+
 export const changeProductQuery = (query) => {
     productQuery = query;
     return productQuery;
@@ -189,5 +193,25 @@ export const clearSeasonQuery = () => {
     query = query.replace(/&season=[^&]*/, "");
     processLink.search = query;
 }
+
+export const setPageQuery = (page) => {
+    let query = processLink.search;
+    query = query.replaceAll("%20", " ");
+    if (query.includes("page")) {
+        query = query.replace(/page=[^&]*/, "page=" + page);
+    } else {
+        query += "&page=" + page;
+    }
+    processLink.search = query;
+    productQuery = query;
+};
+
+export const clearPageQuery = () => {
+    let query = processLink.search;
+    console.log("clearing page query")
+    query = query.replaceAll("%20", " ");
+    query = query.replace(/&page=[^&]*/, "");
+    processLink.search = query;
+};
 
 getQuery() ;

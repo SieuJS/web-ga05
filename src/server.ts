@@ -6,10 +6,11 @@ import { CommonModule, LogInterceptor } from './modules/common';
 import * as hbs from 'express-handlebars';
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
-
+import * as fs from 'fs';
 import * as session from 'express-session';
 import * as passport from 'passport';
-import { productRender } from './modules/view/hbs/productRender';
+import { productRender, paginateRender, productDetailRender, relatedProductsRender, productImageRender } from './modules/view/hbs';
+
 /**
  * These are API defaults that can be changed using environment variables,
  * it is not required to change them (see the `.env.example` file)
@@ -55,9 +56,14 @@ function createSwagger(app: INestApplication) {
  * parsing middleware.
  */
 async function bootstrap(): Promise<void> {
-
+  const httpsOptions = {
+    key: fs.readFileSync(join(__dirname,'../secret/ssl.key.pem')),
+    cert: fs.readFileSync(join(__dirname,'../secret/ssl.cert.pem')),
+  };
     const app = await NestFactory.create<NestExpressApplication>(
-        ApplicationModule
+        ApplicationModule,{
+          httpsOptions,
+        }
     );
     app.useStaticAssets(join(__dirname, '..', 'client'));
     app.setBaseViewsDir(join(__dirname, '..', 'views'));
@@ -69,13 +75,13 @@ async function bootstrap(): Promise<void> {
           defaultLayout: 'layout_main',
           layoutsDir: join(__dirname, '..', 'views', 'layouts'),
           partialsDir: join(__dirname, '..', 'views', 'partials'),
-          helpers : {productRender}
+          helpers : {productRender, paginateRender, productDetailRender, relatedProductsRender, productImageRender}
         }).engine,
       );
     app.setViewEngine('hbs');
     // @todo Enable Helmet for better API security headers
 
-    app.setGlobalPrefix(process.env.API_PREFIX || API_DEFAULT_PREFIX , { exclude: ['view/(.*)'] });
+    app.setGlobalPrefix(process.env.API_PREFIX || API_DEFAULT_PREFIX , { exclude: ['/home', '/shop', 'product-details/(.*)'] });
 
     app.use(
         session({

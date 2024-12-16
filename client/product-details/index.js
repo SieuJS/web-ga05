@@ -15,24 +15,26 @@ cartSubmitEvent.addEventListener('click', async (event) => {
 
 const wrapper = document.querySelector('#wrapper');
 
-document.addEventListener('DOMContentLoaded', async () => {
-    const productId = getProductIdFromUrl();
-    if (!productId) {
-        window.location.href = '/shop/';
-    } else {
-        const productData = await fetchProductDetails(productId);
+// document.addEventListener('DOMContentLoaded', async () => {
+//     const productId = getProductIdFromUrl();
+//     if (!productId) {
+//         window.location.href = '/shop/';
+//     } else {
+//         const productData = await fetchProductDetails(productId);
 
-        if (productData) {
-            renderProductDetails(productData);
-            const relatedProducts = await getRelatedProduct(productId);
-            renderRelatedProducts(relatedProducts);
-        }
-    }
-});
+//         if (productData) {
+//             renderProductDetails(productData);
+//         }
+//     }
+// });
 
 function getProductIdFromUrl() {
+    const url = window.location.href;
     const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('id');
+    const pathSegments = window.location.pathname.split('/');
+    const productId = pathSegments[pathSegments.length - 1];
+    //url = 'http://localhost:3000/product-details/1'
+    return productId;
 }
 
 async function fetchProductDetails(productId) {

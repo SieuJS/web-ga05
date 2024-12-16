@@ -19,7 +19,7 @@ export function productRender (products : ProductData[]) {
                         <a href="#"
                         data-id="${product.id}"
                         class="add-to-cart-btn add-to-cart-event">ADD TO CART</a>
-                        <a href="/product-details/?id=${
+                        <a href="/product-details/${
                             product.id
                         }" class="add-to-cart-btn ">DETAIL</a>
                     </div>

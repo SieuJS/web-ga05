@@ -1,4 +1,4 @@
-import { setLinkAndReload } from "./product-query.js";
+import { clearPageQuery, setLinkAndReload} from "./product-query.js";
 import { getQuery } from "./product-query.js";
 import { setQuery, addSubQuery } from "./product-query.js";
 
@@ -52,6 +52,7 @@ const loadCategory = async () => {
                     const query = cate.querySelector(".sub-value").value;
                     const master = cate.querySelector(".master-value").value;
                     addSubQuery(query, master);
+                    clearPageQuery();
                     setLinkAndReload();
                 });
             });

@@ -42,6 +42,10 @@ export class CartController {
         input.userId = userInSession.id;
 
         input.quantity = parseInt(input.quantity as any);
+        const productInStock = await this.productService.getProductById(input.productId as string);
+        if(productInStock.quantity < input.quantity) {
+            throw new HttpException('Product out of stock', 400);
+        }
         await this.cartService.addItemToCart(input);
             
         const cartOfUser = await this.cartService.getCartByUserId(userInSession.id);

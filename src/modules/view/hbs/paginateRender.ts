@@ -1,17 +1,15 @@
+import { PaginationMeta } from "../../paginate";
 
-export const paginateRender = ({
-    total,
-    lastPage,
-    currentPage, 
-    perPage, 
-    prev, 
-    next 
-}) => {
+export function paginateRender(meta: PaginationMeta) {
+    const {
+        lastPage,
+        currentPage, 
+        prev, 
+        next 
+    } = meta;
     let pages = [];
     let page = 1;
     let last = lastPage;
-    let prevPage = currentPage - 1;
-    let nextPage = currentPage + 1;
     let prevDisabled = prev ===null ? 'disabled' : '';
     let nextDisabled = next === null ? 'disabled' : '';
 
@@ -21,7 +19,7 @@ export const paginateRender = ({
             page++;
         }
     }
-    const paginateContainer = document.querySelector('.shop_pagination_area');
+
 
     if (pages.length > 6) {
         const startPage = Math.max(1, currentPage - 2);
@@ -29,7 +27,7 @@ export const paginateRender = ({
         pages = [];
 
         for (let i = startPage; i <= endPage; i++) {
-            pages.push(i);
+            pages.push(i.toString());
         }
 
         if (startPage > 1) {
@@ -46,15 +44,16 @@ export const paginateRender = ({
             }
         }
     }
+    
 
-    paginateContainer.innerHTML = `
+    return  `
         <nav aria-label="Page navigation">
             <ul class="pagination pagination-sm">
             <li class="page-item ${prevDisabled}">
                 <a class="page-link" href="#" data-page="${prev}">Prev</a>
             </li>
             ${pages.map(page => `
-                <li class="page-item ${currentPage === page ? 'active' : ''} ${page === '...' ? 'disabled' : ''}">
+                <li class="page-item ${currentPage.toString() === page ? 'active' : ''} ${page === '...' ? 'disabled' : ''}">
                 <a class="page-link" href="#" data-page="${page === '...' ? '' : page}">${page}</a>
                 </li>
             `).join('')}
@@ -63,6 +62,4 @@ export const paginateRender = ({
             </li>
             </ul>
         </nav>`;
-
-    
 }
