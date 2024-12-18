@@ -5,7 +5,7 @@
 
 Scaffold quickly your next [NestJS 10](https://nestjs.com/) API project with 
 ❤️ using this template
-
+a
 - Crafted for Docker environments (Dockerfile support and environment variables)
 - REST API with [Prisma](https://www.prisma.io/) support 
 - Swagger documentation, [Joi](https://github.com/hapijs/joi) validation, Winston logger, ...
