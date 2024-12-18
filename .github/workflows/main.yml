@@ -53,7 +53,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE }}
           script: |
               # Pull image mà được push lên DockerHub bên trên
-              docker pull ${{ secrets.DOCKERHUB_USERNAME }}/karl:${{ github.sha }}
+              docker pull ${{ secrets.DOCKER_USERNAME }}/karl:${{ github.sha }}
 
               # Dừng và gỡ bỏ container hiện tại (nếu có)
               docker stop karl-container
