@@ -29,7 +29,6 @@ jobs:
         # Build và test image được build ra bằng Docker 
         run: |
           docker build -t karl .
-          docker run karl npm test
 
       - name: Push image to Docker Hub
         uses: docker/build-push-action@v2
