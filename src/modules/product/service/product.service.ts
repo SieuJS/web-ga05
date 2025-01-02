@@ -6,7 +6,7 @@ import { Injectable } from "@nestjs/common";
 import { PaginationArgs } from "../../paginate";
 import { PaginatorTypes, paginator } from '@nodeteam/nestjs-prisma-pagination';
 
-const paginate: PaginatorTypes.PaginateFunction = paginator({});
+const paginate: PaginatorTypes.PaginateFunction = paginator({perPage : 10, page : 1});
 
 @Injectable()
 export class ProductService {
@@ -22,6 +22,7 @@ export class ProductService {
 
     async getListProduct(where : any ,paginationArgs : PaginationArgs ): Promise<ProductPaginatedResult> {
         let products : ProductPaginatedResult; ;
+
         if(where.categoryId)
         {
           products = await paginate(this.prisma.product, 
@@ -216,7 +217,7 @@ export class ProductService {
 
       const products = [...MenCasualProducts, ...MenFormalProducts, ...MenSportsProducts, ...WomenCasualProducts, ...WomenFormalProducts, ...WomenSportsProducts]
         return products;
-      }
+    }
 
     async updateQuantity(productId : string , quantity : number, isAdd : boolean = true) : Promise<ProductData> {
       const product = await this.txHost.tx.product.findUnique({
@@ -248,4 +249,6 @@ export class ProductService {
         }
       });
     }
+
+    
 }

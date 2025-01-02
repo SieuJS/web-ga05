@@ -1,7 +1,7 @@
 import { Controller, Get, Query } from "@nestjs/common";
 import { CategoryService } from "../service";
 import { CategoryData} from "../model";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiQuery, ApiTags } from "@nestjs/swagger";
 
 @Controller('category')
 @ApiTags('Category')
@@ -19,7 +19,8 @@ export class CategoryController {
     }
 
     @Get('/sub') 
-    async getListSubCategory(@Query('master') master : string) : Promise<CategoryData[]> {
-        return this.categoryService.getListSubCategory(master);
+    @ApiQuery({name : 'master', required : false})
+    async getListSubCategory(@Query('master') master? : string) : Promise<CategoryData[]> {
+        return this.categoryService.getListSubCategory(master || "");
     }
 }

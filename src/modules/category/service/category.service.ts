@@ -33,10 +33,13 @@ export class CategoryService {
         return categories as CategoryData[];
     }
 
-    async getListSubCategory(masterCategory: string): Promise<CategoryData[]> {
+    async getListSubCategory(masterCategory?: string): Promise<CategoryData[]> {
         const categories = await this.prisma.category.findMany({
             where : {
-                masterCategory
+                masterCategory : {
+                    startsWith : masterCategory || "",
+                    mode : 'insensitive'
+                }
             },
             distinct : ['subCategory']
         })

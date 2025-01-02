@@ -35,7 +35,6 @@ loginForm.addEventListener('submit', async (e) => {
             const error = await response.json();
         console.error('Login failed:', error);
 
-
         errorElement.classList.remove('d-none');
         errorMessageElement.textContent = error.message;
         setTimeout(() => {

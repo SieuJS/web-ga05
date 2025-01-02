@@ -9,7 +9,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import * as session from 'express-session';
 import * as passport from 'passport';
 import { productRender, paginateRender, productDetailRender, relatedProductsRender, productImageRender } from './modules/view/hbs';
-
+import * as cors from 'cors';
 /**
  * These are API defaults that can be changed using environment variables,
  * it is not required to change them (see the `.env.example` file)
@@ -60,7 +60,7 @@ async function bootstrap(): Promise<void> {
     );
     app.useStaticAssets(join(__dirname, '..', 'client'));
     app.setBaseViewsDir(join(__dirname, '..', 'views'));
-
+    app.use(cors());
     app.engine(
         'hbs',
         hbs.create({
