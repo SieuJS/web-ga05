@@ -10,7 +10,7 @@ a
 - REST API with [Prisma](https://www.prisma.io/) support 
 - Swagger documentation, [Joi](https://github.com/hapijs/joi) validation, Winston logger, ...
 - Folder structure, code samples and best practices
-- Fast HTTP server with [Fastify](https://fastify.dev/)
+- Fast HTTP server with [Fastify](https://fastify.dev/) l
 
 ## 1. Getting started
 
