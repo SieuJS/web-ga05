@@ -8,6 +8,7 @@ import { LoggerService } from "../../common";
 import { SearchProductPipe } from "../pipe/search-product.pipe";
 import { ProductPaginatedResult } from "../model";
 import { PaginationArgs } from "../../paginate";
+import { SortOrderProductPipe } from "../pipe/sort-order-product.pipe";
 
 
 @Controller('product')
@@ -32,9 +33,10 @@ export class ProductController {
     @ApiQuery({ name: 'season', required: false})
     @ApiQuery({ name: 'color', required: false})
     @ApiQuery({name : 'master', required : false})
+    @ApiQuery({name : 'orderBy', required : false})
     @ApiResponse({ status: 200, description: 'Get all product' , type : ProductPaginatedResult})
-    async getListProduct(@Query(PaginateTransformPipe) paginationArgs: PaginationArgs , @Query(SearchProductPipe) searchProduct : any ): Promise<ProductPaginatedResult> {
-        const products = await this.productService.getListProduct(searchProduct, paginationArgs);
+    async getListProduct(@Query(PaginateTransformPipe) paginationArgs: PaginationArgs , @Query(SearchProductPipe) searchProduct : any, @Query(SortOrderProductPipe) orderBy : any ): Promise<ProductPaginatedResult> {
+        const products = await this.productService.getListProduct(searchProduct, paginationArgs, orderBy);
         return products;
     }
 

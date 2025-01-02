@@ -20,7 +20,7 @@ export class HomeController {
 
     @Get('/shop')
     async shop(@Res() res: Response, @Query(PaginateTransformPipe) paginationArgs: PaginationArgs, @Query(SearchProductPipe) searchProduct: any) {
-        const result = await this.productService.getListProduct(searchProduct, paginationArgs);
+        const result = await this.productService.getListProduct(searchProduct, paginationArgs );
         
         const products = result.data;
         const meta = result.meta;

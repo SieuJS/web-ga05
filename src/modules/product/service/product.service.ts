@@ -20,7 +20,7 @@ export class ProductService {
         return product as ProductData;
     }
 
-    async getListProduct(where : any ,paginationArgs : PaginationArgs ): Promise<ProductPaginatedResult> {
+    async getListProduct(where : any ,paginationArgs : PaginationArgs, orderBy? : any ): Promise<ProductPaginatedResult> {
         let products : ProductPaginatedResult; ;
 
         if(where.categoryId)
@@ -29,7 +29,8 @@ export class ProductService {
             {
               where :{    
                 AND: [
-                        {
+                        {OR:[
+                          {
                             name: {
                                 contains: where.search || "",
                                 mode: "insensitive",
@@ -41,6 +42,7 @@ export class ProductService {
                                 mode: "insensitive",
                             },
                         },
+                        ]},
                         {
                             season: {
                                 contains: where.season || "",
@@ -63,7 +65,8 @@ export class ProductService {
                             categoryId: {...where.categoryId },
                         },
                     ]
-                }
+                },
+              orderBy,
             } ,
             paginationArgs
           ) 
@@ -73,18 +76,20 @@ export class ProductService {
             {
               where :{
                 AND : [
-                  {
-                    name : {
-                      contains : where.search || '',
-                      mode : 'insensitive'
-                    }
+                  {OR:[
+                    {
+                      name: {
+                          contains: where.search || "",
+                          mode: "insensitive",
+                      },
                   },
                   {
-                    description : {
-                        contains : where.search || '',
-                        mode : 'insensitive'
-                    }
+                      description: {
+                          contains: where.search || "",
+                          mode: "insensitive",
+                      },
                   },
+                  ]},
                   {
                     season : {
                       contains : where.season || '',
@@ -106,7 +111,9 @@ export class ProductService {
                     }
                   }
                 ]
-              }}, 
+              },
+              orderBy : orderBy
+            }, 
             paginationArgs
           )
         }
