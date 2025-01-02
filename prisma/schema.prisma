@@ -25,8 +25,17 @@ model Product {
   in_cart        Cart[]
   tbl_categories Category? @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_in_category")
   in_orders       OrderProductBill[]
+  images        ProductImage[]
 
   @@map("tbl_products")
+}
+
+model ProductImage {
+  id        String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  productId String  @map("product_id") @db.Uuid
+  image     String
+  product   Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_of_image")
+  @@map("tbl_product_images")
 }
 
 model User {
