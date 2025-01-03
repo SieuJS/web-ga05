@@ -10,10 +10,8 @@ export class SortOrderProductPipe implements PipeTransform {
         if (value.orderBy && !fields.includes(value.orderBy)) {
             throw new Error(`Invalid orderBy field: ${value.orderBy}`);
         }
-        let 
-            orderBy : any = {
-                id : 'desc'
-
+        let orderBy : any = {
+            id : 'desc'
         }
         if(value.orderBy) {
                 orderBy = {

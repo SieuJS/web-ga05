@@ -256,6 +256,5 @@ export class ProductService {
         }
       });
     }
-
     
 }
