@@ -34,6 +34,7 @@ export class ProductController {
     @ApiQuery({ name: 'color', required: false})
     @ApiQuery({name : 'master', required : false})
     @ApiQuery({name : 'orderBy', required : false})
+    @ApiQuery({name : "order", required : false})
     @ApiResponse({ status: 200, description: 'Get all product' , type : ProductPaginatedResult})
     async getListProduct(@Query(PaginateTransformPipe) paginationArgs: PaginationArgs , @Query(SearchProductPipe) searchProduct : any, @Query(SortOrderProductPipe) orderBy : any ): Promise<ProductPaginatedResult> {
         const products = await this.productService.getListProduct(searchProduct, paginationArgs, orderBy);

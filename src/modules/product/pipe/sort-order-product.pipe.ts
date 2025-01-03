@@ -2,7 +2,7 @@ import { ArgumentMetadata, PipeTransform } from "@nestjs/common";
 
 import { Injectable } from "@nestjs/common";
 
-const fields = ['id', 'name', 'description', 'price', 'season', 'baseColour', 'quantity'];
+const fields = ['id', 'name', 'description', 'price', 'season', 'baseColour', 'quantity', 'year'];
 
 @Injectable()
 export class SortOrderProductPipe implements PipeTransform {

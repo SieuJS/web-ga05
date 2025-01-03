@@ -66,7 +66,7 @@ export class ProductService {
                         },
                     ]
                 },
-              orderBy,
+              orderBy
             } ,
             paginationArgs
           ) 
@@ -112,7 +112,7 @@ export class ProductService {
                   }
                 ]
               },
-              orderBy : orderBy
+              orderBy
             }, 
             paginationArgs
           )
