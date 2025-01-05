@@ -1,23 +1,39 @@
-import { Body, Post,Get, Query, Controller, Param } from "@nestjs/common";
+import { Body, Post,Get, Query, Controller, Param, UploadedFiles, UseInterceptors, HttpException, HttpStatus, Inject } from "@nestjs/common";
 import { ApiOperation, ApiQuery, ApiResponse } from "@nestjs/swagger";
 import { PaginateTransformPipe } from "../../paginate";
 import { ProductService } from "../service/product.service";
 import { ProductData, ProductInput } from "../model";
 import { ApiTags } from "@nestjs/swagger";
-import { LoggerService } from "../../common";
+import { Config, LoggerService } from "../../common";
 import { SearchProductPipe } from "../pipe/search-product.pipe";
 import { ProductPaginatedResult } from "../model";
 import { PaginationArgs } from "../../paginate";
 import { SortOrderProductPipe } from "../pipe/sort-order-product.pipe";
+import {  FilesInterceptor } from "@nestjs/platform-express";
+import { diskStorage } from "multer";
+import { extname } from "path";
+import { CategoryService } from "../../category/service";
+import { Service } from "../../tokens";
 
+const storage = diskStorage({
+  destination: './client/public/img/uploads',
+  filename: (req, file, cb) => {
+    const name = file.originalname.split('.')[0];
+    const extension = extname(file.originalname);
+    const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('');
+    cb(null, `${name}-${randomName}${extension}`);
+  },
+});
 
 @Controller('product')
 @ApiTags("Product")
 export class ProductController {
     constructor(
         private readonly productService: ProductService,
-        private readonly loggerService : LoggerService
-        
+        private readonly loggerService : LoggerService,
+        private readonly categoryService : CategoryService,
+        @Inject(Service.CONFIG) 
+        private readonly configService : Config,
     ) {}
 
     @Post()
@@ -60,4 +76,33 @@ export class ProductController {
     async getNewArrivalProduct() {
         return this.productService.getNewArrivalProduct();
     }
+
+
+    @Post('upload')
+    @ApiOperation({ summary: 'Upload product image' })
+    @ApiResponse({ status: 200, description: 'Upload product image' })
+    @UseInterceptors(FilesInterceptor('images[]', 10, {
+        storage : storage,
+    }))
+    async uploadProductImage(@UploadedFiles() files: Array<Express.Multer.File>, @Body() cateInfo : any) {
+        console.log("get in ")
+        const category = await this.categoryService.getUniqueCategory(cateInfo);
+        if(!category) {
+            return new HttpException("Category not found", HttpStatus.NOT_FOUND);
+        }
+        // let createdProduct ;
+        try {
+            const imageLinks = files.map(file => file.path.replace(`client`, this.configService.HOST_URL));
+            console.log("imageLinks", imageLinks);
+            // createdProduct = await this.productService.createProductWithCategory(productInput,  category.id);
+        }
+        catch(err) {
+            
+            return new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return {
+            link : files.map(file => file.path.replace('client/public', ''))
+        }
+    }
+
 }

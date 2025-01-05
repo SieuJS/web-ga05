@@ -74,4 +74,16 @@ export class CategoryService {
         const categories = await this.prisma.category.findMany();
         return categories as CategoryData[];
     }
+
+    async getUniqueCategory({masterCategory , subCategory} : CategoryInput) : Promise<CategoryData> {
+        const category = await this.prisma.category.findUnique({
+            where : {
+                masterCategory_subCategory:{
+                    masterCategory,
+                    subCategory
+                }
+            }
+        })
+        return category as CategoryData;
+    }
 }

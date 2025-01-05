@@ -13,6 +13,18 @@ import {
 } from "../public/js/product-query.js";
 import { paginateRender } from "../public/js/paginate.js";
 
+document.addEventListener("DOMContentLoaded", async () => {
+    const addToCartButtons =
+    document.querySelectorAll(".add-to-cart-event");
+    addToCartButtons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+        event.preventDefault();
+        const productId = button.getAttribute("data-id");
+        addToCart(event.target, productId);
+    });
+});
+});
+
 loadCart();
 export async function loadProducts() {
     try {

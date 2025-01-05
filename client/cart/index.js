@@ -1,4 +1,4 @@
-import { fetchCart } from "../public/js/cart.js";
+import { fetchCart, loadCart } from "../public/js/cart.js";
 
 const cartTableBody = document.querySelector('.cart-table-body');
 let totalPrice = 0;
@@ -9,7 +9,7 @@ const toUpdateProducts = [
 
 ];
 
-
+loadCart();
 const loadCartDetail = async () => {
     if(! await isLogged()) {
         window.location.href = '/auth/login';
