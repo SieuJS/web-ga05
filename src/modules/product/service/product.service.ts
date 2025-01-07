@@ -15,7 +15,14 @@ export class ProductService {
     ) {}
     async createProduct(data: ProductInput): Promise<ProductData> {
         const product = await this.prisma.product.create({
-            data
+            data: {
+                ...data,
+                images : {
+                  createMany : {
+                    data : data.images?.map(image => ({image})) || []
+                  }
+                }
+            }
         });
         return product as ProductData;
     }
@@ -257,10 +264,16 @@ export class ProductService {
       });
     }
     public async createProductWithCategory(data: ProductInput, categoryId : string): Promise<ProductData> {
-        const product = await this.txHost.tx.product.create({
+        const product = await this.prisma.product.create({
             data : {
                 ...data,
-                categoryId
+                status : data.status || "instock",
+                categoryId,
+                images : {
+                    createMany : {
+                        data : data.images?.map(image => ({image})) || []
+                    }
+                }
             }
         });
         return product as ProductData;

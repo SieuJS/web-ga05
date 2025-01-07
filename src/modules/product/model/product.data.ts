@@ -42,6 +42,12 @@ export class ProductData {
     @ApiProperty({description : "The quantity of product", example : 10})
     quantity : number;
 
+    @ApiProperty({description : "The status of product", example : "instock"})
+    status : string ;
+
+
+
+
     constructor(product: Product) {
         this.id = product.id;
         this.name = product.name as string;
@@ -56,5 +62,6 @@ export class ProductData {
         this.year = product.year as string;
         this.usage = product.usage as string;
         this.quantity = product.quantity as number;
+
     }
 }

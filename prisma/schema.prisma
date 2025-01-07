@@ -22,6 +22,7 @@ model Product {
   year           String?
   usage          String?
   quantity       Int
+  status         String
   in_cart        Cart[]
   tbl_categories Category? @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_in_category")
   in_orders       OrderProductBill[]
@@ -70,7 +71,6 @@ model Cart {
 
   @@map("tbl_carts")
 }
-
 
 model Order {
   id String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid

@@ -9,7 +9,7 @@ const toUpdateProducts = [
 
 ];
 
-loadCart();
+
 const loadCartDetail = async () => {
     if(! await isLogged()) {
         window.location.href = '/auth/login';
@@ -17,6 +17,7 @@ const loadCartDetail = async () => {
     cartTableBody.innerHTML = '<tr><td colspan="4"><span class = "loader"></span></td></tr>';
     try {
         const cart = await fetchCart();
+        await loadCart();
         renderCartDetail(cart);
     } catch (error) {
         console.error('Error loading cart:', error);

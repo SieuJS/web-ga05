@@ -14,6 +14,7 @@ import { diskStorage } from "multer";
 import { extname } from "path";
 import { CategoryService } from "../../category/service";
 import { Service } from "../../tokens";
+import { TranformProductPipe } from "../pipe/tranform-product.pipe";
 
 const storage = diskStorage({
   destination: './client/public/img/uploads',
@@ -77,31 +78,35 @@ export class ProductController {
         return this.productService.getNewArrivalProduct();
     }
 
-
     @Post('upload')
     @ApiOperation({ summary: 'Upload product image' })
     @ApiResponse({ status: 200, description: 'Upload product image' })
     @UseInterceptors(FilesInterceptor('images[]', 10, {
         storage : storage,
     }))
-    async uploadProductImage(@UploadedFiles() files: Array<Express.Multer.File>, @Body() cateInfo : any) {
-        console.log("get in ")
+    async uploadProductImage(@UploadedFiles() files: Array<Express.Multer.File>, @Body() cateInfo : any, @Body(TranformProductPipe) productInput : ProductInput) {
         const category = await this.categoryService.getUniqueCategory(cateInfo);
         if(!category) {
             return new HttpException("Category not found", HttpStatus.NOT_FOUND);
         }
-        // let createdProduct ;
+        let createdProduct ;
+        let imageLinks;
         try {
-            const imageLinks = files.map(file => file.path.replace(`client`, this.configService.HOST_URL));
-            console.log("imageLinks", imageLinks);
-            // createdProduct = await this.productService.createProductWithCategory(productInput,  category.id);
+            imageLinks=  files.map(file => file.path.replace(`client`, this.configService.HOST_URL));
+
+            createdProduct = await this.productService.createProductWithCategory({
+                ...productInput,
+                images : imageLinks
+            },  category.id);
         }
         catch(err) {
-            
-            return new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+            console.log(err);
+            throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return {
-            link : files.map(file => file.path.replace('client/public', ''))
+            link : files.map(file => file.path.replace('client/public', '')),
+            product : createdProduct,
+            images : imageLinks
         }
     }
 
