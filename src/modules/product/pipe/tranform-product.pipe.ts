@@ -11,6 +11,8 @@ export class TranformProductPipe implements PipeTransform {
             subCategory : undefined,
             price: parseFloat(value.price as any) as any,
             quantity: parseFloat(value.quantity as any),
+            year : `${value.year}`,
+            image : value.images[0],
         } ;
     }
 }

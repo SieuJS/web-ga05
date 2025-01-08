@@ -25,6 +25,10 @@ export class UserService{
         return user as UserData;
     }
 
+    async getListUsers(): Promise<UserData[]> {
+        return this.prisma.user.findMany() as Promise<UserData[]>;
+    }
+
     async signIn(username: string, password: string): Promise<UserData | null> {
 
         const user = await this.prisma.user.findUnique({

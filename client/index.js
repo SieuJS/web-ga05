@@ -1,52 +1,53 @@
 import { addToCart , loadCart } from "./public/js/cart.js";
 loadCart();
 
-document.addEventListener("DOMContentLoaded", async () => {
-    const products = await fetchNewArrivals();
-    if (products) {
-        renderNewArrivals(products);
-        (function ($) {
-            $('.portfolio-menu button.btn').on('click', function () {
-                $('.portfolio-menu button.btn').removeClass('active');
-                $(this).addClass('active');
-            })
-            if ($.fn.imagesLoaded) {
-                $('.karl-new-arrivals').imagesLoaded(function () {
-                    // filter items on button click
-                    $('.portfolio-menu').on('click', 'button', function () {
-                        var filterValue = $(this).attr('data-filter');
-                        $grid.isotope({
-                            filter: filterValue
-                        });
-                    });
-                    // init Isotope
-                    var $grid = $('.karl-new-arrivals').isotope({
-                        itemSelector: '.single_gallery_item',
-                        percentPosition: true,
-                        masonry: {
-                            columnWidth: '.single_gallery_item'
-                        }
-                    });
-                });
-            }
-        })(jQuery);
-        const addToCartButtons = document.querySelectorAll(".add-to-cart-event");
-        addToCartButtons.forEach((button) => {
-            button.addEventListener("click", (event) => {
-                event.preventDefault();
-                const productId = button.getAttribute("data-id");
-                addToCart(event.target ,productId);
-            });
-        });
+// document.addEventListener("DOMContentLoaded", async () => {
+//     const products = await fetchNewArrivals();
+//     if (products) {
+//         renderNewArrivals(products);
+//         (function ($) {
+//             $('.portfolio-menu button.btn').on('click', function () {
+//                 $('.portfolio-menu button.btn').removeClass('active');
+//                 $(this).addClass('active');
+//             })
+//             if ($.fn.imagesLoaded) {
+//                 $('.karl-new-arrivals').imagesLoaded(function () {
+//                     // filter items on button click
+//                     $('.portfolio-menu').on('click', 'button', function () {
+//                         var filterValue = $(this).attr('data-filter');
+//                         $grid.isotope({
+//                             filter: filterValue
+//                         });
+//                     });
+//                     // init Isotope
+//                     var $grid = $('.karl-new-arrivals').isotope({
+//                         itemSelector: '.single_gallery_item',
+//                         percentPosition: true,
+//                         masonry: {
+//                             columnWidth: '.single_gallery_item'
+//                         }
+//                     });
+//                 });
+//             }
+//         })(jQuery);
+//         const addToCartButtons = document.querySelectorAll(".add-to-cart-event");
+//         addToCartButtons.forEach((button) => {
+//             button.addEventListener("click", (event) => {
+//                 event.preventDefault();
+//                 const productId = button.getAttribute("data-id");
+//                 addToCart(event.target ,productId);
+//             });
+//         });
 
-    }
-});
-        const addToCartButtons = document.querySelectorAll(".add-to-cart-event");
+//     }
+// });
+const addToCartButtons = document.querySelectorAll(".add-to-cart-event");
         addToCartButtons.forEach((button) => {
-            button.addEventListener("click", (event) => {
+            button.addEventListener("click",async (event) => {
                 event.preventDefault();
                 const productId = button.getAttribute("data-id");
-                addToCart(event.target ,productId);
+                await addToCart(event.target ,productId);
+                await loadCart();
             });
         });
 const fetchNewArrivals = async () => {

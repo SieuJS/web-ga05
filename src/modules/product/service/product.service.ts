@@ -278,4 +278,33 @@ export class ProductService {
         });
         return product as ProductData;
     }
+
+    public async getUniqueProductAdmin(id: string): Promise<ProductData> {
+        const product = await this.prisma.product.findUnique({
+            where: { id } ,
+            include : {
+              images : true,
+              tbl_categories : true
+            }
+        });
+
+        return product as ProductData;
+    }
+    
+    public async updateProduct(id: string, data: ProductInput, categoryId : string): Promise<ProductData> {
+        const product = await this.prisma.product.update({
+            where: { id },
+            data: {
+                ...data,
+                categoryId,
+                images : {
+                    deleteMany : {},
+                    createMany : {
+                        data : data.images?.map(image => ({image})) || []
+                    }
+              }
+            }
+        });
+        return product as ProductData;
+    }
 }

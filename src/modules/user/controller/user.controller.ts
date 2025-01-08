@@ -64,4 +64,11 @@ export class UserController {
       req.session.destroy();
       return { msg: 'The user session has ended' }
     }
+
+    @Get('/list')
+    @ApiOperation({ summary: 'Get all user' })
+    @ApiResponse({ status: 200, description: 'Get all user' , type : UserData, isArray : true})
+    async getListUser(): Promise<UserData[]> {
+        return this.userService.getListUsers();
+    }
 }
