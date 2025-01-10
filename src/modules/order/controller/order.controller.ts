@@ -1,10 +1,11 @@
-import { Controller, UseGuards, Req, Body, Post, HttpException, Get } from "@nestjs/common";
+import { Controller, UseGuards, Req, Body, Post, HttpException, Get, Param } from "@nestjs/common";
 import { OrderService } from "../service";
 import { AuthenticatedGuard } from "../../auth";
 import { OrderAddressBillInput, OrderInput, OrderProductBillInput } from "../model";
 import { Transactional } from "@nestjs-cls/transactional";
 import { CartService } from "../../cart/service";
 import { ProductService } from "../../product";
+import { ApiParam } from "@nestjs/swagger";
 
 @Controller('order')
 export class OrderController {
@@ -62,5 +63,15 @@ export class OrderController {
             order,
             message : 'Order created'
         }
+    }
+
+    @Get('/info/:id')
+    @ApiParam({name : 'id', type : 'string'})
+    async getOrderById(@Req() req : any,@Param('id') orderId : string ) : Promise<any> {
+        const order = await this.orderSerivce.getOrderById(orderId);
+        return {
+            data : order,
+            message : 'Get order by id'
+        };
     }
 }

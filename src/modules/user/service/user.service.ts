@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, Injectable } from "@nestjs/common";
 import { TransactionHost } from "@nestjs-cls/transactional";
 import { TransactionalAdapterPrisma } from "@nestjs-cls/transactional-adapter-prisma";
 import { UserData, UserInput, UserPaginatedResult } from "../model";
@@ -136,7 +136,7 @@ export class UserService {
             where: { id },
         });
         if (!user) {
-            throw new Error("User not found");
+            throw new HttpException("User not found", 404);
         }
         let hashedPassword = user.password;
         if(data.oldPassword){
@@ -145,7 +145,7 @@ export class UserService {
                 user.password as string
             );
             if (!passwordValid) {
-                throw new Error("Password not match");
+                throw new HttpException("Password not match", 400);
             }
             const saltOrRounds = 10;;
             hashedPassword = await bcrypt.hash(data.newPassword, saltOrRounds);

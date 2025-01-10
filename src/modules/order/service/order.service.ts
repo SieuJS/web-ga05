@@ -59,5 +59,16 @@ export class OrderService {
     });
     }
 
-   
+   async getOrderById(orderId : string) : Promise<any> {
+        return this.txHost.tx.order.findUnique({
+            where : {
+                id : orderId
+            },
+            include : {
+                order_bill_product : true,
+                order_bill_address : true,
+                order_of_user : true
+            }
+        });
+    }
 }

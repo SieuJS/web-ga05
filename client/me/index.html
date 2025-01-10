@@ -245,34 +245,15 @@
             <div class="container">
                 <div class="row">
                     <div class="col-3">
-                        <ul class="nav nav-tabs" id="checkoutTab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="order-list-tab" data-toggle="tab" href="#order-list"
-                                    role="tab" aria-controls="order-list" aria-selected="true">Order List</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="billing-info-tab" data-toggle="tab" href="#billing-info"
-                                    role="tab" aria-controls="billing-info" aria-selected="false">Billing Info</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="shipping-info-tab" data-toggle="tab" href="#shipping-info"
-                                    role="tab" aria-controls="shipping-info" aria-selected="false">Shipping Info</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content" id="checkoutTabContent">
-                            <div class="tab-pane fade show active" id="order-list" role="tabpanel"
-                                aria-labelledby="order-list-tab">
-                                <!-- Order List Content -->
-                            </div>
-                            <div class="tab-pane fade" id="billing-info" role="tabpanel"
-                                aria-labelledby="billing-info-tab">
-                                <!-- Billing Info Content -->
-                            </div>
-                            <div class="tab-pane fade" id="shipping-info" role="tabpanel"
-                                aria-labelledby="shipping-info-tab">
-                                <!-- Shipping Info Content -->
-                            </div>
+                        <div class="list-group">
+                            <a href="/me" class="list-group-item list-group-item-action active">
+                                <i class="fa fa-user" aria-hidden="true"></i> Profile
+                            </a>
+                            <a href="/order" class="list-group-item list-group-item-action">
+                                <i class="fa fa-list" aria-hidden="true"></i> Order List
+                            </a>
                         </div>
+
                     </div>
                     <div class="col-8">
                         <div class="user-profile">
@@ -286,7 +267,7 @@
                                     <div class="form-group">
                                         <label for="avatar">Avatar</label>
                                         <div>
-                                            <img src="../public/img/user-avatar.png" alt="User Avatar" class="img-thumbnail" id="avatar">
+                                            <img src="https://upcdn.io/12a1zEm/raw/uploads/2025/01/10/4k4x9W4dCC-640px-Apple-logo.png" alt="User Avatar" class="img-thumbnail" id="avatar" style="border-radius: 50%; width: 150px; height: 150px;">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -301,7 +282,8 @@
                                         <label for="email">Email</label>
                                         <p id="email">johndoe@example.com</p>
                                     </div>
-                                    <button type="button" class="btn btn-primary" id="update-profile-btn">Update Profile</button>
+                                    <a href="/update-info" >
+                                    <button type="button" class="btn btn-primary" id="update-profile-btn">Update Profile</button></a>
                                 </div>
                             </div>
                         </div>

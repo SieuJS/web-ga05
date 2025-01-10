@@ -97,8 +97,9 @@ export class UserController {
     @ApiBody({description : "Input form", type : UpdateInforInput})
     @ApiOperation({ summary: 'Update the user profile' })
     @UseGuards(AuthenticatedGuard)
-    async updateProfile(@Req() req : Request, @Body() data: UpdateInforInput): Promise<UserData> {
+    async updateProfile(@Req() req : Request, @Body() data: UpdateInforInput): Promise<any> {
         const userInSession = req.user as UserInSession;
-        return this.userService.updateProfile(userInSession.id, data);
+        await this.userService.updateProfile(userInSession.id, data);
+        return {message : 'Update profile successfully', success : true};
     }
 }

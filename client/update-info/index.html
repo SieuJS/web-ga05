@@ -246,145 +246,170 @@
             <div class="container">
                 <div class="row">
                     <div class="col-3">
-                        <ul class="nav nav-tabs" id="checkoutTab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="order-list-tab" data-toggle="tab" href="#order-list"
-                                    role="tab" aria-controls="order-list" aria-selected="true">Order List</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="billing-info-tab" data-toggle="tab" href="#billing-info"
-                                    role="tab" aria-controls="billing-info" aria-selected="false">Billing Info</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="shipping-info-tab" data-toggle="tab" href="#shipping-info"
-                                    role="tab" aria-controls="shipping-info" aria-selected="false">Shipping Info</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content" id="checkoutTabContent">
-                            <div class="tab-pane fade show active" id="order-list" role="tabpanel"
-                                aria-labelledby="order-list-tab">
-                                <!-- Order List Content -->
-                            </div>
-                            <div class="tab-pane fade" id="billing-info" role="tabpanel"
-                                aria-labelledby="billing-info-tab">
-                                <!-- Billing Info Content -->
-                            </div>
-                            <div class="tab-pane fade" id="shipping-info" role="tabpanel"
-                                aria-labelledby="shipping-info-tab">
-                                <!-- Shipping Info Content -->
-                            </div>
+                        <div class="list-group">
+                            <a href="/me" class="list-group-item list-group-item-action active">
+                                <i class="fa fa-user" aria-hidden="true"></i> Profile
+                            </a>
+                            <a href="/order" class="list-group-item list-group-item-action ">
+                                <i class="fa fa-list" aria-hidden="true"></i> Order List
+                            </a>
                         </div>
+
                     </div>
                     <div class="col-8">
-
-
-                            <div class="user-profile mb-3">
-                                <div class="profile-page-heading">
-                                    <h5>User Profile</h5>
-                                    <p>Manage your profile information</p>
+                        <div class="user-profile mb-3">
+                            <div class="profile-page-heading">
+                                <h5>User Profile</h5>
+                                <p>Manage your profile information</p>
+                            </div>
+                            <form id="user-profile-form"></form>
+                            <div class="form-group">
+                                <label for="avatar">Avatar</label>
+                                <div class="row gap-3 m-0">
+                                    <button type="button" class="btn btn-primary col-6 ml-2 upload-btn">Add
+                                        image</button>
                                 </div>
-                            
-                                <form id="user-profile-form"></form>
-                                    <div class="form-group">
-                                        <label for="avatar">Avatar</label>
-                                        <div class="row gap-3 m-0">
-                                            <button type="button" class="btn btn-primary col-6 ml-2 upload-btn">Add image</button>
-                                        </div>
-                                    </div>
+                            </div>
 
-                                    <div class="form-group password">
-                                        <label for="password">Change Password</label>
-                                        <div class="row gap-3 m-0">
-                                            <input type="password" class="form-control col-9" id="password" name="password" placeholder="Enter new password" readonly>
-                                            <button type="button" class="btn btn-secondary edit-btn col-2 ml-2" data-target="#password">Edit</button>
-                                        </div>
-                                    </div>
-                                    <div class="form-group d-none password">
-                                        <label for="old-password">Old Password</label>
-                                        <div class="row gap-3 m-0">
-                                            <input type="password" class="form-control col-9" id="old-password" name="old-password" placeholder="Enter old password">
-                                            <button type="button" class="btn btn-secondary goback-btn col-2 ml-2" data-target="#old-password">Go back</button>
-                                        </div>
-                                    </div>
-                                    <div class="form-group d-none password" id="new-password-group">
-                                        <label for="new-password">New Password</label>
-                                        <div class="row gap-3 m-0">
-                                            <input type="password" class="form-control col-9" id="new-password" name="new-password" placeholder="Enter new password">
-                                            <button type="button" class="btn btn-secondary edit-btn col-2 ml-2" data-target="#new-password">Edit</button>
-                                        </div>
-                                    </div>
-                                    <div class="form-group d-none password" id="re-new-password-group">
-                                        <label for="re-new-password">Re-enter New Password</label>
-                                        <div class="row gap-3 m-0">
-                                            <input type="password" class="form-control col-9" id="re-new-password" name="re-new-password" placeholder="Re-enter new password">
-                                            <button type="button" class="btn btn-secondary edit-btn col-2 ml-2" data-target="#re-new-password">Edit</button>
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary" id="submit-form">Save Changes</button>
-                                </form>
-                                <script>
-                                    $(document).ready(function() {
-                                        
-                                        $(".upload-btn").bytescaleUploadWidget({
-                                            apiKey: "public_12a1zEmARBeezfGPFXGCm3iswBmL",
-                                            onComplete: function(files) {
-                                                if (files.length === 0) {
-                                                    alert('No files selected.');
-                                                } else {
-                                                    const fileUrl = files[0].fileUrl;
-                                                    $('#user-profile-form').append(`<input type="hidden" name="avatar" id = "avatar" value="${fileUrl}">`);
-                                                    $('#user-profile-form').append(`<img src="${fileUrl}" alt="Avatar Preview" class="img-thumbnail mt-2" id="avatar-preview">`);
-                                                    alert('Image uploaded successfully.');
-                                                }
-                                            }
-                                        });
+                            <div class="form-group password">
+                                <label for="password">Change Password</label>
+                                <div class="row gap-3 m-0">
+                                    <input type="password" class="form-control col-9" id="password" name="password"
+                                        placeholder="Enter new password" readonly>
+                                    <button type="button" class="btn btn-secondary edit-btn col-2 ml-2"
+                                        data-target="#password">Edit</button>
+                                </div>
+                            </div>
+                            <div class="form-group d-none password">
+                                <label for="old-password">Old Password</label>
+                                <div class="row gap-3 m-0">
+                                    <input type="password" class="form-control col-9" id="old-password"
+                                        name="old-password" placeholder="Enter old password">
+                                    <button type="button" class="btn btn-secondary goback-btn col-2 ml-2"
+                                        data-target="#old-password">Go
+                                        back</button>
+                                </div>
+                            </div>
+                            <div class="form-group d-none password" id="new-password-group">
+                                <label for="new-password">New Password</label>
+                                <div class="row gap-3 m-0">
+                                    <input type="password" class="form-control col-9" id="new-password"
+                                        name="new-password" placeholder="Enter new password">
+                                    <button type="button" class="btn btn-secondary edit-btn col-2 ml-2"
+                                        data-target="#new-password">Edit</button>
+                                </div>
+                            </div>
+                            <div class="form-group d-none password" id="re-new-password-group">
+                                <label for="re-new-password">Re-enter New Password</label>
+                                <div class="row gap-3 m-0">
+                                    <input type="password" class="form-control col-9" id="re-new-password"
+                                        name="re-new-password" placeholder="Re-enter new password">
+                                    <button type="button" class="btn btn-secondary edit-btn col-2 ml-2"
+                                        data-target="#re-new-password">Edit</button>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="submit-form">Save Changes</button>
+                            </form>
 
-                                        document.querySelectorAll('.edit-btn').forEach(button => {
-                                            button.addEventListener('click', function() {
-                                                const target = document.querySelector(this.getAttribute('data-target'));
-                                                if (target.id === 'password') {
-                                                    document.querySelectorAll('.password').forEach(passwordField => {
-                                                        passwordField.classList.toggle('d-none');
-                                                    });
-                                                } else {
-                                                    target.disabled = !target.disabled;
-                                                    if (!target.disabled) {
-                                                        target.focus();
-                                                    }
-                                                }
-                                            });
-                                        });
-
-                                        document.querySelectorAll('.goback-btn').forEach(gobackButton => {
-                                            gobackButton.addEventListener('click', function() {
-                                                document.querySelectorAll('.password').forEach(passwordField => {
-                                                    passwordField.classList.toggle('d-none');
-                                                });
-                                            });
-                                        });
-
-                                        document.getElementById('submit-form').addEventListener('click', function(event) {
-                                            const newPassword = document.getElementById('new-password').value;
-                                            console.log("clicked")
-                                            const reNewPassword = document.getElementById('re-new-password').value;
-                                            if (newPassword !== reNewPassword) {
-                                                event.preventDefault();
-                                                alert('New passwords do not match!');
+                            <script>
+                                $(document).ready(function() {
+                                    $(".upload-btn").bytescaleUploadWidget({
+                                        apiKey: "public_12a1zEmARBeezfGPFXGCm3iswBmL",
+                                        onComplete: function(files) {
+                                            if (files.length === 0) {
+                                                alert('No files selected.');
                                             } else {
-                                                console.log("get in")
-                                                const avatar =document.querySelector('#avatar').value;
-                                                const newPassword =document.querySelector('#new-password').value;
-                                                const oldPassword =document.querySelector('#old-password').value;
-                                                console.log({newPassword, oldPassword, avatar})
-                                                event.preventDefault();
-
-
+                                                const fileUrl = files[0].fileUrl;
+                                                $('#user-profile-form').append(
+                                                    `<input type="hidden" name="avatar" id = "avatar" value="${fileUrl}">`
+                                                    );
+                                                $('#user-profile-form').append(
+                                                    `<img src="${fileUrl}" alt="Avatar Preview" class="img-thumbnail mt-2" id="avatar-preview">`
+                                                    );
+                                                alert('Image uploaded successfully.');
+                                            }
+                                        }
+                                    });
+                                    document.querySelectorAll('.edit-btn').forEach(button => {
+                                        button.addEventListener('click', function() {
+                                            const target = document.querySelector(this
+                                                .getAttribute('data-target'));
+                                            if (target.id === 'password') {
+                                                document.querySelectorAll('.password').forEach(
+                                                    passwordField => {
+                                                        passwordField.classList.toggle(
+                                                            'd-none');
+                                                    });
+                                            } else {
+                                                target.disabled = !target.disabled;
+                                                if (!target.disabled) {
+                                                    target.focus();
+                                                }
                                             }
                                         });
                                     });
-                                </script>
-                            </div>
+                                    document.querySelectorAll('.goback-btn').forEach(gobackButton => {
+                                        gobackButton.addEventListener('click', function() {
+                                            document.querySelectorAll('.password').forEach(
+                                                passwordField => {
+                                                    passwordField.classList.toggle(
+                                                    'd-none');
+                                                });
+                                        });
+                                    });
+                                    document.getElementById('submit-form').addEventListener('click', function(
+                                        event) {
+                                        const newPassword = document.getElementById('new-password')
+                                            .value;
+                                        console.log("clicked")
+                                        const reNewPassword = document.getElementById('re-new-password')
+                                            .value;
+                                        if (newPassword !== reNewPassword) {
+                                            event.preventDefault();
+                                            alert('New passwords do not match!');
+                                        } else {
+                                            console.log("get in")
+                                            const avatar = document.querySelector('#avatar')?.value || undefined;
+                                            const newPassword = document.querySelector('#new-password')
+                                                .value;
+                                            const oldPassword = document.querySelector('#old-password')
+                                                .value;
+                                            console.log({
+                                                newPassword,
+                                                oldPassword,
+                                                avatar
+                                            })
+                                            fetch('/api/v1/user/profile', {
+                                                    method: 'PATCH',
+                                                    headers: {
+                                                        'Content-Type': 'application/json'
+                                                    },
+                                                    body: JSON.stringify({
+                                                        newPassword,
+                                                        oldPassword,
+                                                        avatar
+                                                    })
+                                                })
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    if (data.success) {
+                                                        alert('Profile updated successfully!');
+                                                        window.location.href = '/profile';
+                                                    } else {
+                                                        alert(data.message);
+                                                    }
+                                                })
+                                                .catch(error => {
+                                                    alert('An error occurred while updating profile.', error.message);
+                                                });
+                                            
+                                            event.preventDefault();
+                                        }
+                                    });
+                                });
+                            </script>
                         </div>
+                    </div>
 
                 </div>
             </div>

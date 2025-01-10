@@ -8,7 +8,7 @@ import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as session from 'express-session';
 import * as passport from 'passport';
-import { productRender, paginateRender, productDetailRender, relatedProductsRender, productImageRender } from './modules/view/hbs';
+import { productRender, paginateRender, productDetailRender, relatedProductsRender, productImageRender,profileRender } from './modules/view/hbs';
 import * as cors from 'cors';
 /**
  * These are API defaults that can be changed using environment variables,
@@ -68,13 +68,13 @@ async function bootstrap(): Promise<void> {
           defaultLayout: 'layout_main',
           layoutsDir: join(__dirname, '..', 'views', 'layouts'),
           partialsDir: join(__dirname, '..', 'views', 'partials'),
-          helpers : {productRender, paginateRender, productDetailRender, relatedProductsRender, productImageRender}
+          helpers : {productRender, paginateRender, productDetailRender, relatedProductsRender, productImageRender, profileRender}
         }).engine,
       );
     app.setViewEngine('hbs');
     // @todo Enable Helmet for better API security headers
 
-    app.setGlobalPrefix(process.env.API_PREFIX || API_DEFAULT_PREFIX , { exclude: ['/home', '/shop', 'product-details/(.*)'] });
+    app.setGlobalPrefix(process.env.API_PREFIX || API_DEFAULT_PREFIX , { exclude: ['/home', '/shop', 'product-details/(.*)' , '/profile'] });
 
     app.use(
         session({

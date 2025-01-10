@@ -1,16 +1,18 @@
-import { Controller, Get, Param, Query, Res,  } from "@nestjs/common";
-import { Response } from "express";
+import { Controller, Get, Param, Query, Req, Res, UseGuards,  } from "@nestjs/common";
+import { Request, Response } from "express";
 import { ProductService } from "../../product";
 import { PaginateTransformPipe } from "../../common";
 import { PaginationArgs } from "../../paginate";
 import { SearchProductPipe } from "../../product/pipe/search-product.pipe";
+import { AuthenticatedGuard } from "../../auth";
+import { UserInSession, UserService } from "../../user";
 
 
 @Controller( "/")
 export class HomeController {
     constructor(
         private readonly productService: ProductService,
-
+        private readonly userService : UserService
     ) {}
     @Get('/home')
     async root(@Res() res: Response) {
@@ -32,5 +34,13 @@ export class HomeController {
         const product = await this.productService.getProductById(id);
         const relatedProducts = await this.productService.getRelatedProduct(id);
         return res.render('pages/public/product-details', { product , relatedProducts });
+    }
+
+    @Get('/profile')
+    @UseGuards( AuthenticatedGuard)
+    async profile(@Req() req : Request,@Res() res: Response) {
+        const userInSession = req.user as UserInSession;
+        const user = await this.userService.getUserById(userInSession.id);
+        return res.render('pages/public/profile', {user});
     }
 }
