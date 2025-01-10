@@ -1,18 +1,7 @@
 import { addToCart , loadCart } from "../cart.js";
 loadCart();
 
-// document.addEventListener("DOMContentLoaded", async () => {
-
-//         const addToCartButtons = document.querySelectorAll(".add-to-cart-event");
-//         addToCartButtons.forEach((button) => {
-//             button.addEventListener("click", (event) => {
-//                 event.preventDefault();
-//                 const productId = button.getAttribute("data-id");
-//                 addToCart(event.target ,productId);
-//             });
-//         });
-// });
-        const addToCartButtons = document.querySelectorAll(".add-to-cart-event");
+    const addToCartButtons = document.querySelectorAll(".add-to-cart-event");
         addToCartButtons.forEach((button) => {
             button.addEventListener("click", (event) => {
                 event.preventDefault();

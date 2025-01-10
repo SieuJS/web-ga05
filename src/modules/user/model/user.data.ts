@@ -1,4 +1,4 @@
-import { ApiProperty, OmitType } from "@nestjs/swagger";
+import { ApiProperty, OmitType, PickType } from "@nestjs/swagger";
 import { User } from "@prisma/client";
 import {
     validate,
@@ -6,6 +6,7 @@ import {
     IsEmail,
     IsNotEmpty,
   } from 'class-validator';
+import { PaginationMeta } from "../../paginate";
 
 export class UserData {
     @ApiProperty({description: 'The id of the user', example: 1})
@@ -31,6 +32,15 @@ export class UserData {
     @ApiProperty({description: 'The role of the user', example: 'user'})
     role : string ;
 
+    @ApiProperty({description :"Status of the user", example : "active"})
+    status : string;
+
+    @ApiProperty({description: "avatar of the user", example : "https://www.google.com"})
+    avatar : string;
+
+    @ApiProperty({description: 'The created date of the user', example: '2021-08-16T00:00:00.000Z'})
+    createdAt : Date;
+
     constructor (user: User) {
         this.id = user.id;
         this.email = user.email as string;
@@ -43,7 +53,21 @@ export class UserData {
                 throw new Error(`Validation failed. errors: ${errors}`);
             }
         });
+        this.status = user.status as string;
+        this.createdAt = user.createdAt;
+        this.avatar = user.avatar as string;
     }
 }
 
-export class UserInSession extends OmitType(UserData, ['password','name', 'email'] as const) {}
+export class UserInSession extends OmitType(UserData, ['password','name', 'email','createdAt', 'avatar'] as const) {}
+
+export class UserSearchQuery extends PickType(UserData, ['name', 'email'] as const) {}
+export class UserOrderQuery extends PickType(UserData, ['name', 'email'] as const) {}
+
+export class UserPaginatedResult {
+    @ApiProperty({description: 'The data of user', type: [UserData]})
+    data : UserData[];
+
+    @ApiProperty({description : "The meta data of the user", type : PaginationMeta})
+    meta : PaginationMeta;
+}

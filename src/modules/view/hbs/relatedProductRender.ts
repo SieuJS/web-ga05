@@ -16,7 +16,7 @@ export function relatedProductsRender(products : ProductData[]) {
                     <h4 class="product-price">₹${parseFloat(product.price as any).toFixed(2)}</h4>
                     <p style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${product.name}</p>
                     <div class="d-flex justify-content-between">
-                        <a href="#" class="add-to-cart-btn add-to-cart-event">ADD TO CART</a>
+                        <a href="#" class="add-to-cart-btn add-to-cart-event" data-id="${product.id}">ADD TO CART</a>
                         <a href="/product-details/${product.id}" class="add-to-cart-btn">DETAIL</a>
                     </div>
                 </div>

@@ -1,11 +1,14 @@
-import { Controller, Get, Post, Query,Body, HttpException, UseGuards, Req, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Controller, Get, Post, Query,Body, HttpException, UseGuards, Req, UsePipes, ValidationPipe, Patch, Param } from "@nestjs/common";
 import { Request } from "express";
 import { UserService } from "../service/user.service";
-import { UserData, UserInput, UserInSession, UserLoginInput } from "../model/";
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { UpdateInforInput, UserData, UserInput, UserInSession, UserLoginInput, UserPaginatedResult } from "../model/";
+import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { LocalAuthGuard, AuthenticatedGuard } from "../../auth";
 import { UserInputPipe } from "../pipe/user-input.pipe";
 import { AuthResponse } from "../model/";
+import { PaginateTransformPipe } from "../../common";
+import { PaginationArgs } from "../../paginate";
+import { SearchUserPipe, SortOrderUserPipe } from "../pipe";
 
 
 @ApiTags('User')
@@ -15,7 +18,6 @@ export class UserController {
         private userService : UserService,
 
     ){}
-
     @Get()
     async getUserById(@Query() id: string) : Promise<UserData> {
         return this.userService.getUserById(id);
@@ -33,10 +35,10 @@ export class UserController {
         if (existingUserName) {
             throw new HttpException('User with this username already exists', 400);
         }
+        data.status = 'active';
         const user = await this.userService.createUser(data);
 
-        return {id : user.id,  username : user.username, role : user.role, token: 'Bearer ' + req.sessionID};
-
+        return {id : user.id,  username : user.username, role : user.role, token: 'Bearer ' + req.sessionID , status : user.status};
     }
 
     @Post('login')
@@ -67,8 +69,36 @@ export class UserController {
 
     @Get('/list')
     @ApiOperation({ summary: 'Get all user' })
-    @ApiResponse({ status: 200, description: 'Get all user' , type : UserData, isArray : true})
-    async getListUser(): Promise<UserData[]> {
-        return this.userService.getListUsers();
+    @ApiQuery({ name: 'name', required: false})
+    @ApiQuery({ name: 'email', required: false})
+    @ApiQuery({ name: 'orderBy', required: false})
+    @ApiQuery({ name: 'order', required: false})
+    @ApiResponse({ status: 200, description: 'Get all user' , type : UserPaginatedResult})
+    async getListUser(@Query(PaginateTransformPipe) paginationArgs : PaginationArgs , @Query(SearchUserPipe)searchUser : any, @Query(SortOrderUserPipe) orderBy : any ): Promise<UserPaginatedResult> {
+
+        return this.userService.getListUsers(searchUser , paginationArgs, orderBy);
+    }
+
+    @Patch('ban/:id')
+    @ApiParam({name : 'id'})
+    @ApiOperation({ summary: 'Ban the user' })
+    async banUser(@Req() req : Request, @Param('id') id: string): Promise<UserData> {
+        return this.userService.banUser(id);
+    }
+
+    @Patch('unban/:id')
+    @ApiParam({name : 'id'})
+    @ApiOperation({ summary: 'Unban the user' })
+    async unBanUser(@Req() req : Request, @Param('id') id: string): Promise<UserData> {
+        return this.userService.unBanUser(id);
+    }
+
+    @Patch('profile')
+    @ApiBody({description : "Input form", type : UpdateInforInput})
+    @ApiOperation({ summary: 'Update the user profile' })
+    @UseGuards(AuthenticatedGuard)
+    async updateProfile(@Req() req : Request, @Body() data: UpdateInforInput): Promise<UserData> {
+        const userInSession = req.user as UserInSession;
+        return this.userService.updateProfile(userInSession.id, data);
     }
 }

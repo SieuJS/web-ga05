@@ -1,6 +1,6 @@
 generator client {
-  provider = "prisma-client-js" 
-  binaryTargets = ["native", "debian-openssl-3.0.x",  "linux-musl-openssl-3.0.x"]
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -9,24 +9,24 @@ datasource db {
 }
 
 model Product {
-  id             String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id             String             @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   name           String?
   gender         String?
-  categoryId     String?   @map("category_id") @db.Uuid
-  price          Decimal?  @db.Decimal
+  categoryId     String?            @map("category_id") @db.Uuid
+  price          Decimal?           @db.Decimal
   description    String?
-  baseColour     String?   @map("base_colour")
+  baseColour     String?            @map("base_colour")
   image          String?
-  articleType    String?   @map("article_type")
+  articleType    String?            @map("article_type")
   season         String?
   year           String?
   usage          String?
   quantity       Int
   status         String
   in_cart        Cart[]
-  tbl_categories Category? @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_in_category")
-  in_orders       OrderProductBill[]
-  images        ProductImage[]
+  in_orders      OrderProductBill[]
+  images         ProductImage[]
+  tbl_categories Category?          @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_in_category")
 
   @@map("tbl_products")
 }
@@ -36,18 +36,23 @@ model ProductImage {
   productId String  @map("product_id") @db.Uuid
   image     String
   product   Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_of_image")
+
   @@map("tbl_product_images")
 }
 
 model User {
-  id        String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  email     String  @unique
-  username String  @unique
+  id        String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  email     String   @unique
+  username  String   @unique
   name      String?
   password  String
   role      String
-  cart     Cart[]
-  orders   Order[]
+  status    String
+  createdAt DateTime @default(now()) @map("created_at")
+  avatar    String?
+  cart      Cart[]
+  orders    Order[]
+
   @@map("tbl_users")
 }
 
@@ -62,57 +67,57 @@ model Category {
 }
 
 model Cart {
-  id        String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  userId    String  @map("user_id") @db.Uuid
-  productId String?  @map("product_id") @db.Uuid
-  quantity  Int
-  cart_of_user User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_cart_of_user")
+  id               String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId           String   @map("user_id") @db.Uuid
+  productId        String?  @map("product_id") @db.Uuid
+  quantity         Int
+  cart_of_user     User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_cart_of_user")
   products_in_cart Product? @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_products_in_cart")
 
   @@map("tbl_carts")
 }
 
 model Order {
-  id String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  totalPrice Float @map("total_price")
-  userId String @map("user_id") @db.Uuid
-  orderDate DateTime @map("order_date")
-  status String
-  order_of_user User @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_order_of_user")
+  id                 String             @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  totalPrice         Float              @map("total_price")
+  userId             String             @map("user_id") @db.Uuid
+  orderDate          DateTime           @map("order_date")
+  status             String
   order_bill_address OrderAdressBill[]
   order_bill_product OrderProductBill[]
-
+  order_of_user      User               @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_order_of_user")
 
   @@map("tbl_orders")
-
 }
 
 model OrderAdressBill {
-  id String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  orderId String @map("order_id") @db.Uuid
-  firstName String @map("first_name")
-  lastName String @map("last_name")
-  company String
-  country String
-  address String
-  postCode String @map("post_code")
-  city String
-  province String
-  phone String
-  email String
-  order_of_order Order @relation(fields: [orderId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_order_of_order")
+  id             String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  orderId        String @map("order_id") @db.Uuid
+  firstName      String @map("first_name")
+  lastName       String @map("last_name")
+  company        String
+  country        String
+  address        String
+  postCode       String @map("post_code")
+  city           String
+  province       String
+  phone          String
+  email          String
+  order_of_order Order  @relation(fields: [orderId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_order_of_order")
+
   @@map("tbl_order_address_bills")
 }
 
 model OrderProductBill {
-  id String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  orderId String @map("order_id") @db.Uuid
-  productId String @map("product_id") @db.Uuid
-  productName String @map("product_name")
-  quantity Int
-  price Float
-  totalPrice Float @map("total_price")
-  bill_of_order Order @relation(fields: [orderId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_order_of_order")
+  id                String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  orderId           String  @map("order_id") @db.Uuid
+  productId         String  @map("product_id") @db.Uuid
+  productName       String  @map("product_name")
+  quantity          Int
+  price             Float
+  totalPrice        Float   @map("total_price")
+  bill_of_order     Order   @relation(fields: [orderId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_order_of_order")
   products_in_order Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_of_order")
+
   @@map("tbl_order_product_bills")
 }

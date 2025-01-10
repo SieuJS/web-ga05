@@ -10,7 +10,6 @@ cartSubmitEvent.addEventListener('click', async (event) => {
     const productId = getProductIdFromUrl() ; 
     const quantity = document.getElementById('qty').value;
     await addTOCartEvent(event.target, productId, quantity);
-    
 });
 
 const wrapper = document.querySelector('#wrapper');
@@ -87,9 +86,7 @@ function renderProductDetails(product) {
     });
 }
 
-function addToCart(productId, quantity) {
-    console.log(`Added ${quantity} of Product ID ${productId} to the cart`);
-}
+
 
 async function getRelatedProduct(id) {
     try {
@@ -157,3 +154,15 @@ function renderRelatedProducts(products) {
         }
     })(jQuery);
 }
+
+
+const addToCartButtons = document.querySelectorAll(".add-to-cart-event");
+addToCartButtons.forEach((button) => {
+    button.addEventListener("click", async(event) => {
+        event.preventDefault();
+        console.log("clicked");
+        const productId = button.getAttribute("data-id");
+        await addTOCartEvent(event.target ,productId);
+        await loadCart();
+    });
+});
