@@ -40,8 +40,10 @@ export class CartController {
 
         const userInSession = req.user ; 
         input.userId = userInSession.id;
+        console.log('cart contro', input.quantity)
 
         input.quantity = parseInt(input.quantity as any);
+        console.log('cart contro', input.quantity)
         const productInStock = await this.productService.getProductById(input.productId as string);
         if(productInStock.quantity < input.quantity) {
             throw new HttpException('Product out of stock', 400);

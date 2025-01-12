@@ -1,3 +1,5 @@
+import { isLogged } from "./auth.js";
+
 const cartContainer = document.querySelector(".cart");
 const cartList = document.querySelector(".cart-list");
 const cartQuantity = document.querySelector(".cart_quantity");
@@ -19,23 +21,25 @@ const removeFromCart = async (id) => {
     return data;
 };
 
+
 const renderCart = (cart) => {
+    console.log("get render cart" ,cart)
     let totalPrice = 0;
     let totalQuantity = 0;
     cartList.innerHTML = cart
         .map((item) => {
-            totalPrice += item.products_in_cart?.price || 1000 * item.quantity;
+            totalPrice += item.products_in_cart?.price * item.quantity;
             totalQuantity += item.quantity;
             return `
         <li>
             <a href="#" class = "image">
-            <img src="${item.products_in_cart.image}" class="cart-thumb" alt="product">
+            <img src="${item.products_in_cart?.image}" class="cart-thumb" alt="product">
             </a>
             <div class="cart-item-desc">
-                <h6> <a href ="/product-details/${item.products_in_cart.id}">${item.products_in_cart.name}</a></h6>
-                <p>${item.quantity}x - <span class="price">$${item.products_in_cart.price}</span></p>
+                <h6> <a href ="/product-details/${item.products_in_cart?.id}">${item.products_in_cart?.name}</a></h6>
+                <p>${item.quantity}x - <span class="price">$${item.products_in_cart?.price}</span></p>
             </div> 
-            <span class = "dropdown-product-remove" data-id="${item.products_in_cart.id}"><i class = "icon-cross" > </i></span>
+            <span class = "dropdown-product-remove" data-id="${item.products_in_cart?.id}"><i class = "icon-cross" > </i></span>
         </li>`;
         })
         .join(" ");
@@ -55,12 +59,23 @@ const renderCart = (cart) => {
     `;
 };
 
-export const loadCart = async (isLogged = false) => {
-    if (!isLogged) {
+export const loadCart = async () => {
+    const isLoggedIn = await isLogged();
+
+    if (!isLoggedIn) {
+        console.log("load cards")
         const cart = JSON.parse(localStorage.getItem("cart")) || [];
         renderCart(cart);
         cartContainer.classList.toggle("hidden");
     } else {
+        const cart = localStorage.getItem("cart");
+        if (cart) {
+            const cartItems = JSON.parse(cart);
+            for (const item of cartItems) {
+                await addToCart(null, item.products_in_cart.productId, item.quantity);
+            }
+            localStorage.removeItem("cart");
+        }
         cartContainer.classList.toggle("hidden");
         try {
             const cart = await fetchCart();
@@ -70,26 +85,37 @@ export const loadCart = async (isLogged = false) => {
     }
 };
 
-export const addToCart = async (element, id, quantity = 1,isLogged = false) => {
-    if (!isLogged) {
+export const addToCart = async (element, id, quantity = 1) => {
+    const isLoggedIn = await isLogged();
+    if (!isLoggedIn) {
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        const existingProduct = cart.find((item) => item.productId === id);
+        const existingProduct = cart.find((item) => item.products_in_cart.productId === id);
         if (existingProduct) {
             existingProduct.quantity += quantity;
         } else {
-            cart.push({ productId: id, quantity: quantity, price : 1000 });
+            console.log(id);
+            const productToAdd = await fetch(`/api/v1/product/detail/${id}`);
+            const data = await productToAdd.json();
+            console.log(data);
+            cart.push({products_in_cart : { productId: data.id, price : parseInt(data.price), image : data.image, name : data.name }, quantity: quantity});
         }
+
         localStorage.setItem("cart", JSON.stringify(cart));
         renderCart(cart);
         return;
     }
-    const elementContent = element.innerHTML;
-    element.innerHTML =
+    let elementContent = "";
+    if(element){
+
+        elementContent = element.innerHTML;
+        element.innerHTML =
         '<span class="loader" role="status" aria-hidden="true"></span>';
+    }
     const body = {
         productId: id,
         quantity: quantity,
     };
+
     const response = await fetch(`/api/v1/cart/add`, {
         method: "POST",
         headers: {
@@ -103,12 +129,18 @@ export const addToCart = async (element, id, quantity = 1,isLogged = false) => {
         return;
     } else if (!response.ok) {
         window.alert(data.message);
-        element.innerHTML = elementContent;
+        if(element){
+
+            element.innerHTML = elementContent;
+        }
         return;
     }
     const cart = data.data;
     renderCart(cart);
-    element.innerHTML = elementContent;
+    if(element){
+
+        element.innerHTML = elementContent;
+    }
 };
 
 const clearCart = async () => {

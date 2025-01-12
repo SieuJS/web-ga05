@@ -49,6 +49,8 @@ export class CartService {
         });
 
         if(productInCart) {
+            console.log("productInCart", productInCart);
+            console.log("to add", productInCart.quantity + input.quantity);
             return await this.txHost.tx.cart.update({
                 where : {
                     id : productInCart.id
@@ -68,7 +70,7 @@ export class CartService {
             }) as CartWithProductData; 
         }
         else {
-
+            console.log("to add", input.quantity);
             return await this.txHost.tx.cart.create({
                 data : {
                     userId : input.userId,

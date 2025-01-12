@@ -27,8 +27,20 @@ model Product {
   in_orders      OrderProductBill[]
   images         ProductImage[]
   tbl_categories Category?          @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_in_category")
-
+  reviews        ProductReview[]
   @@map("tbl_products")
+}
+
+model ProductReview {
+  id        String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  productId String   @map("product_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  review    String
+  rating    Int
+  product   Product  @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_of_review")
+  user      User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_of_review")
+
+  @@map("tbl_product_reviews")
 }
 
 model ProductImage {
@@ -52,6 +64,7 @@ model User {
   avatar    String?
   cart      Cart[]
   orders    Order[]
+  reviews   ProductReview[]
 
   @@map("tbl_users")
 }
