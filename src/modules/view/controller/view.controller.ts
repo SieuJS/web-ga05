@@ -40,6 +40,8 @@ export class HomeController {
     @UseGuards( AuthenticatedGuard)
     async profile(@Req() req : Request,@Res() res: Response) {
         const userInSession = req.user as UserInSession;
+        console.log("id" , userInSession.id);
+
         const user = await this.userService.getUserById(userInSession.id);
         return res.render('pages/public/profile', {user});
     }

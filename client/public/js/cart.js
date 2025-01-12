@@ -1,31 +1,32 @@
-const cartContainer = document.querySelector('.cart');
-const cartList = document.querySelector('.cart-list');
-const cartQuantity = document.querySelector('.cart_quantity');
+const cartContainer = document.querySelector(".cart");
+const cartList = document.querySelector(".cart-list");
+const cartQuantity = document.querySelector(".cart_quantity");
 
 export const fetchCart = async () => {
-    const response = await fetch('/api/v1/cart/get');
+    const response = await fetch("/api/v1/cart/get");
     const data = await response.json();
     if (!response.ok && response.status === 403) {
-        throw new Error('Not logged in');
+        throw new Error("Not logged in");
     }
     return data.data;
-}
+};
 
 const removeFromCart = async (id) => {
     const response = await fetch(`/api/v1/cart/remove/${id}`, {
-        method: 'DELETE'
+        method: "DELETE",
     });
     const data = await response.json();
     return data;
-}
+};
 
-const renderCart = (cart ) => {
-    let totalPrice = 0 ;
+const renderCart = (cart) => {
+    let totalPrice = 0;
     let totalQuantity = 0;
-    cartList.innerHTML = cart.map((item) => {
-        totalPrice += item.products_in_cart.price * item.quantity;
-        totalQuantity += item.quantity;
-        return `
+    cartList.innerHTML = cart
+        .map((item) => {
+            totalPrice += item.products_in_cart?.price || 1000 * item.quantity;
+            totalQuantity += item.quantity;
+            return `
         <li>
             <a href="#" class = "image">
             <img src="${item.products_in_cart.image}" class="cart-thumb" alt="product">
@@ -35,8 +36,9 @@ const renderCart = (cart ) => {
                 <p>${item.quantity}x - <span class="price">$${item.products_in_cart.price}</span></p>
             </div> 
             <span class = "dropdown-product-remove" data-id="${item.products_in_cart.id}"><i class = "icon-cross" > </i></span>
-        </li>`
-    }).join(' ');
+        </li>`;
+        })
+        .join(" ");
 
     cartList.innerHTML += `<li class="total">
                           <span class="pull-right">Total: $${totalPrice}</span>
@@ -46,46 +48,60 @@ const renderCart = (cart ) => {
                           >
     </li>`;
     cartQuantity.innerHTML = cart.length;
-    const headerCartButton = document.querySelector('#header-cart-btn');
+    const headerCartButton = document.querySelector("#header-cart-btn");
     headerCartButton.innerHTML = `
         <span class="cart_quantity">${totalQuantity}</span>
             <i class="ti-bag"></i> Your Bag $${totalPrice}
-    `
-}
+    `;
+};
 
-export const loadCart = async () => {
-    cartContainer.classList.toggle('hidden');
-    try{
-        const cart = await fetchCart();
+export const loadCart = async (isLogged = false) => {
+    if (!isLogged) {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
         renderCart(cart);
-        cartContainer.classList.toggle('hidden');
-
+        cartContainer.classList.toggle("hidden");
+    } else {
+        cartContainer.classList.toggle("hidden");
+        try {
+            const cart = await fetchCart();
+            renderCart(cart);
+            cartContainer.classList.toggle("hidden");
+        } catch (error) {}
     }
-    catch(error) {
+};
 
-    }
-}
-
-export const addToCart = async (element, id , quantity = 1) => {
-    const elementContent = element.innerHTML;
-    element.innerHTML = '<span class="loader" role="status" aria-hidden="true"></span>';
-    const body = {
-        productId : id,
-        quantity : quantity
-    }
-    const response = await fetch(`/api/v1/cart/add`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body : JSON.stringify(body),
-    });
-    const data = await response.json();
-    if(!response.ok && response.status === 403) {
-        window.location.href = '/auth/login';
+export const addToCart = async (element, id, quantity = 1,isLogged = false) => {
+    if (!isLogged) {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const existingProduct = cart.find((item) => item.productId === id);
+        if (existingProduct) {
+            existingProduct.quantity += quantity;
+        } else {
+            cart.push({ productId: id, quantity: quantity, price : 1000 });
+        }
+        localStorage.setItem("cart", JSON.stringify(cart));
+        renderCart(cart);
         return;
     }
-    else if(!response.ok) {
+    const elementContent = element.innerHTML;
+    element.innerHTML =
+        '<span class="loader" role="status" aria-hidden="true"></span>';
+    const body = {
+        productId: id,
+        quantity: quantity,
+    };
+    const response = await fetch(`/api/v1/cart/add`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+    });
+    const data = await response.json();
+    if (!response.ok && response.status === 403) {
+        window.location.href = "/auth/login";
+        return;
+    } else if (!response.ok) {
         window.alert(data.message);
         element.innerHTML = elementContent;
         return;
@@ -93,11 +109,11 @@ export const addToCart = async (element, id , quantity = 1) => {
     const cart = data.data;
     renderCart(cart);
     element.innerHTML = elementContent;
-}
+};
 
 const clearCart = async () => {
-    const response = await fetch('/api/v1/cart/clear', {
-        method: 'DELETE'
+    const response = await fetch("/api/v1/cart/clear", {
+        method: "DELETE",
     });
     const data = await response.json();
     if (!response.ok) {
@@ -105,4 +121,4 @@ const clearCart = async () => {
         return;
     }
     renderCart([]);
-}
+};

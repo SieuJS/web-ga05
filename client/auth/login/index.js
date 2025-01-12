@@ -1,5 +1,9 @@
 
 const loginForm = document.querySelector('#login-form');
+const googleLoginButton = document.querySelector('#login-google-button');
+googleLoginButton.addEventListener('click', async () => {
+    window.location.href = '/api/v1/oauth/';
+});
 
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();

@@ -3,12 +3,13 @@ import { Request } from "express";
 import { UserService } from "../service/user.service";
 import { UpdateInforInput, UserData, UserInput, UserInSession, UserLoginInput, UserPaginatedResult } from "../model/";
 import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { LocalAuthGuard, AuthenticatedGuard } from "../../auth";
+import {  AuthenticatedGuard} from "../../auth";
 import { UserInputPipe } from "../pipe/user-input.pipe";
 import { AuthResponse } from "../model/";
 import { PaginateTransformPipe } from "../../common";
 import { PaginationArgs } from "../../paginate";
 import { SearchUserPipe, SortOrderUserPipe } from "../pipe";
+import { AuthGuard } from "@nestjs/passport";
 
 
 @ApiTags('User')
@@ -45,7 +46,7 @@ export class UserController {
     @ApiOperation({ summary: 'Login the user' })
     @ApiResponse({ status: 200, description: 'User logged in successfully' , type: AuthResponse})
     @ApiBody( {description : "Input form", type : UserLoginInput})
-    @UseGuards(LocalAuthGuard)
+    @UseGuards(AuthGuard(['local','google']))
     async signIn(@Req() req : Request): Promise<AuthResponse> {
         const userInSession = req.user as UserInSession;
         return { ...userInSession,
