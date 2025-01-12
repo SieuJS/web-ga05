@@ -61,7 +61,7 @@ const renderCart = (cart) => {
 
 export const loadCart = async () => {
     const isLoggedIn = await isLogged();
-
+    console.log("is logged in", isLoggedIn);
     if (!isLoggedIn) {
         console.log("load cards")
         const cart = JSON.parse(localStorage.getItem("cart")) || [];

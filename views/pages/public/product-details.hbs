@@ -121,8 +121,63 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <div class="section_heading text-center">
+                            <h2>Customer Reviews</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="list-group" id="reviewsList">
+                            {{#each reviews}}
+                            <div class="list-group-item">
+                                <h5 class="mb-1">{{this.author}}</h5>
+                                <p class="mb-1">{{this.content}}</p>
+                                <small>Rating: {{this.rating}}/5</small>
+                            </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="section_heading text-center">
+                            <h2>Leave a Review</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <form id="reviewForm">
+                            <div class="form-group">
+                                <label for="reviewAuthor">Name</label>
+                                <input type="text" class="form-control" id="reviewAuthor" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reviewContent">Review</label>
+                                <textarea class="form-control" id="reviewContent" rows="3" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="reviewRating">Rating</label>
+                                <select class="form-control" id="reviewRating" required>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Review</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </section>
+
+
     <script type = "module" src = "/public/js/auth.js"></script>
     <script type = "module" src = "/public/js/cart.js"></script>
     <script type = "module" src = "/product-details/index.js"></script>

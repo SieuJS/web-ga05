@@ -7,6 +7,83 @@ import { SearchProductPipe } from "../../product/pipe/search-product.pipe";
 import { AuthenticatedGuard } from "../../auth";
 import { UserInSession, UserService } from "../../user";
 
+const reviews = [
+    {
+        author : 'John Doe',
+        content : 'This is a great product',
+        rating : 5
+    },
+    {
+        author : 'Jane Doe',
+        content : 'This is a great product',
+        rating : 4
+    },
+    {
+        author : 'John Doe',
+        content : 'This is a great product',
+        rating : 3
+    },
+    {
+        author : 'John Doe',
+        content : 'This is a great product',
+        rating : 5
+    },
+    {
+        author : 'Jane Doe',
+        content : 'This is a great product',
+        rating : 4
+    },
+    {
+        author : 'John Doe',
+        content : 'This is a great product',
+        rating : 3
+    },
+    {
+        author : 'John Doe',
+        content : 'This is a great product',
+        rating : 5
+    },
+    {
+        author : 'Jane Doe',
+        content : 'This is a great product',
+        rating : 4
+    },
+    {
+        author : 'John Doe',
+        content : 'This is a great product',
+        rating : 3
+    },
+    {
+        author : 'John Doe',
+        content : 'This is a great product',
+        rating : 5
+    },
+    {
+        author : 'Jane Doe',
+        content : 'This is a great product',
+        rating : 4
+    },
+    {
+        author : 'John Doe',
+        content : 'This is a great product',
+        rating : 3
+    },
+    {
+        author : 'John Doe',
+        content : 'This is a great product',
+        rating : 5
+    },
+    {
+        author : 'Jane Doe',
+        content : 'This is a great product',
+        rating : 4
+    },
+    {
+        author : 'John Doe',
+        content : 'This is a great product',
+        rating : 3
+    }
+]
 
 @Controller( "/")
 export class HomeController {
@@ -33,7 +110,7 @@ export class HomeController {
     async productDetails(@Res() res: Response, @Param('id') id: string) {
         const product = await this.productService.getProductById(id);
         const relatedProducts = await this.productService.getRelatedProduct(id);
-        return res.render('pages/public/product-details', { product , relatedProducts });
+        return res.render('pages/public/product-details', { product , relatedProducts, reviews });
     }
 
     @Get('/profile')
