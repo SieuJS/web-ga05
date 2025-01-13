@@ -1,12 +1,15 @@
-import { Controller, UseGuards, Req, Body, Post, HttpException, Get, Param } from "@nestjs/common";
+import { Controller, UseGuards, Req, Body, Post, HttpException, Get, Param, Query, Patch } from "@nestjs/common";
 import { OrderService } from "../service";
 import { AuthenticatedGuard } from "../../auth";
 import { OrderAddressBillInput, OrderInput, OrderProductBillInput } from "../model";
 import { Transactional } from "@nestjs-cls/transactional";
 import { CartService } from "../../cart/service";
 import { ProductService } from "../../product";
-import { ApiParam } from "@nestjs/swagger";
+import { ApiParam, ApiQuery, ApiTags } from "@nestjs/swagger";
+import { PaginateTransformPipe, PaginationArgs } from "../../paginate";
+import { SortOrderTransformPipe } from "../pipe/sort-order-transform.pipe";
 
+@ApiTags('Order')
 @Controller('order')
 export class OrderController {
     constructor (
@@ -74,4 +77,24 @@ export class OrderController {
             message : 'Get order by id'
         };
     }
+
+    @Get('/getlist')
+    @ApiQuery({name : "status", required : false})
+    @ApiQuery({name : "orderBy", required : false})
+    @ApiQuery({name : "order", required : false})
+    async getListOrder( @Query('status') status : string, @Query(PaginateTransformPipe) paginationArgs : PaginationArgs, @Query(SortOrderTransformPipe)orderBy : any ) : Promise<any> {
+        const orderOfUser = await this.orderSerivce.getListOrder({status}, paginationArgs, orderBy);
+        return orderOfUser;
+    }
+
+    @Patch('/update/:orderId')
+    @ApiParam({name : 'orderId', type : 'string'})
+    async updateOrder(@Param('orderId') orderId : string, @Body() data : any) : Promise<any> {
+        const order = await this.orderSerivce.updateOrder(orderId, data.status);
+        return {
+            data : order,
+            message : 'Order updated'
+        }
+    }
+
 }

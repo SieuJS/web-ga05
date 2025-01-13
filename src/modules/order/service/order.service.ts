@@ -3,6 +3,8 @@ import { TransactionalAdapterPrisma } from "@nestjs-cls/transactional-adapter-pr
 import { Injectable } from "@nestjs/common";
 import { OrderInput, OrderAddressBillInput, OrderProductBillInput } from "../model";
 import { PrismaService } from "../../common";
+import { PaginationArgs } from "../../paginate";
+import { paginator, PaginatorTypes } from "@nodeteam/nestjs-prisma-pagination";
 
 @Injectable()
 export class OrderService {
@@ -71,4 +73,33 @@ export class OrderService {
             }
         });
     }
+
+    async getListOrder(where : any , paginationArgs : PaginationArgs, orderBy : any) : Promise<any> {
+        const paginate: PaginatorTypes.PaginateFunction = paginator({perPage : 10, page : 1});
+
+        return paginate(this.prismaService.order, {
+            where : {
+                status : {
+                    contains : where?.status || "",
+                    mode : "insensitive"
+                }
+            },
+            include : {
+                order_of_user : true
+            },
+            orderBy
+        }, paginationArgs );
+    }
+
+    async updateOrder (orderId : string , status : string) {
+        return this.txHost.tx.order.update({
+            where : {
+                id : orderId
+            },
+            data : {
+                status : status
+            }
+        });
+    }
+
 }

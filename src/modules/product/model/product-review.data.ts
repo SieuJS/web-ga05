@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger"
 import { ProductReview } from "@prisma/client"
 import { PaginationMeta } from "../../paginate"
+import {  UserInSession } from "../../user"
 export class ProductReviewData {
 @ApiProperty({ type: 'string', format: 'uuid' })
   id: string
@@ -22,9 +23,14 @@ export class ProductReviewData {
   }
 }
 
-export class PaginatedReview {
+export class ProductReviewWithUser extends ProductReviewData {
+  @ApiProperty({ type: UserInSession })
+  user: UserInSession
+}
+
+export class PaginatedProductReview {
     @ApiProperty({ type: ProductReviewData, isArray: true })
-    data: ProductReviewData[]
+    data: ProductReviewWithUser[]
 
     @ApiProperty({description : "The meta of pagination", type: PaginationMeta})
     meta : PaginationMeta;

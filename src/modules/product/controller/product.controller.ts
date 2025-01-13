@@ -1,8 +1,8 @@
 import { Body, Post,Get, Query, Controller, Param, HttpException, HttpStatus, Patch } from "@nestjs/common";
-import { ApiOperation, ApiQuery, ApiResponse } from "@nestjs/swagger";
+import { ApiOperation, ApiParam, ApiQuery, ApiResponse } from "@nestjs/swagger";
 import { PaginateTransformPipe } from "../../paginate";
 import { ProductService } from "../service/product.service";
-import { ProductData, ProductInput } from "../model";
+import { PaginatedProductReview, ProductData, ProductInput } from "../model";
 import { ApiTags } from "@nestjs/swagger";
 import { LoggerService } from "../../common";
 import { SearchProductPipe } from "../pipe/search-product.pipe";
@@ -12,6 +12,7 @@ import { SortOrderProductPipe } from "../pipe/sort-order-product.pipe";
 import { CategoryService } from "../../category/service";
 import { TranformProductPipe } from "../pipe/tranform-product.pipe";
 import { CategoryInput } from "../../category/model";
+import { ProductReviewService } from "../service/product-review.service";
 
 
 @Controller('product')
@@ -21,6 +22,7 @@ export class ProductController {
         private readonly productService: ProductService,
         private readonly loggerService : LoggerService,
         private readonly categoryService : CategoryService,
+        private readonly productReviewService : ProductReviewService
 
     ) {}
 
@@ -109,4 +111,11 @@ export class ProductController {
         return this.productService.getUniqueProductAdmin(id);
     }
 
+    @Get('/review/:productId') 
+    @ApiOperation({ summary: 'Get all review of product' })
+    @ApiParam({name : 'productId'})
+    @ApiResponse({ status: 200, description: 'Get all review of product' , type : PaginatedProductReview})
+    async getReviewProduct(@Param('productId') productId: string, @Query(PaginateTransformPipe) paginationArgs: PaginationArgs): Promise<PaginatedProductReview> {
+        return this.productReviewService.getReviewByProductId(productId, paginationArgs);
+    }
 }

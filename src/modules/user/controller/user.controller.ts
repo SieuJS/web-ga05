@@ -9,6 +9,7 @@ import { AuthResponse } from "../model/";
 import { PaginateTransformPipe } from "../../common";
 import { PaginationArgs } from "../../paginate";
 import { SearchUserPipe, SortOrderUserPipe } from "../pipe";
+import { ProductReviewService } from "../../product";
 
 
 @ApiTags('User')
@@ -16,6 +17,7 @@ import { SearchUserPipe, SortOrderUserPipe } from "../pipe";
 export class UserController {
     constructor (
         private userService : UserService,
+        private readonly productReviewService : ProductReviewService
 
     ){}
     @Get()
@@ -102,4 +104,19 @@ export class UserController {
         await this.userService.updateProfile(userInSession.id, data);
         return {message : 'Update profile successfully', success : true};
     }
+
+    @Post('review/:productId')
+    @ApiOperation({ summary: 'Review the user' })
+    @ApiParam({name : 'product id'})
+    async reviewUser(@Req() req : Request, @Body() data: any, @Param('productId')productId : string ): Promise<any> {
+        const userInSession = req.user as UserInSession;
+        await this.productReviewService.createReview({
+            userId : userInSession.id,
+            productId : productId,
+            rating : parseInt(data.rating),
+            review : data.review
+        })
+        return {message : 'Review user successfully', success : true};
+    }
+
 }

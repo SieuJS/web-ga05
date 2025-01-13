@@ -132,14 +132,27 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="list-group" id="reviewsList">
-                            {{#each reviews}}
                             <div class="list-group-item">
                                 <h5 class="mb-1">{{this.author}}</h5>
                                 <p class="mb-1">{{this.content}}</p>
                                 <small>Rating: {{this.rating}}/5</small>
                             </div>
-                            {{/each}}
+                            
                         </div>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center" id="reviewsPagination">
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
                 <div class="row mt-4">
@@ -152,10 +165,6 @@
                 <div class="row">
                     <div class="col-12">
                         <form id="reviewForm">
-                            <div class="form-group">
-                                <label for="reviewAuthor">Name</label>
-                                <input type="text" class="form-control" id="reviewAuthor" required>
-                            </div>
                             <div class="form-group">
                                 <label for="reviewContent">Review</label>
                                 <textarea class="form-control" id="reviewContent" rows="3" required></textarea>

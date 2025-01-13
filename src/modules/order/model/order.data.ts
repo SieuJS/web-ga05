@@ -1,5 +1,7 @@
 import { ApiProperty, OmitType } from "@nestjs/swagger";
 import { Order } from "@prisma/client";
+import { UserInSession } from "../../user";
+import { PaginationMeta } from "../../paginate";
 
 
 export class OrderData {
@@ -28,3 +30,16 @@ export class OrderData {
 }
 
 export class OrderInput extends OmitType(OrderData, ['id', 'orderDate']) {}
+
+export class OrderWithUserData extends OrderData {
+    @ApiProperty({description : 'The user data of the order', type : UserInSession})
+    order_of_user : UserInSession;
+}
+
+export class PaginatedOrderData {
+    @ApiProperty({description : 'The list of orders', type : OrderWithUserData, isArray : true})
+    data : OrderWithUserData[];
+
+    @ApiProperty({description : "The total number of orders", type : PaginationMeta})
+    meta : PaginationMeta;
+}
