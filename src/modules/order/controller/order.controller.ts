@@ -116,7 +116,7 @@ export class OrderController {
         vnp_Params['vnp_Command'] = 'pay';
         vnp_Params['vnp_TmnCode'] = "VE9ZI7PL";
         vnp_Params['vnp_Locale'] = 'vn';
-        vnp_Params['vnp_IpAddr'] = "172.67.208.232";
+        vnp_Params['vnp_IpAddr'] = ip;
         vnp_Params['vnp_CurrCode'] = 'VND';
         vnp_Params['vnp_TxnRef'] = orderId;
         vnp_Params['vnp_OrderInfo'] = "BookStore";
