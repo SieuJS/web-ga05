@@ -38,7 +38,7 @@ const renderOrders = (orders) => {
             <tr>
                 <td>${order.id}</td>
                 <td>${order.totalPrice}</td>
-                <td>${ (new Date(order.orderDate)).toLocaleDateString()}</td>
+                <td>${ (new Date(order.orderDate)).toLocaleDateString()} ${(new Date(order.orderDate)).toLocaleTimeString()}</td>
                 <td>${order.status}</td>
                 <td>${order.paymentStatus} ${order.paymentStatus !=='SUCCESS' ? `<button class ="btn primary-btn payment-btn" data-id = ${order.id}>Go Pay </button>` :''}</td>
                 <td> <button class ="btn primary-btn detail-btn" data-id = ${order.id}>Details </button></td>
