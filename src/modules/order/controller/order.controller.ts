@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Req, Body, Post, HttpException, Get, Param, Query, Patch, Ip, Res } from "@nestjs/common";
+import { Controller, UseGuards, Req, Body, Post, HttpException, Get, Param, Query, Patch, Ip, Res, Inject } from "@nestjs/common";
 import { OrderService } from "../service";
 import { AuthenticatedGuard } from "../../auth";
 import { OrderAddressBillInput, OrderInput, OrderProductBillInput } from "../model";
@@ -11,6 +11,8 @@ import { SortOrderTransformPipe } from "../pipe/sort-order-transform.pipe";
 import { Request, Response } from "express";
 import * as moment from 'moment';
 import { createHmac } from "node:crypto";
+import { Service } from "../../tokens";
+import { Config } from "../../common";
 
 @ApiTags('Order')
 @Controller('order')
@@ -18,7 +20,8 @@ export class OrderController {
     constructor (
         private readonly orderSerivce : OrderService,
         private readonly cartService : CartService,
-        private readonly productService : ProductService
+        private readonly productService : ProductService,
+        @Inject(Service.CONFIG) private readonly configService : Config
     ){}
 
     @UseGuards(AuthenticatedGuard)
@@ -119,7 +122,7 @@ export class OrderController {
         vnp_Params['vnp_OrderInfo'] = "BookStore";
         vnp_Params['vnp_OrderType'] = "pay";
         vnp_Params['vnp_Amount'] = parseInt((price * 10000).toString());
-        vnp_Params['vnp_ReturnUrl'] = "http://localhost:3000/api/v1/order/vnpay-callback";
+        vnp_Params['vnp_ReturnUrl'] = this.configService.HOST_URL+"/api/v1/order/vnpay-callback";
         vnp_Params['vnp_CreateDate'] = date.format('YYYYMMDDHHmmss');
         const sortedParams = sortParams(vnp_Params);
         const urlParams = new URLSearchParams();
