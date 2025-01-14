@@ -14,7 +14,7 @@ export class OrderService {
     ){}
 
     async createOrder(orderInput : OrderInput , orderAdressBillInput : OrderAddressBillInput, orderProductBillInputs : OrderProductBillInput[]) : Promise<any> {
-        const user = await this.txHost.tx.user.findUnique({
+        const user = await this.prismaService.user.findUnique({
             where : {
                 id : orderInput.userId
             }
@@ -24,7 +24,7 @@ export class OrderService {
             throw new Error('User not found');
         }
 
-        return this.txHost.tx.order.create({
+        return this.prismaService.order.create({
             data : {
                 ...orderInput,
                 orderDate : new Date(),
@@ -92,7 +92,7 @@ export class OrderService {
     }
 
     async updateOrder (orderId : string , status : string) {
-        return this.txHost.tx.order.update({
+        return this.prismaService.order.update({
             where : {
                 id : orderId
             },
@@ -103,7 +103,7 @@ export class OrderService {
     }
 
     async updatePaymentStatus (orderId : string , status : string) {
-        return this.txHost.tx.order.update({
+        return this.prismaService.order.update({
             where : {
                 id : orderId
             },
