@@ -62,7 +62,7 @@ jobs:
               docker run -d \
                 -p 80:3000 \
                 --name karl-container \
-                -e DATABASE_URL=${{secrets.DB_URL}} \
+                -e DATABASE_URL="${{secrets.DB_URL}}" \
                 -e API_PORT=3000 \
                 -e SWAGGER_ENABLE=1 \
                 -e API_PREFIX="/api/v1" \
