@@ -70,6 +70,6 @@ jobs:
                 -e JWT_ISSUER="nestjs" \
                 -e HEALTH_TOKEN="health" \
                 -e PASSENGERS_ALLOWED="yes" \
-                -e HOST_URL = "${{secrets.HOST_URL}}" ${{ secrets.DOCKER_USERNAME }}/karl:${{ github.sha }}
+                -e HOST_URL="${{secrets.HOST_URL}}" ${{ secrets.DOCKER_USERNAME }}/karl:${{ github.sha }}
 
 
