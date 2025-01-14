@@ -40,7 +40,7 @@ const renderOrders = (orders) => {
                 <td>${order.totalPrice}</td>
                 <td>${ (new Date(order.orderDate)).toLocaleDateString()}</td>
                 <td>${order.status}</td>
-                <td>${order.paymentStatus}</td>
+                <td>${order.paymentStatus} ${order.paymentStatus !=='SUCCESS' ? `<button class ="btn primary-btn payment-btn" data-id = ${order.id}>Go Pay </button>` :''}</td>
                 <td> <button class ="btn primary-btn detail-btn" data-id = ${order.id}>Details </button></td>
             </tr>
         `;
@@ -51,6 +51,14 @@ const renderOrders = (orders) => {
             console.log('clicked');
             const orderId = button.getAttribute('data-id');
             renderOrderDetails(orderId);
+        });
+    });
+
+    orderTable.querySelectorAll('.payment-btn').forEach((button) => {
+        button.addEventListener('click', async () => {
+            console.log('clicked');
+            const orderId = button.getAttribute('data-id');
+            payOrder(orderId);
         });
     });
 
@@ -109,5 +117,21 @@ async function renderOrderDetails(orderId) {
     }
 }
 
+async function payOrder(orderId) {
+    try {
+        const response = await fetch(`/api/v1/order/vnpay/${orderId}`)
+
+        if (!response.ok) {
+            throw new Error('Failed to pay order');
+        }
+
+        const result = await response.json();
+        if (result.data) {
+            window.location.href = result.data;
+        }
+    } catch (error) {
+        console.error('Error paying order:', error);
+    }
+}
 
 loadOrders();

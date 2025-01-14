@@ -85,10 +85,10 @@ document.addEventListener('DOMContentLoaded', function() {
             // Handle network errors
             errorElement.classList.remove('d-none');
             errorTextElement.textContent = error.message;
+            submitRequestButton.innerHTML = "Sign Up";
             timeOut(() => {
                 errorElement.classList.add('d-none');
             }, 3000);
-            submitRequestButton.innerHTML = "Sign Up";
             return;
         }
     });
