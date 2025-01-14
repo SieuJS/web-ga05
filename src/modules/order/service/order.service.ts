@@ -102,4 +102,30 @@ export class OrderService {
         });
     }
 
+    async updatePaymentStatus (orderId : string , status : string) {
+        return this.txHost.tx.order.update({
+            where : {
+                id : orderId
+            },
+            data : {
+                paymentStatus : status
+            }
+        });
+    }
+
+    async vnPayPayment (orderId : string) {
+        const order = await this.txHost.tx.order.findUnique({
+            where : {
+                id : orderId
+            }
+        });
+
+        if (!order) {
+            throw new Error('Order not found');
+        }
+
+        return order.totalPrice;
+    }
+
+
 }

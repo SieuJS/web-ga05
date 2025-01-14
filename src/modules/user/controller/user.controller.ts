@@ -63,6 +63,23 @@ export class UserController {
             token: 'Bearer ' + req.sessionID};
     }
 
+    @Post('admin/create')
+    @ApiOperation({ summary: 'Create the admin account' })
+    @ApiBody({description : "Input form", type : UserInput})
+    async createAdmin(@Req() req : Request, @Body(UserInputPipe) data: UserInput): Promise<UserData> {
+        const existingUser = await this.userService.getUserByEmail(data.email);
+        if (existingUser) {
+            throw new HttpException('User with this email already exists', 400);
+        }
+        const existingUserName = await this.userService.getUserByUserName(data.username);
+        if (existingUserName) {
+            throw new HttpException('User with this username already exists', 400);
+        }
+        data.status = 'active';
+        data.role = 'admin';
+        return this.userService.createUser(data);
+    }
+
     @Get('/logout')
     logout(@Req() req : any): any {
       req.session.destroy();

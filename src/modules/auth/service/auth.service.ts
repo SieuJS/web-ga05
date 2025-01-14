@@ -12,6 +12,9 @@ export class AuthService {
         if (!user) {
             throw new NotAcceptableException("could not find the user");
         }
+        if(user.status === "banned"){
+            throw new NotAcceptableException("User is banned");
+        }
         const passwordValid = await bcrypt.compare(
             input.password,
             user.password
@@ -50,13 +53,16 @@ export class AuthService {
         const existUser = await this.usersService.getUserByEmail(user.email);
         if (!existUser) {
             const newUser = await this.usersService.createUser(user);
-            console.log("create new", newUser.id);
+            
             return {
                 id: newUser.id,
                 username: user.username,
                 role: user.role,
                 status: "active",
             } 
+        }
+        if(existUser.status === "banned"){
+            throw new NotAcceptableException("User is banned");
         }
         return {
             id: existUser.id,

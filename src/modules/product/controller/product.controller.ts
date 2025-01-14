@@ -1,4 +1,4 @@
-import { Body, Post,Get, Query, Controller, Param, HttpException, HttpStatus, Patch } from "@nestjs/common";
+import { Body, Post,Get, Query, Controller, Param, HttpException, HttpStatus, Patch, UseInterceptors } from "@nestjs/common";
 import { ApiOperation, ApiParam, ApiQuery, ApiResponse } from "@nestjs/swagger";
 import { PaginateTransformPipe } from "../../paginate";
 import { ProductService } from "../service/product.service";
@@ -13,7 +13,7 @@ import { CategoryService } from "../../category/service";
 import { TranformProductPipe } from "../pipe/tranform-product.pipe";
 import { CategoryInput } from "../../category/model";
 import { ProductReviewService } from "../service/product-review.service";
-
+import { CacheInterceptor } from "@nestjs/cache-manager";
 
 @Controller('product')
 @ApiTags("Product")
@@ -32,7 +32,7 @@ export class ProductController {
         this.loggerService.info(`Created new Product with ID ${product.id}`);
         return product
     }
-
+    @UseInterceptors(CacheInterceptor)
     @Get()
     @ApiOperation({ summary: 'Get all product' })
     @ApiQuery({ name: 'search', required: false})

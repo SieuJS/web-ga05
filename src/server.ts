@@ -60,7 +60,8 @@ async function bootstrap(): Promise<void> {
     );
     app.useStaticAssets(join(__dirname, '..', 'client'));
     app.setBaseViewsDir(join(__dirname, '..', 'views'));
-    app.use(cors());
+    app.use(cors(
+    ));
     app.engine(
         'hbs',
         hbs.create({

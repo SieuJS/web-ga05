@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Req, Body, Post, HttpException, Get, Param, Query, Patch } from "@nestjs/common";
+import { Controller, UseGuards, Req, Body, Post, HttpException, Get, Param, Query, Patch, Ip, Res } from "@nestjs/common";
 import { OrderService } from "../service";
 import { AuthenticatedGuard } from "../../auth";
 import { OrderAddressBillInput, OrderInput, OrderProductBillInput } from "../model";
@@ -8,6 +8,9 @@ import { ProductService } from "../../product";
 import { ApiParam, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { PaginateTransformPipe, PaginationArgs } from "../../paginate";
 import { SortOrderTransformPipe } from "../pipe/sort-order-transform.pipe";
+import { Request, Response } from "express";
+import * as moment from 'moment';
+import { createHmac } from "node:crypto";
 
 @ApiTags('Order')
 @Controller('order')
@@ -48,7 +51,8 @@ export class OrderController {
         const orderInput : OrderInput = {
             totalPrice : totalPrice,
             status : 'PENDING',
-            userId : userInSession.id
+            userId : userInSession.id,
+            paymentStatus : 'PENDING'
         }
         orderInput.userId = userInSession.id;
         await this.cartService.clearCart(userInSession.id);
@@ -97,4 +101,83 @@ export class OrderController {
         }
     }
 
+    @Get('/vnpay/:orderId')
+    @ApiParam({name : 'orderId', type : 'string'})
+    async vnPayPayment(@Param('orderId') orderId : string, @Req() req : Request, @Ip() ip : any) : Promise<any> {
+        const price = await this.orderSerivce.vnPayPayment(orderId);
+
+        const secretKey = "D20CQAP41H71RIW04VEAMNF1E29KF8KM";
+        const date = moment();
+        var vnp_Params  : any = {};
+        vnp_Params['vnp_Version'] = '2.1.0';
+        vnp_Params['vnp_Command'] = 'pay';
+        vnp_Params['vnp_TmnCode'] = "VE9ZI7PL";
+        vnp_Params['vnp_Locale'] = 'vn';
+        vnp_Params['vnp_IpAddr'] = "172.67.208.232";
+        vnp_Params['vnp_CurrCode'] = 'VND';
+        vnp_Params['vnp_TxnRef'] = orderId;
+        vnp_Params['vnp_OrderInfo'] = "BookStore";
+        vnp_Params['vnp_OrderType'] = "pay";
+        vnp_Params['vnp_Amount'] = parseInt((price * 10000).toString());
+        vnp_Params['vnp_ReturnUrl'] = "http://localhost:3000/api/v1/order/vnpay-callback";
+        vnp_Params['vnp_CreateDate'] = date.format('YYYYMMDDHHmmss');
+        const sortedParams = sortParams(vnp_Params);
+        const urlParams = new URLSearchParams();
+        for (let [key, value] of Object.entries(sortedParams)) {
+          urlParams.append(key, value as string);
+        }
+      const vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
+        const querystring = urlParams.toString();
+        var hmac = createHmac("sha512", secretKey);
+        const signed = hmac.update(querystring).digest("hex");
+        urlParams.append("vnp_SecureHash", signed);
+        const paymentUrl = `${vnpUrl}?${urlParams.toString()}`;
+
+        return {
+            data : paymentUrl,
+            message : 'Order payment'
+        }
+    }
+
+    @Get('/vnpay-callback')
+    async vnPayCallback(@Req() req : Request, @Res() res : Response) : Promise<any> {
+        const { vnp_ResponseCode, vnp_TxnRef } = req.query;
+        try {
+          if (!vnp_ResponseCode || !vnp_TxnRef) {
+            return new HttpException("Invalid request", 400);
+          }
+      
+        const order = await this.orderSerivce.getOrderById(vnp_TxnRef as string);
+        if (!order) {
+          return new HttpException("Order not found", 404);
+        }
+        if (order.status === "SUCCESS") {
+          return new HttpException("Order already paid", 400);
+        }
+        if (vnp_ResponseCode === "00") {
+          await this.orderSerivce.updatePaymentStatus(vnp_TxnRef as string, "SUCCESS");
+        } else {
+          await this.orderSerivce.updatePaymentStatus(vnp_TxnRef as string, "FAILED");
+        } 
+        res.redirect('/order');
+
+        }catch (error) {
+          return new HttpException(error.message, 400);
+        }
+    }
+
 }
+
+function sortParams(obj : any) {
+    const sortedObj = Object.entries(obj)
+      .filter(
+        ([key, value]) => value !== "" && value !== undefined && value !== null
+      )
+      .sort(([key1], [key2]) => key1.toString().localeCompare(key2.toString()))
+      .reduce((acc : any, [key, value]) => {
+        acc[key] = value;
+        return acc;
+      }, {});
+  
+    return sortedObj;
+  }

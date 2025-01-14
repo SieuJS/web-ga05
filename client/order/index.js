@@ -40,6 +40,7 @@ const renderOrders = (orders) => {
                 <td>${order.totalPrice}</td>
                 <td>${ (new Date(order.orderDate)).toLocaleDateString()}</td>
                 <td>${order.status}</td>
+                <td>${order.paymentStatus}</td>
                 <td> <button class ="btn primary-btn detail-btn" data-id = ${order.id}>Details </button></td>
             </tr>
         `;

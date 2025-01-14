@@ -20,6 +20,9 @@ export class OrderData {
     @ApiProperty({description : 'The date of the order', example : '2021-12-12'})
     orderDate : Date;
 
+    @ApiProperty({description : 'The payment status', example : 'pending'})
+    paymentStatus : string;
+
     constructor (orderData : Order) {
         this.id = orderData.id;
         this.userId = orderData.userId;

@@ -96,6 +96,7 @@ model Order {
   userId             String             @map("user_id") @db.Uuid
   orderDate          DateTime           @map("order_date")
   status             String
+  paymentStatus      String             @map("payment_status") @default("pending")
   order_bill_address OrderAdressBill[]
   order_bill_product OrderProductBill[]
   order_of_user      User               @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_order_of_user")
