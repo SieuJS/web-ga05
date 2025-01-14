@@ -65,11 +65,11 @@ jobs:
                 -e DATABASE_URL=${{secrets.DB_URL}} \
                 -e API_PORT=3000 \
                 -e SWAGGER_ENABLE=1 \
-                -e API_PREFIX=/api/v1 \
-                -e JWT_SECRET=secret \
-                -e JWT_ISSUER=nestjs \
-                -e HEALTH_TOKEN=health \
-                -e PASSENGERS_ALLOWED=yes \
+                -e API_PREFIX="/api/v1" \
+                -e JWT_SECRET="secret" \
+                -e JWT_ISSUER="nestjs" \
+                -e HEALTH_TOKEN="health" \
+                -e PASSENGERS_ALLOWED="yes" \
                 -e HOST_URL = "${{secrets.HOST_URL}}" \
                 ${{ secrets.DOCKER_USERNAME }}/karl:${{ github.sha }}
 
