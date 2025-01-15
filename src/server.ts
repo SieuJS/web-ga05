@@ -10,6 +10,7 @@ import * as session from 'express-session';
 import * as passport from 'passport';
 import { productRender, paginateRender, productDetailRender, relatedProductsRender, productImageRender,profileRender } from './modules/view/hbs';
 import * as cors from 'cors';
+import { SSL_CERT, SSL_KEY } from './key';
 /**
  * These are API defaults that can be changed using environment variables,
  * it is not required to change them (see the `.env.example` file)
@@ -55,8 +56,14 @@ function createSwagger(app: INestApplication) {
  * parsing middleware.
  */
 async function bootstrap(): Promise<void> {
+  const httpsOptions ={
+    key: SSL_KEY,
+    cert: SSL_CERT
+  }
     const app = await NestFactory.create<NestExpressApplication>(
-        ApplicationModule
+        ApplicationModule,
+        {httpsOptions}
+
     );
     app.useStaticAssets(join(__dirname, '..', 'client'));
     app.setBaseViewsDir(join(__dirname, '..', 'views'));
