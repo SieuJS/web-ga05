@@ -10,6 +10,9 @@ export class UpdateInforInput {
     @ApiProperty({description: 'The avatar of the user', example: 'https://www.google.com'})
     avatar: string;
 
+    @ApiProperty({description: 'The name of the user', example: 'John Doe'})
+    name: string;
+
     @ApiProperty({description: 'The old password of the user', example: 'password'})
     oldPassword: string;
 

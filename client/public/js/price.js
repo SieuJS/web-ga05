@@ -60,11 +60,3 @@ priceSliderElement.innerHTML += slideElement;
 })(jQuery);
 
 
-const priceButton = document.getElementById('price-btn');
-priceButton.onclick = async () => {
-  const minPrice = document.getElementById('price-min').value;
-  const maxPrice = document.getElementById('price-max').value;
-
-  setPrice(minPrice, maxPrice);
-  setLinkAndReload();
-}

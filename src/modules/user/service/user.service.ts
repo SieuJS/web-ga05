@@ -131,7 +131,7 @@ export class UserService {
         });
         return user as UserData;
     }
-    async updateProfile(id: string, data: {avatar : string, oldPassword: string, newPassword : string}): Promise<UserData> {
+    async updateProfile(id: string, data: {avatar : string, oldPassword: string, newPassword : string, name : string}): Promise<UserData> {
         const user = await this.prisma.user.findUnique({
             where: { id },
         });
@@ -154,7 +154,8 @@ export class UserService {
         const updatedUser = await this.prisma.user.update({
             where: { id },
             data: {
-        ...(data.avatar  && {avatar: data.avatar}),
+            ...(data.name && {name: data.name}),
+            ...(data.avatar  && {avatar: data.avatar}),
                 password: hashedPassword,
             },
         });

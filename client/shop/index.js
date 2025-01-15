@@ -10,6 +10,7 @@ import {
     setLinkAndAjax,
     setPageQuery,
     clearPageQuery,
+    setPrice,
 } from "../public/js/product-query.js";
 import { paginateRender } from "../public/js/paginate.js";
 
@@ -169,3 +170,14 @@ paginateContainer.querySelectorAll(".page-link").forEach((link) => {
       }
   });
 });
+
+const priceButton = document.getElementById('price-btn');
+priceButton.onclick = async () => {
+  const minPrice = document.getElementById('price-min').value;
+  const maxPrice = document.getElementById('price-max').value;
+
+  setPrice(minPrice, maxPrice);
+  setLinkAndAjax();
+  loadProducts();
+  
+}
